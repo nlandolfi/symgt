@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+[project]
+name = "symgt"
+version = "0.0.1"
+authors = [
+  { name = "N. C. Landolfi", email="crews.fixture.0f@icloud.com"},
+]
+description = "A package for group testing against symmetric distributions."
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+  "numpy", 
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/nlandolfi/symgt"
