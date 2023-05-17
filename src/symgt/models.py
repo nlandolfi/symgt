@@ -1,28 +1,29 @@
 import numpy as np
+from scipy.special import comb, logsumexp  # type: ignore
 
 
 class IIDModel:
     """
-    This class represents a model of independent and identically distributed (iid) samples.
+    This class represents a model of independent and identically distributed (iid) specimens.
 
-    An IIDModel is characterized by a number of samples (`n`) and a prevalence (`p`).
+    An IIDModel is characterized by a number of specimens (`n`) and a prevalence (`p`).
 
     Attributes
     ----------
     n : int
-        Number of samples in the model.
+        Population size of model.
     p : float
         Prevalence in the model.
     """
 
     def __init__(self, n: int, p: float):
         """
-        Initializes an IIDModel with a specific number of samples and a prevalence.
+        Initializes an IIDModel with a specific number of specimens and a prevalence.
 
         Parameters
         ----------
         n : int
-            Number of samples in the model.
+            Population size of model.
         p : float
             Prevalence in the model.
         """
@@ -46,7 +47,7 @@ class IIDModel:
         Parameters
         ----------
         samples : np.ndarray
-            A 2D numpy array where each row represents a sample and each column represents a specimen.
+            A 2D numpy array where each row represents a sample and of specimens.
 
         Returns
         -------
@@ -54,7 +55,7 @@ class IIDModel:
             An IIDModel object. The model's parameters are the population size (n) and the mean of all values in the samples.
         """
         N, n = samples.shape
-        return IIDModel(n, np.sum(samples) / (n * N))
+        return cls(n, np.sum(samples) / (n * N))
 
     def prevalence(self) -> float:
         """
@@ -67,15 +68,111 @@ class IIDModel:
         """
         return self.p
 
-    def log_marginals(self) -> np.ndarray:
+    def log_q(self) -> np.ndarray:
         """
-        Computes the log marginal probabilities for each sample in the model.
+        Computes the log of the q representation of the distribution. See paper.
 
-        The i-th entry of the returned array is the log probability that a group of size i+1 has negative status.
+        The i-th entry of the returned array is the log probability that a group of size i has negative status.
 
         Returns
         -------
         np.ndarray
             An array containing the log marginal probabilities for each sample.
         """
-        return np.log(1 - self.p) * np.arange(1, self.n + 1)
+        # note that by convention q(0) = 1, so log q(0) = 0; handled with multiplication by 0
+        return np.log(1 - self.p) * np.arange(0, self.n + 1)
+
+
+class SymmetricModel:
+    """
+    This class represents a symmetric model.
+
+    A symmetric model is defined by population size (`n`) and a probability distribution (`alpha`).
+
+    Attributes
+    ----------
+    n : int
+        Population size of model.
+    alpha : np.ndarray
+        Representation of the symmetric distribution.
+        alpha[i] is the probability that there are i ones in a sample.
+    """
+
+    def __init__(self, n: int, alpha: np.ndarray):
+        """
+        Initializes a SymmetricModel with a specific population size and a representation.
+
+        Parameters
+        ----------
+        n : int
+            Population size of model.
+        alpha : np.ndarray
+            Representation of symmetric distribution. See paper.
+        """
+        if not isinstance(n, int):
+            raise TypeError("`n` should be a positive integer.")
+        if n <= 0:
+            raise ValueError("`n` should be a positive integer.")
+        if len(alpha) != n + 1:
+            raise ValueError("len of `alpha` should be `n+1`.")
+
+        self.n = n
+        self.alpha = np.asarray(alpha).astype(np.float64)
+
+    @classmethod
+    def fit(cls, samples: np.ndarray) -> "SymmetricModel":
+        """
+        Function to fit a symmetric distribution model.
+
+        Parameters
+        ----------
+        samples : np.ndarray
+            A 2D numpy array where each row represents a sample and each column represents a specimen.
+
+        Returns
+        -------
+        SymmetricModel
+            A SymmetricModel object. The model's parameters are the population size (n) and the normalized histogram of sums of each sample.
+        """
+        N, n = samples.shape
+        sums = np.sum(samples, axis=0)
+        alpha = np.bincount(sums, minlength=n + 1)
+        return cls(n, alpha / N)
+
+    def prevalence(self) -> float:
+        """
+        Returns the prevalence of the model.
+
+        Returns
+        -------
+        float
+            The prevalence of the model.
+        """
+        return 1 - np.exp(self.log_q()[1])
+
+    def log_q(self) -> np.ndarray:
+        """
+        Computes the log of the q representation of the distribution. See paper.
+
+        The i-th entry of the returned array is the log probability that a group of size i has negative status.
+
+        Returns
+        -------
+        np.ndarray
+            An array containing the log marginal probabilities for each sample.
+        """
+        # note that by convention q(0) = 1, so log q(0) = 0; handled with initialization to 0
+        log_q = np.zeros(self.n + 1)
+        lalpha = np.log(
+            self.alpha, where=(self.alpha != 0), out=np.full_like(self.alpha, -np.inf)
+        )
+        for i in range(1, self.n + 1):
+            a = [lalpha[0]]
+            for j in range(1, self.n - i + 1):
+                a.append(
+                    np.log(comb(self.n - i, j, exact=True))
+                    - np.log(comb(self.n, j, exact=True))
+                    + lalpha[j]
+                )
+            log_q[i] = logsumexp(a)
+        return log_q

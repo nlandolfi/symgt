@@ -13,7 +13,8 @@ fmt:
 types:
 	mypy src
 test:
-	python tests/smoke_test.py
+	python tests/01_smoke_test:_IIDModel.py
+	python tests/02_smoke_test:_SymmetricModel.py
 freeze:
 	pip freeze > requirements.txt
 
