@@ -26,6 +26,15 @@ class IIDModel:
         p : float
             Prevalence in the model.
         """
+        if not isinstance(n, int):
+            raise TypeError("`n` should be a positive integer.")
+        if n <= 0:
+            raise ValueError("`n` should be a positive integer.")
+        if not isinstance(p, float):
+            raise TypeError("`p` should be a float between 0 and 1 inclusive.")
+        if not (0 <= p <= 1):
+            raise ValueError("`p` should be a float between 0 and 1 inclusive.")
+
         self.n = n
         self.p = p
 

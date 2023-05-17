@@ -1,3 +1,7 @@
+precommit:
+	make fmt
+	make types
+	make test
 build:
 	python3 -m build
 deploy:
@@ -12,10 +16,6 @@ test:
 	python tests/smoke_test.py
 freeze:
 	pip freeze > requirements.txt
-precommit:
-	make fmt
-	make types
-	make test
 
 .PHONY: setupenv
 setupenv:
