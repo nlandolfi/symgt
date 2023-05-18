@@ -8,7 +8,7 @@ SymmetricModel = st.SymmetricModel
 
 m = SymmetricModel(10, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 lq = m.log_q()
-assert np.all(np.exp(lq) == 1)  # this never has positive status specimens
+assert np.all(np.exp(lq) == 1)  # this model never has positive specimens
 
 m = SymmetricModel(10, np.ones(11) / 11)
 lq = m.log_q()

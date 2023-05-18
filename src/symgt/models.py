@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.special import comb, logsumexp  # type: ignore
+from scipy.special import gammaln, logsumexp  # type: ignore
 
 
 class IIDModel:
@@ -135,8 +135,10 @@ class SymmetricModel:
             A SymmetricModel object. The model's parameters are the population size (n) and the normalized histogram of sums of each sample.
         """
         N, n = samples.shape
-        sums = np.sum(samples, axis=0)
-        alpha = np.bincount(sums, minlength=n + 1)
+        nnzs = np.sum(samples, axis=1)
+        alpha = np.zeros(n + 1)
+        for nnz in nnzs:  # TODO: vectorize
+            alpha[nnz] += 1
         return cls(n, alpha / N)
 
     def prevalence(self) -> float:
@@ -163,16 +165,20 @@ class SymmetricModel:
         """
         # note that by convention q(0) = 1, so log q(0) = 0; handled with initialization to 0
         log_q = np.zeros(self.n + 1)
-        lalpha = np.log(
+
+        # by default, np.log will do this (take log(0) = -np.inf) and throw a warning
+        # here we make it explicit
+        log_alpha = np.log(
             self.alpha, where=(self.alpha != 0), out=np.full_like(self.alpha, -np.inf)
         )
+
         for i in range(1, self.n + 1):
-            a = [lalpha[0]]
+            a = [log_alpha[0]]
             for j in range(1, self.n - i + 1):
-                a.append(
-                    np.log(comb(self.n - i, j, exact=True))
-                    - np.log(comb(self.n, j, exact=True))
-                    + lalpha[j]
-                )
+                a.append(log_comb(self.n - i, j) - log_comb(self.n, j) + log_alpha[j])
             log_q[i] = logsumexp(a)
         return log_q
+
+
+def log_comb(n, k):
+    return gammaln(n + 1) - gammaln(k + 1) - gammaln(n - k + 1)
