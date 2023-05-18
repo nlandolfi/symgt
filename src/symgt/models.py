@@ -94,7 +94,7 @@ class SymmetricModel:
     """
     This class represents a symmetric distribution. In other words, the specimens are exchangeable.
 
-    A symmetric model is defined by population size (`n`) and a probability distribution (`alpha`).
+    A symmetric model is defined by population size (`n`) and the representation alpha. Recall that alpha is a probability distribution over the equivlance classes, conveniently indexed by the number of nonzeros in the outcomes.
 
     Attributes
     ----------
