@@ -2,6 +2,9 @@ import symgt as st
 import pytest
 import numpy as np
 
+# test other things, ECost etc.
+print("THIS IS SMOKE TEST 3: IT TESTS algorithms.py")
+
 
 def test_U_from_q():
     # w_r = np.array([0, 0.5, 0])

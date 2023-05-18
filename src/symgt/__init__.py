@@ -4,6 +4,9 @@ from .algorithms import (
     ETests,
     dorfman_pool_size,
     dorfman_multiplicity_function,
+    optimal_multiplicity_function,
+    integer_partition,
+    ECost,
 )
 
 __all__ = [
@@ -13,4 +16,7 @@ __all__ = [
     "ETests",
     "dorfman_pool_size",
     "dorfman_multiplicity_function",
+    "optimal_multiplicty_function",
+    "integer_partition",
+    "ECost",
 ]
