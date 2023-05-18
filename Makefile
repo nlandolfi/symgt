@@ -14,7 +14,7 @@ types:
 	mypy src
 test:
 	python tests/01_smoke_test:_IIDModel.py
-	python tests/02_smoke_test:_SymmetricModel.py
+	python tests/02_smoke_test:_ExchangeableModel.py
 freeze:
 	pip freeze > requirements.txt
 

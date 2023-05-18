@@ -9,6 +9,9 @@ class IIDModel:
 
     An IIDModel is characterized by a number of specimens (`n`) and a prevalence (`p`).
 
+    Every IIDModel could be represented as an ExchangeableModel, but use this
+    class to indicate the additional structure.
+
     Attributes
     ----------
     n : int
@@ -80,7 +83,7 @@ class IIDModel:
         """
         Computes the log of the q representation of the distribution. See paper.
 
-        The i-th entry of the returned array is the log probability that a group of 
+        The i-th entry of the returned array is the log probability that a group of
         size i has negative status.
 
         Returns
@@ -92,13 +95,13 @@ class IIDModel:
         return np.log(1 - self.p) * np.arange(0, self.n + 1)
 
 
-class SymmetricModel:
+class ExchangeableModel:
     """
     This class represents a symmetric distribution. In other words, the specimen
     statuses are modeled as exchangeable random variables.
 
     A symmetric model is defined by population size (`n`) and the representation
-    `alpha`. `alpha[i]` is the probability of `i` positive statuses. 
+    `alpha`. `alpha[i]` is the probability of `i` positive statuses.
 
     Attributes
     ----------
@@ -111,7 +114,7 @@ class SymmetricModel:
 
     def __init__(self, n: int, alpha: np.ndarray):
         """
-        Initializes a SymmetricModel with a specific population size and a representation.
+        Initializes a ExchangeableModel with a specific population size and a representation.
 
         Parameters
         ----------
@@ -133,13 +136,13 @@ class SymmetricModel:
         self.alpha = np.asarray(alpha).astype(np.float64)
 
     def __str__(self):
-        return f"SymmetricModel(n={self.n}, alpha=...)"
+        return f"ExchangeableModel(n={self.n}, alpha=...)"
 
     def __repr__(self):
         return self.__str__()
 
     @classmethod
-    def fit(cls, samples: np.ndarray) -> "SymmetricModel":
+    def fit(cls, samples: np.ndarray) -> "ExchangeableModel":
         """
         Function to fit a symmetric distribution model.
 
@@ -150,8 +153,8 @@ class SymmetricModel:
 
         Returns
         -------
-        SymmetricModel
-            A SymmetricModel object. The model's parameters are the population size (n) and the normalized histogram of sums of each sample.
+        ExchangeableModel
+            An ExchangeableModel object. The model's parameters are the population size (n) and the normalized histogram of sums of each sample.
         """
         N, n = samples.shape
         nnzs = np.sum(samples, axis=1)
