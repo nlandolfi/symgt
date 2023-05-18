@@ -213,7 +213,7 @@ class ExchangeableModel:
 
 def log_comb(n, k):
     """
-    Compute the log of `n` choose `k` using scipy's gammaln function.
+    Compute the log of `n` choose `k` using scipy's `gammaln` function.
 
     Used by `ExchangeableModel`'s `log_q` function.
     """
