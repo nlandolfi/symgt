@@ -4,8 +4,8 @@ from scipy.special import gammaln, logsumexp  # type: ignore
 
 class IIDModel:
     """
-    This class represents a distribution of independent and identically distributed (iid)
-    specimen statuses.
+    This class represents a distribution of independent and identically distributed
+    (iid) specimen statuses.
 
     An IIDModel is characterized by a number of specimens (`n`) and a prevalence (`p`).
 
@@ -59,7 +59,8 @@ class IIDModel:
         Returns
         -------
         IIDModel
-            An IIDModel object. The model's parameters are the population size (n) and the mean of all values in the samples.
+            An IIDModel object. The model's parameters are the population size (n)
+            and the mean of all values in the samples.
         """
         N, n = samples.shape
         return cls(n, np.sum(samples) / (n * N))
@@ -79,7 +80,8 @@ class IIDModel:
         """
         Computes the log of the q representation of the distribution. See paper.
 
-        The i-th entry of the returned array is the log probability that a group of size i has negative status.
+        The i-th entry of the returned array is the log probability that a group of 
+        size i has negative status.
 
         Returns
         -------
@@ -92,9 +94,11 @@ class IIDModel:
 
 class SymmetricModel:
     """
-    This class represents a symmetric distribution. In other words, the specimen statuses are modeled as exchangeable random variables.
+    This class represents a symmetric distribution. In other words, the specimen
+    statuses are modeled as exchangeable random variables.
 
-    A symmetric model is defined by population size (`n`) and the representation alpha. Recall that alpha is a probability distribution over the equivlance classes. For the exchangeable (permutation) symmetry, these equivalence classes can be convenient indexed by the number of nonzero entries in outcomes (i.e., the number of positive specimens).
+    A symmetric model is defined by population size (`n`) and the representation
+    `alpha`. `alpha[i]` is the probability of `i` positive statuses. 
 
     Attributes
     ----------
