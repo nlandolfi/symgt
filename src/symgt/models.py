@@ -63,7 +63,7 @@ class IIDModel:
         -------
         IIDModel
             An `IIDModel` object. The model's parameters are the population
-            size (`n`) and the proportion of positive statuses in the samples.
+            size (`n`) and the proportion of positive outcomes in the samples.
         """
         N, n = samples.shape
         return cls(n, np.sum(samples) / (n * N))
