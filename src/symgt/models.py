@@ -78,7 +78,7 @@ class IIDModel:
         Returns
         -------
         np.ndarray
-            An array containing the log marginal probabilities for each sample.
+            An array containing the log of the q representation.
         """
         # note that by convention q(0) = 1, so log q(0) = 0; handled with multiplication by 0
         return np.log(1 - self.p) * np.arange(0, self.n + 1)
