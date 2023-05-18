@@ -198,7 +198,7 @@ class ExchangeableModel:
         log_q = np.zeros(self.n + 1)
 
         # by default, np.log also takes log(0) = -np.inf, but throws a warning
-        # here we make it explicit and w/o the warning
+        # here we make it explicit and do not print a warning
         log_alpha = np.log(
             self.alpha, where=(self.alpha != 0), out=np.full_like(self.alpha, -np.inf)
         )
