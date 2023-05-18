@@ -5,7 +5,7 @@ from scipy.special import gammaln, logsumexp  # type: ignore
 class IIDModel:
     """
     This class represents a distribution of independent and identically distributed
-    (iid) specimen statuses.
+    (iid) binary outcomes.
 
     An IIDModel is characterized by a number of specimens (`n`) and a prevalence (`p`).
 
@@ -98,8 +98,9 @@ class IIDModel:
 
 class ExchangeableModel:
     """
-    This class represents a permutation-symmetric distribution. In other
-    words, the specimen statuses are modeled as exchangeable random variables.
+    This class represents a permutation-symmetric distribution of binary
+    outcomes. In other words, the specimen statuses are modeled as
+    exchangeable random variables.
 
     An exchangeable model is defined by population size (`n`) and the representation
     `alpha`. `alpha[i]` is the probability of `i` positive statuses.
