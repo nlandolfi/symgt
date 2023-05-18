@@ -1,28 +1,30 @@
 import numpy as np
+from scipy.special import gammaln, logsumexp  # type: ignore
 
 
 class IIDModel:
     """
-    This class represents a model of independent and identically distributed (iid) samples.
+    This class represents a distribution of independent and identically distributed (iid)
+    specimen statuses.
 
-    An IIDModel is characterized by a number of samples (`n`) and a prevalence (`p`).
+    An IIDModel is characterized by a number of specimens (`n`) and a prevalence (`p`).
 
     Attributes
     ----------
     n : int
-        Number of samples in the model.
+        Population size of model.
     p : float
         Prevalence in the model.
     """
 
     def __init__(self, n: int, p: float):
         """
-        Initializes an IIDModel with a specific number of samples and a prevalence.
+        Initializes an IIDModel with a specific number of specimens and a prevalence.
 
         Parameters
         ----------
         n : int
-            Number of samples in the model.
+            Population size of model.
         p : float
             Prevalence in the model.
         """
@@ -46,7 +48,7 @@ class IIDModel:
         Parameters
         ----------
         samples : np.ndarray
-            A 2D numpy array where each row represents a sample and each column represents a specimen.
+            A 2D numpy array where each row represents a sample and of specimens.
 
         Returns
         -------
@@ -54,7 +56,7 @@ class IIDModel:
             An IIDModel object. The model's parameters are the population size (n) and the mean of all values in the samples.
         """
         N, n = samples.shape
-        return IIDModel(n, np.sum(samples) / (n * N))
+        return cls(n, np.sum(samples) / (n * N))
 
     def prevalence(self) -> float:
         """
@@ -67,15 +69,16 @@ class IIDModel:
         """
         return self.p
 
-    def log_marginals(self) -> np.ndarray:
+    def log_q(self) -> np.ndarray:
         """
-        Computes the log marginal probabilities for each sample in the model.
+        Computes the log of the q representation of the distribution. See paper.
 
-        The i-th entry of the returned array is the log probability that a group of size i+1 has negative status.
+        The i-th entry of the returned array is the log probability that a group of size i has negative status.
 
         Returns
         -------
         np.ndarray
             An array containing the log marginal probabilities for each sample.
         """
-        return np.log(1 - self.p) * np.arange(1, self.n + 1)
+        # note that by convention q(0) = 1, so log q(0) = 0; handled with multiplication by 0
+        return np.log(1 - self.p) * np.arange(0, self.n + 1)
