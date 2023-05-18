@@ -1,5 +1,46 @@
 import numpy as np
 
+import numpy as np
+from typing import List
+
+
+def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
+    """
+    Compute the optimal pool size according to Dorfman's infinite analysis for `prevalence`.
+    In other words, minimize `1/m + 1 - (1-prevalence)^m` over the pool size `m`.
+    This function is a helper for `dorfman_pattern` below.
+    """
+    if not (0 <= prevalence <= 1):
+        raise ValueError(f"prevalence={prevalence} must be in [0,1]")
+
+    costs = [1 / m + 1 - (1 - prevalence) ** m for m in range(1, max_pool_size + 1)]
+
+    m = int(np.argmin(costs)) + 1  # off by one indexing
+
+    if 1 / m + 1 - (1 - prevalence) ** m > 1:
+        m = 1
+    if m == max_pool_size:
+        print("WARNING: m == max_pool_size; might need to increase max_pool_size")
+
+    return m
+
+
+def dorfman_multiplicity_function(n: int, prevalence: float) -> List[int]:
+    """
+    Compute a multiplicity function according to Dorfman's infinite analysis.
+    This adds a pool of irregular size if Dorfman's pool size does not
+    divide evenly into `n`.
+
+    See `dorfman_pool_size` above.
+    """
+
+    multfn = np.zeros(n + 1, dtype=int)
+    m = dorfman_pool_size(prevalence, max_pool_size=n)
+    multfn[m] = n // m  # integer division
+    if n % m != 0:
+        multfn[n % m] = 1  # remainder
+    return multfn.tolist()
+
 
 def optimal_multiplicity_function(q: np.ndarray, subpopulations=False):
     """
