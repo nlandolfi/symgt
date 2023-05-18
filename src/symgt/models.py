@@ -115,6 +115,8 @@ class SymmetricModel:
             raise ValueError("`n` should be a positive integer.")
         if len(alpha) != n + 1:
             raise ValueError("len of `alpha` should be `n+1`.")
+        if np.sum(alpha) != 1:
+            raise ValueError("`np.sum(alpha)` should be `n+1`.")
 
         self.n = n
         self.alpha = np.asarray(alpha).astype(np.float64)
@@ -138,7 +140,8 @@ class SymmetricModel:
         nnzs = np.sum(samples, axis=1)
         alpha = np.zeros(n + 1)
         for nnz in nnzs:  # TODO: vectorize
-            alpha[nnz] += 1
+            assert nnz.is_integer()
+            alpha[int(nnz)] += 1
         return cls(n, alpha / N)
 
     def prevalence(self) -> float:
