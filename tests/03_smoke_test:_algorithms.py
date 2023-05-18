@@ -5,6 +5,16 @@ import numpy as np
 # test other things, ECost etc.
 print("THIS IS SMOKE TEST 3: IT TESTS algorithms.py")
 
+def test_dorfman_etc():
+    assert st.dorfman_pool_size(0.01) == 11
+    assert st.dorfman_pool_size(0.02) == 8
+    assert st.dorfman_pool_size(0.05) == 5
+    assert st.dorfman_pool_size(0.1) == 4
+    assert st.dorfman_pool_size(0.15) == 3
+    assert st.dorfman_multiplicity_function(5, 0.15) == [0, 0, 1, 1, 0, 0]
+
+
+test_dorfman_etc()
 
 def test_U_from_q():
     # w_r = np.array([0, 0.5, 0])
@@ -58,13 +68,3 @@ def test_U_from_q():
 test_U_from_q()
 
 
-def test_dorfman_etc():
-    assert st.dorfman_pool_size(0.01) == 11
-    assert st.dorfman_pool_size(0.02) == 8
-    assert st.dorfman_pool_size(0.05) == 5
-    assert st.dorfman_pool_size(0.1) == 4
-    assert st.dorfman_pool_size(0.15) == 3
-    assert st.dorfman_multiplicity_function(5, 0.15) == [0, 0, 1, 1, 0, 0]
-
-
-test_dorfman_etc()

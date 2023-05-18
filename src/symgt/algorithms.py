@@ -11,7 +11,7 @@ def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
     This function is a helper for `dorfman_pattern` below.
     """
     if not (0 <= prevalence <= 1):
-        raise ValueError(f"prevalence={prevalence} must be in [0,1]")
+        raise ValueError(f"prevalence={prevalence} must be in [0, 1]")
 
     costs = [1 / m + 1 - (1 - prevalence) ** m for m in range(1, max_pool_size + 1)]
 
@@ -51,7 +51,7 @@ def optimal_multiplicity_function(q: np.ndarray, subpopulations=False):
     for all subpopulations.  The multiplicity functions are the rows of the first value returned.
 
     Examples
-    -------
+    --------
     e.g.,
     ```
         multfns, costs = optimal_patterns(q; subpopulations=true)
@@ -105,7 +105,7 @@ def optimal_multiplicity_function(q: np.ndarray, subpopulations=False):
         return multfns[n, :], J[n]
 
 
-def U_from_q(q: np.ndarray):
+def U_from_q(q: np.ndarray) -> np.ndarray:
     """
     Compute the function `U` for the symmetric distribution represented by `q`.
 
@@ -129,7 +129,7 @@ def U_from_q(q: np.ndarray):
     return U
 
 
-def integer_partition(multfn: np.ndarray):
+def integer_partition(multfn: np.ndarray) -> List[int]:
     """
     Convert a multiplicity function to an integer partition.
     An integer partition is a nondescreasing list of (possibly repeating) part sizes.
@@ -144,7 +144,7 @@ def integer_partition(multfn: np.ndarray):
     return ss
 
 
-def ECost(multfn: np.ndarray, q: np.ndarray):
+def ECost(multfn: np.ndarray, q: np.ndarray) -> float:
     """
     Compute the expected cost of a grouping encoded by `multfn` for a
     distribution with representation `q`.
@@ -156,7 +156,7 @@ def ECost(multfn: np.ndarray, q: np.ndarray):
     return np.sum([m * ETests(h, q) for (h, m) in enumerate(multfn)])
 
 
-def ETests(h: int, q: np.ndarray):
+def ETests(h: int, q: np.ndarray) -> float:
     """
     Compute the expected number of tests used for a group of size `h`
     for a distribution with representation `q`.
