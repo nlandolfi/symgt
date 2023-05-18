@@ -3,8 +3,8 @@ from .algorithms import (
     U_from_q,
     ETests,
     dorfman_pool_size,
-    dorfman_multiplicity_function,
-    optimal_multiplicity_function,
+    dorfman_multfn,
+    optimal_multfn,
     integer_partition,
     ECost,
 )
@@ -15,8 +15,8 @@ __all__ = [
     "U_from_q",
     "ETests",
     "dorfman_pool_size",
-    "dorfman_multiplicity_function",
-    "optimal_multiplicty_function",
+    "dorfman_multfn",
+    "optimal_multfn",
     "integer_partition",
     "ECost",
 ]

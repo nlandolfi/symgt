@@ -17,9 +17,9 @@ m_iid = st.IIDModel.fit(X)
 q_sym = np.exp(m_sym.log_q())
 q_iid = np.exp(m_iid.log_q())
 
-mu_sym, _ = st.optimal_multiplicity_function(q_sym)
-mu_iid, _ = st.optimal_multiplicity_function(q_iid)
-mu_drf = st.dorfman_multiplicity_function(m_iid.n, m_iid.prevalence())
+mu_sym, _ = st.optimal_multfn(q_sym)
+mu_iid, _ = st.optimal_multfn(q_iid)
+mu_drf = st.dorfman_multfn(m_iid.n, m_iid.prevalence())
 l_sym, l_iid, l_drf = (
     st.integer_partition(mu_sym),
     st.integer_partition(mu_iid),

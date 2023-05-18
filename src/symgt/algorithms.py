@@ -6,8 +6,11 @@ from typing import List
 
 def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
     """
-    Compute the optimal pool size according to Dorfman's infinite analysis for `prevalence`.
+    Compute the optimal pool size according to Dorfman's infinite analysis
+    using `prevalence`.
+
     In other words, minimize `1/m + 1 - (1-prevalence)^m` over the pool size `m`.
+
     This function is a helper for `dorfman_pattern` below.
     """
     if not (0 <= prevalence <= 1):
@@ -25,9 +28,10 @@ def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
     return m
 
 
-def dorfman_multiplicity_function(n: int, prevalence: float) -> List[int]:
+def dorfman_multfn(n: int, prevalence: float) -> List[int]:
     """
     Compute a multiplicity function according to Dorfman's infinite analysis.
+
     This adds a pool of irregular size if Dorfman's pool size does not
     divide evenly into `n`.
 
@@ -42,7 +46,7 @@ def dorfman_multiplicity_function(n: int, prevalence: float) -> List[int]:
     return multfn.tolist()
 
 
-def optimal_multiplicity_function(q: np.ndarray, subpopulations=False):
+def optimal_multfn(q: np.ndarray, subpopulations=False):
     """
     Compute an optimal multiplicity function for a symmetric distribution with representation `q`.
     The population size `n` is inferred from the length of `q` (i.e., `len(q) - 1`).
@@ -113,7 +117,7 @@ def U_from_q(q: np.ndarray) -> np.ndarray:
     U(h) is the expected number of tests used to declare a group of size `h`.
 
 
-    This is a helper function for `optimal_multiplicity_function` below.
+    This is a helper function for `optimal_multfn` below.
     """
     # assert is_plausible_q(q)
     n = len(q) - 1
