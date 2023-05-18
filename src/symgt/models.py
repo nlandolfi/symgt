@@ -116,7 +116,7 @@ class ExchangeableModel:
 
     def __init__(self, n: int, alpha: np.ndarray):
         """
-        Initializes a ExchangeableModel with a specific population size and a
+        Initializes a ExchangeableModel with a specific population size and
         representation.
 
         Parameters
