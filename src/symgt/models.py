@@ -132,8 +132,8 @@ class ExchangeableModel:
             raise ValueError("`n` should be a positive integer.")
         if len(alpha) != n + 1:
             raise ValueError("len of `alpha` should be `n+1`.")
-        if np.sum(alpha) != 1:
-            raise ValueError("`np.sum(alpha)` should be `n+1`.")
+        if not np.allclose(np.sum(alpha), 1.):
+            raise ValueError("`np.sum(alpha)` should be `1`.")
 
         self.n = n
         self.alpha = np.asarray(alpha).astype(np.float64)
