@@ -40,6 +40,12 @@ class IIDModel:
         self.n = n
         self.p = p
 
+    def __str__(self):
+        return f"IIDModel(n={self.n}, p={self.p})"
+
+    def __repr__(self):
+        return self.__str__()
+
     @classmethod
     def fit(cls, samples: np.ndarray) -> "IIDModel":
         """
