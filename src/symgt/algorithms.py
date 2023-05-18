@@ -11,8 +11,11 @@ def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
 
     This function is a helper for `dorfman_multfn` below.
     """
-    if not (0 <= prevalence <= 1):
+    if not (0.0 <= prevalence <= 1.0):
         raise ValueError(f"prevalence={prevalence} must be in [0, 1]")
+
+    if not (max_pool_size > 1):
+        raise ValueError(f"max_pool_size={max_pool_size} should be > 1")
 
     costs = [1 / m + 1 - (1 - prevalence) ** m for m in range(1, max_pool_size + 1)]
 
