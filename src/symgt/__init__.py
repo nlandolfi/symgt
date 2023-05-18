@@ -1,3 +1,3 @@
-from .models import IIDModel
+from .models import IIDModel, ExchangeableModel
 
-__all__ = ["IIDModel"]
+__all__ = ["IIDModel", "ExchangeableModel"]
