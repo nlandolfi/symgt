@@ -12,7 +12,7 @@ def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
     In other words, minimize `1/m + 1 - (1-prevalence)^m` with respect to
     the pool size `m`.
 
-    This function is a helper for `dorfman_pattern` below.
+    This function is a helper for `dorfman_multfn` below.
     """
     if not (0 <= prevalence <= 1):
         raise ValueError(f"prevalence={prevalence} must be in [0, 1]")
@@ -22,7 +22,7 @@ def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
     m = int(np.argmin(costs)) + 1  # off by one indexing
 
     if 1 / m + 1 - (1 - prevalence) ** m > 1:
-        m = 1 # no pooling
+        m = 1  # no pooling
     if m == max_pool_size:
         print("WARNING: m == max_pool_size; might need to increase max_pool_size")
 
@@ -31,9 +31,9 @@ def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
 
 def dorfman_multfn(n: int, prevalence: float) -> np.ndarray:
     """
-    Use Dorfman's infinite analysis to compute a group size, and then
-    add a pool of irregular size if Dorfman's pool size does not divide 
-    evenly into `n`.
+    Compute a multfn using Dorfman's infinite analysis, adding a pool
+    of irregular size if the indicated pool size does not divide evenly
+    into `n`.
 
     See `dorfman_pool_size` above.
     """
