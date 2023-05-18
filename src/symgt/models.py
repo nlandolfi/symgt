@@ -111,7 +111,7 @@ class ExchangeableModel:
         Population size of model.
     alpha : np.ndarray
         Representation of the symmetric distribution.
-        alpha[i] is the probability that there are i ones in a sample.
+        `alpha[i]` is the probability that there are `i` ones in a sample.
     """
 
     def __init__(self, n: int, alpha: np.ndarray):
