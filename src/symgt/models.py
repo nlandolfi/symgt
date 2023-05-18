@@ -92,9 +92,9 @@ class IIDModel:
 
 class SymmetricModel:
     """
-    This class represents a symmetric distribution. In other words, the specimens are exchangeable.
+    This class represents a symmetric distribution. In other words, the specimen statuses are modeled as exchangeable random variable.
 
-    A symmetric model is defined by population size (`n`) and the representation alpha. Recall that alpha is a probability distribution over the equivlance classes, conveniently indexed by the number of nonzeros in the outcomes.
+    A symmetric model is defined by population size (`n`) and the representation alpha. Recall that alpha is a probability distribution over the equivlance classes. For the exchangeable (permutation) symmetry, these equivalence classes can be convenient indexed by the number of nonzero entries in outcomes (i.e., the number of positive specimens).
 
     Attributes
     ----------
