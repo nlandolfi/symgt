@@ -70,6 +70,7 @@ def test_fit():
     assert np.array_equal(
         model.alpha, np.array([0.0, 0.0, 0.0, 0.0, 1.0])
     ), "Incorrect model.alpha."
+    assert model.prevalence() == 1.0, "Incorrect model.prevalence()"
 
     # Test 3: Mix of ones and zeros
     samples = np.array(
