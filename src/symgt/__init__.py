@@ -1,4 +1,4 @@
-from .models import IIDModel, SymmetricModel
+from .models import IIDModel, ExchangeableModel
 from .algorithms import (
     U_from_q,
     ETests,
@@ -11,7 +11,7 @@ from .algorithms import (
 
 __all__ = [
     "IIDModel",
-    "SymmetricModel",
+    "ExchangeableModel",
     "U_from_q",
     "ETests",
     "dorfman_pool_size",
