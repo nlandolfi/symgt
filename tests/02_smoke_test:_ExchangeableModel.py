@@ -99,5 +99,10 @@ def test_log_comb():
         got, want
     ), f"comb(20,5) !approx= exp(log_comb(20,5): got {got}, want {want}"
 
+    got, want = comb(80, 20), np.exp(log_comb(80, 20))
+    assert np.allclose(
+        got, want
+    ), f"comb(80,20) !approx= exp(log_comb(80,20): got {got}, want {want}"
+
 
 test_log_comb()
