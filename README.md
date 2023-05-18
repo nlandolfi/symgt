@@ -1,6 +1,6 @@
 # symgt
 
-The symgt python package. Only Python 3.
+A package for group testing against symmetric distributions. Python 3.
 
 ```
 pip install symgt
