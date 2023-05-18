@@ -54,13 +54,13 @@ class IIDModel:
         Parameters
         ----------
         samples : np.ndarray
-            A 2D numpy array where each row represents a sample and of specimens.
+            A 2D numpy array where each row represents a sample of `n` specimens.
 
         Returns
         -------
         IIDModel
-            An IIDModel object. The model's parameters are the population size (n)
-            and the mean of all values in the samples.
+            An IIDModel object. The model's parameters are the population size (`n`)
+            and the proportion of positive statuses in the samples.
         """
         N, n = samples.shape
         return cls(n, np.sum(samples) / (n * N))
