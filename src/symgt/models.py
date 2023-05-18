@@ -164,7 +164,7 @@ class ExchangeableModel:
         nnzs = np.sum(samples, axis=1)
 
         if not np.all(nnzs % 1 == 0):
-            raise ValueError("All row sums `samples` should be integral")
+            raise ValueError("All row sums of `samples` should be integral")
 
         alpha = np.bincount(nnzs.astype(int), minlength=n + 1)
 
