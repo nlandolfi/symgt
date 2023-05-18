@@ -81,17 +81,18 @@ class IIDModel:
 
     def log_q(self) -> np.ndarray:
         """
-        Computes the log of the q representation of the distribution. See paper.
+        Computes the log of the `q` representation of the distribution. See paper.
 
-        The i-th entry of the returned array is the log probability that a group of
-        size i has negative status.
+        The `i`-th entry of the returned array is the log probability that a group of
+        size `i` has negative status.
 
         Returns
         -------
         np.ndarray
-            An array containing the log of the q representation.
+            An array containing the log of the `q` representation.
         """
-        # note that by convention q(0) = 1, so log q(0) = 0; handled with multiplication by 0
+        # note that by convention q(0) = 1, so log q(0) = 0;
+        # handled with multiplication by 0
         return np.log(1 - self.p) * np.arange(0, self.n + 1)
 
 
@@ -157,7 +158,7 @@ class ExchangeableModel:
         -------
         ExchangeableModel
             An ExchangeableModel object. The model's parameters are the
-            population size (n) and the normalized histogram of sums of each
+            population size (`n`) and the normalized histogram of sums of each
             sample.
         """
         N, n = samples.shape
@@ -181,15 +182,15 @@ class ExchangeableModel:
 
     def log_q(self) -> np.ndarray:
         """
-        Computes the log of the q representation of the distribution. See paper.
+        Computes the log of the `q` representation of the distribution. See paper.
 
-        The i-th entry of the returned array is the log probability that a
-        group of size i has negative status.
+        The `i`-th entry of the returned array is the log probability that a
+        group of size `i` has negative status.
 
         Returns
         -------
         np.ndarray
-            An array containing the log marginal probabilities for each sample.
+            An array containing the log of the `q` representation.
         """
         # note that by convention q(0) = 1, so log q(0) = 0;
         # handled with initialization to 0
@@ -211,6 +212,8 @@ class ExchangeableModel:
 
 def log_comb(n, k):
     """
-    Compute the log of n choose k using scipy's gammaln function.
+    Compute the log of `n` choose `k` using scipy's gammaln function.
+
+    Used by `ExchangeableModel`'s `log_q` function.
     """
     return gammaln(n + 1) - gammaln(k + 1) - gammaln(n - k + 1)
