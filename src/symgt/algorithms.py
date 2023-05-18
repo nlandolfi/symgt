@@ -31,11 +31,11 @@ def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
 
 def dorfman_multfn(n: int, prevalence: float) -> np.ndarray:
     """
-    Compute a multfn using Dorfman's infinite analysis, adding a pool
-    of irregular size if the indicated pool size does not divide evenly
-    into `n`.
+    Compute a multiplicity function using Dorfman's infinite analysis, 
+    adding a pool of irregular size if the indicated pool size does not 
+    divide evenly into `n`.
 
-    See `dorfman_pool_size` above.
+    Uses `dorfman_pool_size` above.
     """
 
     multfn = np.zeros(n + 1, dtype=int)
