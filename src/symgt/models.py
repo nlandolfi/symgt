@@ -97,10 +97,10 @@ class IIDModel:
 
 class ExchangeableModel:
     """
-    This class represents a symmetric distribution. In other words, the specimen
-    statuses are modeled as exchangeable random variables.
+    This class represents a permutation-symmetric distribution. In other
+    words, the specimen statuses are modeled as exchangeable random variables.
 
-    A symmetric model is defined by population size (`n`) and the representation
+    An exchangeable model is defined by population size (`n`) and the representation
     `alpha`. `alpha[i]` is the probability of `i` positive statuses.
 
     Attributes
@@ -114,7 +114,8 @@ class ExchangeableModel:
 
     def __init__(self, n: int, alpha: np.ndarray):
         """
-        Initializes a ExchangeableModel with a specific population size and a representation.
+        Initializes a ExchangeableModel with a specific population size and a
+        representation.
 
         Parameters
         ----------
@@ -149,12 +150,15 @@ class ExchangeableModel:
         Parameters
         ----------
         samples : np.ndarray
-            A 2D numpy array where each row represents a sample and each column represents a specimen.
+            A 2D numpy array where each row represents a sample and each column
+            represents a specimen.
 
         Returns
         -------
         ExchangeableModel
-            An ExchangeableModel object. The model's parameters are the population size (n) and the normalized histogram of sums of each sample.
+            An ExchangeableModel object. The model's parameters are the
+            population size (n) and the normalized histogram of sums of each
+            sample.
         """
         N, n = samples.shape
         nnzs = np.sum(samples, axis=1)
@@ -179,18 +183,20 @@ class ExchangeableModel:
         """
         Computes the log of the q representation of the distribution. See paper.
 
-        The i-th entry of the returned array is the log probability that a group of size i has negative status.
+        The i-th entry of the returned array is the log probability that a
+        group of size i has negative status.
 
         Returns
         -------
         np.ndarray
             An array containing the log marginal probabilities for each sample.
         """
-        # note that by convention q(0) = 1, so log q(0) = 0; handled with initialization to 0
+        # note that by convention q(0) = 1, so log q(0) = 0;
+        # handled with initialization to 0
         log_q = np.zeros(self.n + 1)
 
-        # by default, np.log will do this (take log(0) = -np.inf) and throw a warning
-        # here we make it explicit
+        # by default, np.log also takes log(0) = -np.inf, but throws a warning
+        # here we make it explicit and w/o the warning
         log_alpha = np.log(
             self.alpha, where=(self.alpha != 0), out=np.full_like(self.alpha, -np.inf)
         )
