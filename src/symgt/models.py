@@ -9,7 +9,7 @@ class IIDModel:
 
     An IIDModel is characterized by a number of specimens (`n`) and a prevalence (`p`).
 
-    Every IIDModel could be represented as an ExchangeableModel, but use this
+    Every IIDModel can be represented as an ExchangeableModel, but use this
     class to indicate the additional structure.
 
     Attributes
