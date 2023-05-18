@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 import symgt as st
 from symgt.models import log_comb
 from scipy.special import comb
@@ -14,6 +15,37 @@ assert np.all(np.exp(lq) == 1)  # this model never has positive specimens
 m = ExchangeableModel(10, np.ones(11) / 11)
 lq = m.log_q()
 assert np.all(np.diff(np.exp(lq)) < 0)  # should be decreasing
+
+# test exchangeable model init valid parameters
+n = 2
+alpha = np.array([0.3, 0.4, 0.3])
+model = ExchangeableModel(n, alpha)
+assert model.n == n
+assert np.all(model.alpha == alpha)
+
+# test exchangeable model init invalid n type
+n = "2"
+alpha = np.array([0.3, 0.4, 0.3])
+with pytest.raises(TypeError):
+    ExchangeableModel(n, alpha)
+
+# test exchangeable model init invalid n value
+n = 0
+alpha = np.array([0.3, 0.4, 0.3])
+with pytest.raises(ValueError):
+    ExchangeableModel(n, alpha)
+
+# test exchangeable model init invalid alpha length
+n = 2
+alpha = np.array([0.3, 0.4])
+with pytest.raises(ValueError):
+    ExchangeableModel(n, alpha)
+
+# test exchangeable model init invalid alpha sum
+n = 2
+alpha = np.array([0.3, 0.4, 0.2])
+with pytest.raises(ValueError):
+    ExchangeableModel(n, alpha)
 
 
 def test_fit():

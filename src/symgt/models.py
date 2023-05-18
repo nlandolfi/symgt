@@ -148,13 +148,11 @@ class ExchangeableModel:
     def fit(cls, samples: np.ndarray) -> "ExchangeableModel":
         """
         Function to fit a symmetric distribution model.
-
         Parameters
         ----------
         samples : np.ndarray
             A 2D numpy array where each row represents a sample and each column
             represents a specimen.
-
         Returns
         -------
         ExchangeableModel
@@ -164,10 +162,12 @@ class ExchangeableModel:
         """
         N, n = samples.shape
         nnzs = np.sum(samples, axis=1)
-        alpha = np.zeros(n + 1)
-        for nnz in nnzs:  # TODO: vectorize?
-            assert nnz.is_integer()
-            alpha[int(nnz)] += 1
+
+        if not np.all(nnzs % 1 == 0):
+            raise ValueError("All row sums `samples` should be integral")
+
+        alpha = np.bincount(nnzs.astype(int), minlength=n + 1)
+
         return cls(n, alpha / N)
 
     def prevalence(self) -> float:
