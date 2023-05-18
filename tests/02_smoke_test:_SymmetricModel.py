@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 import symgt as st
 
 print("THIS IS SMOKE TEST 2: IT TESTS SymmetricModel")

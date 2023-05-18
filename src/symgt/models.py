@@ -4,7 +4,8 @@ from scipy.special import gammaln, logsumexp  # type: ignore
 
 class IIDModel:
     """
-    This class represents a model of independent and identically distributed (iid) specimens.
+    This class represents a distribution of independent and identically distributed (iid)
+    specimen statuses.
 
     An IIDModel is characterized by a number of specimens (`n`) and a prevalence (`p`).
 
@@ -85,7 +86,7 @@ class IIDModel:
 
 class SymmetricModel:
     """
-    This class represents a symmetric model.
+    This class represents a symmetric distribution. In other words, the specimens are exchangeable.
 
     A symmetric model is defined by population size (`n`) and a probability distribution (`alpha`).
 
@@ -139,7 +140,7 @@ class SymmetricModel:
         N, n = samples.shape
         nnzs = np.sum(samples, axis=1)
         alpha = np.zeros(n + 1)
-        for nnz in nnzs:  # TODO: vectorize
+        for nnz in nnzs:  # TODO: vectorize?
             assert nnz.is_integer()
             alpha[int(nnz)] += 1
         return cls(n, alpha / N)
@@ -184,4 +185,7 @@ class SymmetricModel:
 
 
 def log_comb(n, k):
+    """
+    Compute the log of n choose k using scipy's gammaln function.
+    """
     return gammaln(n + 1) - gammaln(k + 1) - gammaln(n - k + 1)

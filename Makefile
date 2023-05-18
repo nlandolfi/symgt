@@ -15,6 +15,7 @@ types:
 test:
 	python tests/01_smoke_test:_IIDModel.py
 	python tests/02_smoke_test:_SymmetricModel.py
+	python tests/03_smoke_test:_Algorithms.py
 freeze:
 	pip freeze > requirements.txt
 

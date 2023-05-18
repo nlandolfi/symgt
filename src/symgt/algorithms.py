@@ -1,30 +1,10 @@
 import numpy as np
 
 
-def compute_U_from_q(q: np.ndarray):
-    """
-    Compute the function `U` for the symmetric distribution represented by `q`.
-
-    U : {0,…,n} → R
-    U(h) is the expected number of tests used to declare a group of size `h`.
-
-
-    This is a helper function for `optimal_multiplicity_function` below.
-    """
-    # assert is_plausible_q(q)
-    n = len(q) - 1
-    U = np.zeros(n + 1)
-    U[0] = 1
-    U[1] = 1
-    for i in range(2, n + 1):
-        U[i] = 1 + i * (1 - q[i])
-    return U
-
-
 def optimal_multiplicity_function(q: np.ndarray, subpopulations=False):
     """
     Compute an optimal multiplicity function for a symmetric distribution with representation `q`.
-    The population size `n` is inferred from the length of `q` (one less than it).
+    The population size `n` is inferred from the length of `q` (i.e., `len(q) - 1`).
 
     Use the keyword argument `subpopulations=true` to return multiplicity functions and costs
     for all subpopulations.  The multiplicity functions are the rows of the first value returned.
@@ -35,15 +15,15 @@ def optimal_multiplicity_function(q: np.ndarray, subpopulations=False):
     ```
         multfns, costs = optimal_patterns(q; subpopulations=true)
     ```
-    `multfns[i, :]` is an optimal multiplicty function for a subpopulation of size `i` and `J[i]` is its cost.
+    `multfns[i, :]` is an optimal multiplicty function for a subpopulation of size `i` and `costs[i]` is its cost.
     """
     n = len(q) - 1
 
     if not (n > 0):
-        raise ValueError(f"population size {n} should be > 0")
+        raise ValueError(f"population size n={n} should be > 0")
 
     # U[h] is the *expected* number of tests to declare a group of size h = 0, …, n
-    U = compute_U_from_q(q)
+    U = U_from_q(q)
 
     # J[m] is the optimal cost to declare a population of size m = 0, …, n
     J = np.zeros(n + 1)  # note, J[0] = 0 by default
@@ -84,7 +64,37 @@ def optimal_multiplicity_function(q: np.ndarray, subpopulations=False):
         return multfns[n, :], J[n]
 
 
+def U_from_q(q: np.ndarray):
+    """
+    Compute the function `U` for the symmetric distribution represented by `q`.
+
+    U : {0,…,n} → R
+    U(h) is the expected number of tests used to declare a group of size `h`.
+
+
+    This is a helper function for `optimal_multiplicity_function` below.
+    """
+    # assert is_plausible_q(q)
+    n = len(q) - 1
+
+    if not (n > 0):
+        raise ValueError(f"population size n={n} should be > 0")
+
+    U = np.zeros(n + 1)
+    U[0] = 1
+    U[1] = 1
+    for i in range(2, n + 1):
+        U[i] = 1 + i * (1 - q[i])
+    return U
+
+
 def integer_partition(multfn: np.ndarray):
+    """
+    Convert a multiplicity function to an integer partition.
+    An integer partition is a nondescreasing list of (possibly repeating) part sizes.
+
+    `multfn[i]` is the multiplicty of a part of size i
+    """
     ss = []
     for i, x in enumerate(multfn):
         for _ in range(x):
@@ -94,10 +104,25 @@ def integer_partition(multfn: np.ndarray):
 
 
 def ECost(multfn: np.ndarray, q: np.ndarray):
+    """
+    Compute the expected cost of a grouping encoded by `multfn` for a
+    distribution with representation `q`.
+
+    `multfn[i]` is the number of parts of size `i`.
+    `q[i]` is the probability that a group of size i tests negative.
+
+    """
     return np.sum([m * ETests(h, q) for (h, m) in enumerate(multfn)])
 
 
 def ETests(h: int, q: np.ndarray):
+    """
+    Compute the expected number of tests used for a group of size `h`
+    for a distribution with representation `q`.
+
+    `h` is the size of the group.
+    `q[i]` is the probability that a group of size i tests negative.
+    """
     if h == 1:
         return 1
     else:
