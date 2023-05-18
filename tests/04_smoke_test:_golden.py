@@ -524,7 +524,7 @@ batches = pd.read_csv("tests/batches_for_04_smoke_test.csv")
 X = matrix(batches)
 X = X[shuffle, :]
 
-m_sym = st.SymmetricModel.fit(X[:250, :])
+m_sym = st.ExchangeableModel.fit(X[:250, :])
 m_iid = st.IIDModel.fit(X[:250, :])
 q_sym = np.exp(m_sym.log_q())
 q_iid = np.exp(m_iid.log_q())
