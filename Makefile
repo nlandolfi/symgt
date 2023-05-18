@@ -1,5 +1,6 @@
 precommit:
 	make fmt
+	make lint
 	make types
 	make test
 build:
@@ -10,11 +11,14 @@ install:
 	pip install -e .
 fmt:
 	python -m black .
+lint:
+	python -m ruff .
 types:
 	mypy src
 test:
 	python tests/01_smoke_test:_IIDModel.py
 	python tests/02_smoke_test:_ExchangeableModel.py
+	python tests/03_smoke_test:_algorithms.py
 freeze:
 	pip freeze > requirements.txt
 
