@@ -11,15 +11,15 @@ got, want = m.prevalence(), 0.1
 if got != want:
     raise Exception(f"IIDModel prevalence: got {got}; want {want}")
 
-lms = m.log_q()
-got, want = np.exp(lms[0]), 1
+q = np.exp(m.log_q())
+got, want = q[0], 1
 if not np.isclose(got, want):
     raise Exception(f"IIDModel q(0): got {got}; want {want}")
-got, want = np.exp(lms[1]), 1 - m.prevalence()
+got, want = q[1], 1 - m.prevalence()
 if not np.isclose(got, want):
     raise Exception(f"IIDModel q(1): got {got}; want {want}")
 
-assert np.all(np.diff(np.exp(lms)) < 0)  # should be decreasing
+assert np.all(np.diff(q) < 0)  # should be decreasing
 
 
 def test_IIDModel_init():
