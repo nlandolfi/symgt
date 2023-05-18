@@ -1,8 +1,5 @@
 import numpy as np
 
-import numpy as np
-from typing import List
-
 
 def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
     """
