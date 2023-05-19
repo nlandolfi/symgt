@@ -69,7 +69,7 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     ```
     Here `multfn` is an nd.array and `cost` is a float.
 
-    To get solutions to all subproblems:
+    To get solutions and costs for all subproblems:
     ```
         multfns, costs = compute_optimal_multfn(c, subpopulations=true)
     ```
