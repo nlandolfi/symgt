@@ -82,11 +82,11 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     if not (n > 0):
         raise ValueError(f"population size n={n} should be > 0")
 
-    # J[m] is the optimal cost to declare a population of size m = 0, …, n
-    J = np.zeros(n + 1)  # note, J[0] = 0 by default
+    # Mstar[m] is the optimal cost to partition m = 0, …, n (the value function)
+    Mstar = np.zeros(n + 1)  # note, Mstar[0] = 0 by default
 
-    # The cost of declaring one individual is 1 test
-    J[1] = 1
+    # The cost of declaring one individual is c[1]
+    Mstar[1] = c[1]
 
     # the n+1 here is for indexing off by one, we don't use i[0] or multfns[0, :]
     i = np.zeros(n + 1, dtype=int)
@@ -94,10 +94,10 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
 
     for k in range(1, n + 1):
         # find an optimal i[k]; the +1 here is for off by one indexing
-        i[k] = np.argmin([J[k - i] + c[i] for i in range(1, k + 1)]) + 1
+        i[k] = np.argmin([Mstar[k - i] + c[i] for i in range(1, k + 1)]) + 1
 
         # record the optimal cost
-        J[k] = J[k - i[k]] + c[i[k]]
+        Mstar[k] = Mstar[k - i[k]] + c[i[k]]
 
         if k - i[k] > 0:  # if we are using a subproblem
             multfns[k, :] = multfns[k - i[k], :]  # take its multfn
@@ -112,9 +112,9 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     assert np.all(got == want), f"multfns @ np.arange(1, n+1): got {got} want {want}"
 
     if subproblems:
-        return multfns, J
+        return multfns, Mstar
     else:
-        return multfns[n, :], J[n]
+        return multfns[n, :], Mstar[n]
 
 
 def symmetric_multfn(q: np.ndarray, subproblems=False):
