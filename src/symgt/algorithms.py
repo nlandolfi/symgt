@@ -123,7 +123,7 @@ def symmetric_multfn(q: np.ndarray, subproblems=False):
     with representation `q`. The population size `n` is inferred from the
     length of `q` (i.e., `len(q) - 1`).
 
-    The keyword argument `subproblems=true` behaves as for `compute_optimal_multfn`.
+    The keyword argument `subproblems=true` behaves as in `compute_optimal_multfn`.
 
     Examples
     --------
