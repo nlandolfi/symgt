@@ -88,23 +88,23 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     # The cost of partitioning 1 is c[1]
     Mstar[1] = c[1]
 
-    # the n+1 here is for indexing convenience, we don't use i[0] or multfns[0, :]
-    i = np.zeros(n + 1, dtype=int)
+    # the n+1 here is for indexing convenience, we don't use istar[0] or multfns[0, :]
+    istar = np.zeros(n + 1, dtype=int)
     multfns = np.zeros((n + 1, n + 1), dtype=int)
 
     for k in range(1, n + 1):
         # find an optimal i[k]; the +1 here is for off by one indexing
-        i[k] = np.argmin([Mstar[k - i] + c[i] for i in range(1, k + 1)]) + 1
+        istar[k] = np.argmin([Mstar[k - i] + c[i] for i in range(1, k + 1)]) + 1
 
         # record the optimal cost
-        Mstar[k] = Mstar[k - i[k]] + c[i[k]]
+        Mstar[k] = Mstar[k - istar[k]] + c[istar[k]]
 
-        if k - i[k] > 0:  # if we are using a subproblem
-            multfns[k, :] = multfns[k - i[k], :]  # take its multfn
+        if k - istar[k] > 0:  # if we are using a subproblem
+            multfns[k, :] = multfns[k - istar[k], :]  # take its multfn
         # otherwise, inherit the zero pattern
 
         # update the multfn to include a part of size i[k]
-        multfns[k, i[k]] += 1
+        multfns[k, istar[k]] += 1
 
     # ith row should be a pattern the number i
     w = np.arange(0, n + 1)
