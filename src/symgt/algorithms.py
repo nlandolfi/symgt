@@ -63,7 +63,7 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
 
     Examples
     --------
-    To just get the solution for `n`:
+    To just get the solution for `n = len(c) - 1`:
     ```
         multfn, cost = compute_optimal_multfn(c)
     ```
