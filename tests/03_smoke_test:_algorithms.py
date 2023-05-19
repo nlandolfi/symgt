@@ -38,5 +38,6 @@ q = np.array([1.0, 0.5, 0.0])
 mus, J = symmetric_multfn(q, subproblems=True)
 assert J[0] == 0  # optimal cost of partitioning no individual is 0
 assert J[1] == 1  # optimal cost of partitioning 1 individual is 1
+assert J[2] == 2  # optimal cost of testing two individuals
 assert np.all(np.diff(J) >= 0)  # nondecreasing
 assert np.allclose(np.array([[0, 0, 0], [0, 1, 0], [0, 2, 0]]), mus)
