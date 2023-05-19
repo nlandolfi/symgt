@@ -52,7 +52,7 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     """
     Compute an optimal multiplicity function for cost `c` where `c[i]` is the
     cost of a part of size `i`. The size of the largest part `n` is inferred
-    from c (i.e., `len(c) - 1`). The value `c[0]` is not used.
+    from c (i.e., `n = len(c) - 1`). The value `c[0]` is not used.
 
     We use dynamic programming. We do not compute all optimal multiplicity
     functions, just a single one.
