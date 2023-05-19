@@ -21,8 +21,8 @@ def integer_partition_from_multfn(multfn: np.ndarray) -> np.ndarray:
 
 def ETests(q: np.ndarray, h: int) -> float:
     """
-    Compute the expected number of tests used for a group of size `h` under a
-    symmetric distribution with representation `q`.
+    Compute the expected number of tests used for a group of size `h` under the
+    symmetric distribution represented by `q`.
 
     Parameters
     ----------
@@ -39,8 +39,8 @@ def ETests(q: np.ndarray, h: int) -> float:
 
 def ECost(q: np.ndarray, multfn: np.ndarray) -> float:
     """
-    Compute the expected cost of a grouping encoded by `multfn` for a
-    symmetric distribution with representation `q`.
+    Compute the expected cost of a grouping encoded by `multfn` under the
+    symmetric distribution represented by `q`.
 
     Parameters
     ----------
@@ -54,7 +54,7 @@ def ECost(q: np.ndarray, multfn: np.ndarray) -> float:
 
 def U_from_q(q: np.ndarray) -> np.ndarray:
     """
-    Compute the function `U` for the symmetric distribution represented by `q`.
+    Compute the function `U` under the symmetric distribution represented by `q`.
 
     U : {0, …, n} → R
     U(h) is the expected number of tests used to declare a group of size `h`.
