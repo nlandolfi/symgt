@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def integer_partition_from_multfn(multfn: np.ndarray) -> np.ndarray:
+def intpart_from_multfn(multfn: np.ndarray) -> np.ndarray:
     """
     Convert a multiplicity function to an integer partition.
     An integer partition is a nondescreasing list of (possibly repeating) part sizes.
