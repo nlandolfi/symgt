@@ -55,8 +55,8 @@ def optimal_multfn(q: np.ndarray, subpopulations=False):
     length of `q` (i.e., `len(q) - 1`).
 
     Use the keyword argument `subpopulations=true` to return multiplicity
-    functions and costs for all subpopulations. The multiplicity functions
-    are the rows of the first value returned.
+    functions and costs for all subpopulations. In that case, the multiplicity
+    functions are the rows of the first value returned.
 
     Examples
     --------
