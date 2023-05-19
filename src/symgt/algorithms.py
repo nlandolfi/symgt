@@ -123,11 +123,7 @@ def symmetric_multfn(q: np.ndarray, subproblems=False):
     with representation `q`. The population size `n` is inferred from the
     length of `q` (i.e., `len(q) - 1`).
 
-    Use the keyword argument `subproblems=true` to return multiplicity
-    functions and costs for all subpopulations. In that case, the multiplicity
-    functions are the rows of the first value returned.
-    The second value is
-    an array of the costs.
+    The keyword argument `subproblems=true` behaves as for `compute_optimal_multfn`.
 
     Examples
     --------
