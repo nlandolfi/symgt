@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 
 from symgt.utils import intpart_from_multfn as intpart, ECost
+from symgt.algorithms import optimal_multfn
 
 print("THIS IS SMOKE TEST 5: IT REPRODUCES THE OLD golden.jl")
 
@@ -532,8 +533,8 @@ q_sym = np.exp(m_sym.log_q())
 q_iid = np.exp(m_iid.log_q())
 
 
-mu_sym, cost_sym = st.optimal_multfn(q_sym)
-mu_iid, cost_iid = st.optimal_multfn(q_iid)
+mu_sym, cost_sym = optimal_multfn(q_sym)
+mu_iid, cost_iid = optimal_multfn(q_iid)
 l_sym, l_iid = intpart(mu_sym), intpart(mu_iid)
 # print(intpart(mu_sym), cost_sym)
 assert np.allclose(cost_sym, 7.2579209623910526)
