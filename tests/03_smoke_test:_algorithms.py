@@ -4,7 +4,6 @@ import pytest
 from symgt.algorithms import dorfman_pool_size
 from symgt.algorithms import dorfman_multfn
 
-# test other things, ECost etc.
 print("THIS IS SMOKE TEST 3: IT TESTS algorithms.py")
 
 assert dorfman_pool_size(0.01) == 11
