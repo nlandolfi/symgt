@@ -54,6 +54,9 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     cost of a part of size `i`. The size of the largest part `n` is inferred
     from c (i.e., `len(c) - 1`). The value `c[0]` is not used.
 
+    We use dynamic programming. We do not compute _all_ optimal multipplicity
+    functions, just a single one.
+
     Use the keyword argument `subproblems=true` to return multiplicity
     functions and costs for all subproblems. The multiplicity functions
     are the rows of the first value returned.
