@@ -19,6 +19,7 @@ test:
 	python tests/01_smoke_test:_IIDModel.py
 	python tests/02_smoke_test:_ExchangeableModel.py
 	python tests/03_smoke_test:_algorithms.py
+	python tests/04_smoke_test:_utils.py
 	python tests/04_smoke_test:_golden.py
 freeze:
 	pip freeze > requirements.txt
