@@ -85,7 +85,7 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     # Mstar[m] is the optimal cost to partition m = 0, …, n (the value function)
     Mstar = np.zeros(n + 1)  # note, Mstar[0] = 0 by default
 
-    # The cost of declaring one individual is c[1]
+    # The cost of partitioning 1 is c[1]
     Mstar[1] = c[1]
 
     # the n+1 here is for indexing off by one, we don't use i[0] or multfns[0, :]
