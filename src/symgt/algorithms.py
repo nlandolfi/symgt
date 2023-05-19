@@ -125,7 +125,8 @@ def symmetric_multfn(q: np.ndarray, subproblems=False):
 
     Use the keyword argument `subproblems=true` to return multiplicity
     functions and costs for all subpopulations. In that case, the multiplicity
-    functions are the rows of the first value returned.
+    functions are the rows of the first value returned. The second value is
+    an array of the costs.
 
     Examples
     --------
