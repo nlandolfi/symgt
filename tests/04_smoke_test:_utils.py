@@ -12,6 +12,7 @@ assert np.allclose(integer_partition_from_multfn([0, 0, 2, 1, 1]), [4, 3, 2, 2])
 assert np.allclose(integer_partition_from_multfn([0, 0, 0]), [])
 
 # Test U_from_q
+# the below are w representations: w[i] = p(x) where nnz(x) = i; see paper
 # w_r = np.array([0, 0.5, 0])
 # w_s = np.array([0, 0, 1.0])
 # these give
