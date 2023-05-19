@@ -2,7 +2,7 @@ import symgt as st
 import numpy as np
 import pandas as pd
 
-from symgt.utils import intpart_from_multfn as intpart
+from symgt.utils import intpart_from_multfn as intpart, ECost
 
 print("THIS IS SMOKE TEST 5: IT REPRODUCES THE OLD golden.jl")
 
@@ -542,8 +542,8 @@ assert np.allclose(l_sym, [27, 27, 26])
 assert np.allclose(cost_iid, 7.830089342189575)
 assert np.allclose(l_iid, [20, 20, 20, 20])
 
-assert np.allclose(st.ECost(mu_sym, q_iid), 8.067076837069752)
-assert np.allclose(st.ECost(mu_iid, q_sym), 7.3396680473136175)
+assert np.allclose(ECost(q_iid, mu_sym), 8.067076837069752)
+assert np.allclose(ECost(q_sym, mu_iid), 7.3396680473136175)
 
 
 def sizes(a):  # for compatability with the old julia code
