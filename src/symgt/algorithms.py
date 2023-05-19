@@ -48,7 +48,7 @@ def dorfman_multfn(n: int, prevalence: float) -> np.ndarray:
     return multfn
 
 
-def optimal_multfn(q: np.ndarray, subpopulations=False):
+def symmetric_multfn(q: np.ndarray, subpopulations=False):
     """
     Compute an optimal multiplicity function for a symmetric distribution
     with representation `q`. The population size `n` is inferred from the
