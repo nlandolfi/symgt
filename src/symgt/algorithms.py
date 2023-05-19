@@ -48,37 +48,7 @@ def dorfman_multfn(n: int, prevalence: float) -> np.ndarray:
     return multfn
 
 
-def symmetric_multfn(q: np.ndarray, subpopulations=False):
-    """
-    Compute an optimal multiplicity function for a symmetric distribution
-    with representation `q`. The population size `n` is inferred from the
-    length of `q` (i.e., `len(q) - 1`).
-
-    Use the keyword argument `subpopulations=true` to return multiplicity
-    functions and costs for all subpopulations. In that case, the multiplicity
-    functions are the rows of the first value returned.
-
-    Examples
-    --------
-    e.g.,
-    ```
-        multfns, costs = optimal_multfn(q, subpopulations=true)
-    ```
-    Here `multfns[i, :]` is an optimal multiplicty function for a subpopulation
-    of size `i` and `costs[i]` is its cost.
-    """
-    n = len(q) - 1
-
-    if not (n > 0):
-        raise ValueError(f"population size n={n} should be > 0")
-
-    # U[h] is the *expected* number of tests used for a group of size h = 0, …, n
-    U = U_from_q(q)
-
-    return optimal_multfn_for_additive_intpart_problem(U, subproblems=subpopulations)
-
-
-def optimal_multfn_for_additive_intpart_problem(c: np.ndarray, subproblems=False):
+def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     """
     Compute an optimal multiplicity function for cost `c` where `c[i]` is the
     cost of a part of size `i`. The size of the largest part `n` is inferred
@@ -90,11 +60,17 @@ def optimal_multfn_for_additive_intpart_problem(c: np.ndarray, subproblems=False
 
     Examples
     --------
-    e.g.,
+    To just get the solution for `n`:
     ```
-        multfns, costs = optimal_patterns(q; subpopulations=true)
+        multfn, cost = compute_optimal_multfn(c)
     ```
-    `multfns[i, :]` is an optimal multiplicty function for a subpopulation
+    Here `multfn` is an nd.array and `cost` is a float.
+
+    To get solutions to all subproblems:
+    ```
+        multfns, costs = compute_optimal_multfn(c, subpopulations=true)
+    ```
+    Here `multfns[i, :]` is an optimal multiplicty function for a subpopulation
     of size `i` and `costs[i]` is its cost.
     """
     # c[i] is the cost of a part of size i = 0, …, n
@@ -127,10 +103,6 @@ def optimal_multfn_for_additive_intpart_problem(c: np.ndarray, subproblems=False
         # update the multfn to include a part of size i[k]
         multfns[k, i[k]] += 1
 
-    assert J[0] == 0  # optimal cost of partitioning no individual is 0
-    assert J[1] == 1  # optimal cost of partitioning 1 individual is 1
-    assert np.all(np.diff(J) >= 0)  # nondecreasing
-
     # ith row should be a pattern the number i
     w = np.arange(0, n + 1)
     got, want = multfns @ w, w
@@ -140,3 +112,33 @@ def optimal_multfn_for_additive_intpart_problem(c: np.ndarray, subproblems=False
         return multfns, J
     else:
         return multfns[n, :], J[n]
+
+
+def symmetric_multfn(q: np.ndarray, subproblems=False):
+    """
+    Compute an optimal multiplicity function for a symmetric distribution
+    with representation `q`. The population size `n` is inferred from the
+    length of `q` (i.e., `len(q) - 1`).
+
+    Use the keyword argument `subproblems=true` to return multiplicity
+    functions and costs for all subpopulations. In that case, the multiplicity
+    functions are the rows of the first value returned.
+
+    Examples
+    --------
+    e.g.,
+    ```
+        multfns, costs = optimal_multfn(q, subpopulations=true)
+    ```
+    Here `multfns[i, :]` is an optimal multiplicty function for a subpopulation
+    of size `i` and `costs[i]` is its cost.
+    """
+    n = len(q) - 1
+
+    if not (n > 0):
+        raise ValueError(f"population size n={n} should be > 0")
+
+    # U[h] is the *expected* number of tests used for a group of size h = 0, …, n
+    U = U_from_q(q)
+
+    return compute_optimal_multfn(U, subproblems=subproblems)
