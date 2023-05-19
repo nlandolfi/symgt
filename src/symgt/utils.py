@@ -55,9 +55,7 @@ def ECost(q: np.ndarray, multfn: np.ndarray) -> float:
 def U_from_q(q: np.ndarray) -> np.ndarray:
     """
     Compute the function `U` under the symmetric distribution represented by `q`.
-
-    U : {0, …, n} → R
-    `U(h)` is the expected number of tests used to declare a group of size `h`.
+    `U[h]` is the expected number of tests used to declare a group of size `h`.
 
     Parameters
     ----------
