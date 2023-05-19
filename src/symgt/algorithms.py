@@ -45,13 +45,16 @@ def dorfman_multfn(n: int, prevalence: float) -> np.ndarray:
         multfn[n % m] = 1  # remainder
     return multfn
 
+
 def optimal_multfn(q: np.ndarray, subpopulations=False):
     """
-    Compute an optimal multiplicity function for a symmetric distribution with representation `q`.
-    The population size `n` is inferred from the length of `q` (i.e., `len(q) - 1`).
+    Compute an optimal multiplicity function for a symmetric distribution
+    with representation `q`. The population size `n` is inferred from the
+    length of `q` (i.e., `len(q) - 1`).
 
-    Use the keyword argument `subpopulations=true` to return multiplicity functions and costs
-    for all subpopulations.  The multiplicity functions are the rows of the first value returned.
+    Use the keyword argument `subpopulations=true` to return multiplicity
+    functions and costs for all subpopulations. The multiplicity functions
+    are the rows of the first value returned.
 
     Examples
     --------
@@ -59,7 +62,8 @@ def optimal_multfn(q: np.ndarray, subpopulations=False):
     ```
         multfns, costs = optimal_patterns(q; subpopulations=true)
     ```
-    `multfns[i, :]` is an optimal multiplicty function for a subpopulation of size `i` and `costs[i]` is its cost.
+    `multfns[i, :]` is an optimal multiplicty function for a subpopulation
+    of size `i` and `costs[i]` is its cost.
     """
     n = len(q) - 1
 
@@ -130,21 +134,6 @@ def U_from_q(q: np.ndarray) -> np.ndarray:
     for i in range(2, n + 1):
         U[i] = 1 + i * (1 - q[i])
     return U
-
-
-def integer_partition(multfn: np.ndarray) -> List[int]:
-    """
-    Convert a multiplicity function to an integer partition.
-    An integer partition is a nondescreasing list of (possibly repeating) part sizes.
-
-    `multfn[i]` is the multiplicty of a part of size i
-    """
-    ss = []
-    for i, x in enumerate(multfn):
-        for _ in range(x):
-            ss.append(i)
-    ss.reverse()  # conventionally nonincreasing
-    return ss
 
 
 def ECost(multfn: np.ndarray, q: np.ndarray) -> float:

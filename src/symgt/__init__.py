@@ -5,7 +5,6 @@ from .algorithms import (
     dorfman_pool_size,
     dorfman_multfn,
     optimal_multfn,
-    integer_partition,
     ECost,
 )
 
@@ -17,6 +16,5 @@ __all__ = [
     "dorfman_pool_size",
     "dorfman_multfn",
     "optimal_multfn",
-    "integer_partition",
     "ECost",
 ]

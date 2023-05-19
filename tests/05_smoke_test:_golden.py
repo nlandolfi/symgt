@@ -2,7 +2,9 @@ import symgt as st
 import numpy as np
 import pandas as pd
 
-print("THIS IS SMOKE TEST 4: IT REPRODUCES THE OLD golden.jl")
+from symgt.utils import integer_partition_from_multfn as intpart
+
+print("THIS IS SMOKE TEST 5: IT REPRODUCES THE OLD golden.jl")
 
 # from randomness in julia
 shuffle = (
@@ -529,13 +531,14 @@ m_iid = st.IIDModel.fit(X[:250, :])
 q_sym = np.exp(m_sym.log_q())
 q_iid = np.exp(m_iid.log_q())
 
+
 mu_sym, cost_sym = st.optimal_multfn(q_sym)
 mu_iid, cost_iid = st.optimal_multfn(q_iid)
-l_sym, l_iid = st.integer_partition(mu_sym), st.integer_partition(mu_iid)
-# print(st.integer_partition(mu_sym), cost_sym)
+l_sym, l_iid = intpart(mu_sym), intpart(mu_iid)
+# print(intpart(mu_sym), cost_sym)
 assert np.allclose(cost_sym, 7.2579209623910526)
 assert np.allclose(l_sym, [27, 27, 26])
-# print(st.integer_partition(mu_iid), cost_iid)
+# print(intpart(mu_iid), cost_iid)
 assert np.allclose(cost_iid, 7.830089342189575)
 assert np.allclose(l_iid, [20, 20, 20, 20])
 
@@ -544,8 +547,8 @@ assert np.allclose(st.ECost(mu_iid, q_sym), 7.3396680473136175)
 
 
 def sizes(a):  # for compatability with the old julia code
-    b = st.integer_partition(a)
-    b.reverse()
+    b = intpart(a)
+    b = b[::-1]
     return b
 
 

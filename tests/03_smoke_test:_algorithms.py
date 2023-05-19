@@ -1,5 +1,3 @@
-
-
 import numpy as np
 import pytest
 
@@ -23,13 +21,15 @@ with pytest.raises(ValueError):
 
 assert np.all(dorfman_multfn(5, 0.15) == [0, 0, 1, 1, 0, 0])
 
+
 def test_dorfman_etc():
     assert st.dorfman_pool_size(0.01) == 11
     assert st.dorfman_pool_size(0.02) == 8
     assert st.dorfman_pool_size(0.05) == 5
     assert st.dorfman_pool_size(0.1) == 4
     assert st.dorfman_pool_size(0.15) == 3
-    assert st.dorfman_multfn(5, 0.15) == [0, 0, 1, 1, 0, 0]
+    assert np.all(st.dorfman_multfn(5, 0.15) == [0, 0, 1, 1, 0, 0])
+
 
 test_dorfman_etc()
 
@@ -48,7 +48,7 @@ def test_U_from_q():
 
     assert np.all(U_r == want), f"U_r is not {want}"
     assert np.all(U_s == want), f"U_r is not {want}"
-    assert np.all(U_r == U_s), f"U_r is not U_s"
+    assert np.all(U_r == U_s), "U_r is not U_s"
     # they should match (proof that U is not a representation)
 
     q = np.exp(st.IIDModel(10, 0.1).log_q())

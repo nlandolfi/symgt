@@ -20,7 +20,7 @@ test:
 	python tests/02_smoke_test:_ExchangeableModel.py
 	python tests/03_smoke_test:_algorithms.py
 	python tests/04_smoke_test:_utils.py
-	python tests/04_smoke_test:_golden.py
+	python tests/05_smoke_test:_golden.py
 freeze:
 	pip freeze > requirements.txt
 
