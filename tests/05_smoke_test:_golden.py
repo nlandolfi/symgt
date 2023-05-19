@@ -2,7 +2,7 @@ import symgt as st
 import numpy as np
 import pandas as pd
 
-from symgt.utils import integer_partition_from_multfn as intpart
+from symgt.utils import intpart_from_multfn as intpart
 
 print("THIS IS SMOKE TEST 5: IT REPRODUCES THE OLD golden.jl")
 
