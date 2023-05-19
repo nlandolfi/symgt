@@ -62,9 +62,9 @@ def optimal_multfn(q: np.ndarray, subpopulations=False):
     --------
     e.g.,
     ```
-        multfns, costs = optimal_patterns(q; subpopulations=true)
+        multfns, costs = optimal_multfn(q, subpopulations=true)
     ```
-    `multfns[i, :]` is an optimal multiplicty function for a subpopulation
+    Here `multfns[i, :]` is an optimal multiplicty function for a subpopulation
     of size `i` and `costs[i]` is its cost.
     """
     n = len(q) - 1
@@ -72,7 +72,7 @@ def optimal_multfn(q: np.ndarray, subpopulations=False):
     if not (n > 0):
         raise ValueError(f"population size n={n} should be > 0")
 
-    # U[h] is the *expected* number of tests to declare a group of size h = 0, …, n
+    # U[h] is the *expected* number of tests used for a group of size h = 0, …, n
     U = U_from_q(q)
 
     return optimal_multfn_for_additive_intpart_problem(U, subproblems=subpopulations)
@@ -80,9 +80,9 @@ def optimal_multfn(q: np.ndarray, subpopulations=False):
 
 def optimal_multfn_for_additive_intpart_problem(c: np.ndarray, subproblems=False):
     """
-    Compute an optimal multiplicity function for a cost `c` where `c[i]` is the
-    cost of a part of size `i`. We use off-by-one indexing for convenience.
-    The size of the largest part `n` is inferred from c (i.e., `len(c) - 1`).
+    Compute an optimal multiplicity function for cost `c` where `c[i]` is the
+    cost of a part of size `i`. The size of the largest part `n` is inferred
+    from c (i.e., `len(c) - 1`). The value `c[0]` is not used.
 
     Use the keyword argument `subproblems=true` to return multiplicity
     functions and costs for all subproblems. The multiplicity functions
@@ -121,14 +121,14 @@ def optimal_multfn_for_additive_intpart_problem(c: np.ndarray, subproblems=False
         J[k] = J[k - i[k]] + c[i[k]]
 
         if k - i[k] > 0:  # if we are using a subproblem
-            multfns[k, :] = multfns[k - i[k], :]  # take its pattern
+            multfns[k, :] = multfns[k - i[k], :]  # take its multfn
         # otherwise, inherit the zero pattern
 
-        # update the pattern to include a group of size i[k]
+        # update the multfn to include a part of size i[k]
         multfns[k, i[k]] += 1
 
-    assert J[0] == 0  # optimal cost of declaring 0 individuals is 0
-    assert J[1] == 1  # optimal cost of declaring 1 individual is 1
+    assert J[0] == 0  # optimal cost of partitioning no individual is 0
+    assert J[1] == 1  # optimal cost of partitioning 1 individual is 1
     assert np.all(np.diff(J) >= 0)  # nondecreasing
 
     # ith row should be a pattern the number i
