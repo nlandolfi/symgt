@@ -73,6 +73,34 @@ def optimal_multfn(q: np.ndarray, subpopulations=False):
     # U[h] is the *expected* number of tests to declare a group of size h = 0, …, n
     U = U_from_q(q)
 
+    return optimal_multfn_for_additive_intpart_problem(U, subproblems=subpopulations)
+
+
+def optimal_multfn_for_additive_intpart_problem(c: np.ndarray, subproblems=False):
+    """
+    Compute an optimal multiplicity function for a cost `c` where `c[i]` is the
+    cost of a part of size `i`. We use off-by-one indexing for convenience.
+    The size of the largest part `n` is inferred from c (i.e., `len(c) - 1`).
+
+    Use the keyword argument `subproblems=true` to return multiplicity
+    functions and costs for all subproblems. The multiplicity functions
+    are the rows of the first value returned.
+
+    Examples
+    --------
+    e.g.,
+    ```
+        multfns, costs = optimal_patterns(q; subpopulations=true)
+    ```
+    `multfns[i, :]` is an optimal multiplicty function for a subpopulation
+    of size `i` and `costs[i]` is its cost.
+    """
+    # c[i] is the cost of a part of size i = 0, …, n
+    n = len(c) - 1
+
+    if not (n > 0):
+        raise ValueError(f"population size n={n} should be > 0")
+
     # J[m] is the optimal cost to declare a population of size m = 0, …, n
     J = np.zeros(n + 1)  # note, J[0] = 0 by default
 
@@ -85,10 +113,10 @@ def optimal_multfn(q: np.ndarray, subpopulations=False):
 
     for k in range(1, n + 1):
         # find an optimal i[k]; the +1 here is for off by one indexing
-        i[k] = np.argmin([J[k - i] + U[i] for i in range(1, k + 1)]) + 1
+        i[k] = np.argmin([J[k - i] + c[i] for i in range(1, k + 1)]) + 1
 
         # record the optimal cost
-        J[k] = J[k - i[k]] + U[i[k]]
+        J[k] = J[k - i[k]] + c[i[k]]
 
         if k - i[k] > 0:  # if we are using a subproblem
             multfns[k, :] = multfns[k - i[k], :]  # take its pattern
@@ -106,7 +134,7 @@ def optimal_multfn(q: np.ndarray, subpopulations=False):
     got, want = multfns @ w, w
     assert np.all(got == want), f"multfns @ np.arange(1, n+1): got {got} want {want}"
 
-    if subpopulations:
+    if subproblems:
         return multfns, J
     else:
         return multfns[n, :], J[n]
