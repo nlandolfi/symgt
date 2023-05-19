@@ -93,7 +93,7 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     multfns = np.zeros((n + 1, n + 1), dtype=int)
 
     for k in range(1, n + 1):
-        # find an optimal i[k]; the +1 here is for off by one indexing
+        # find an optimal istar[k]
         istar[k] = np.argmin([Mstar[k - i] + c[i] for i in range(1, k + 1)]) + 1
 
         # record the optimal cost
@@ -103,7 +103,7 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
             multfns[k, :] = multfns[k - istar[k], :]  # take its multfn
         # otherwise, inherit the zero pattern
 
-        # update the multfn to include a part of size i[k]
+        # update the multfn to include a part of size istar[k]
         multfns[k, istar[k]] += 1
 
     # row i should be a be a multfn for i
