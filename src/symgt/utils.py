@@ -9,7 +9,7 @@ def integer_partition_from_multfn(multfn: np.ndarray) -> np.ndarray:
     Parameters
     ----------
     multfn : np.ndarray
-        `multfn[i]` is the multiplicty of a part of size i
+        `multfn[i]` is the multiplicty of a part of size `i`.
     """
     ss = []
     for i, x in enumerate(multfn):
@@ -27,7 +27,7 @@ def ETests(q: np.ndarray, h: int) -> float:
     Parameters
     ----------
     q : np.ndarray
-        `q[i]` is the probability that a group of size i tests negative.
+        `q[i]` is the probability that a group of size `i` tests negative.
     h : int
         `h` is the size of the group.
     """
@@ -57,16 +57,13 @@ def U_from_q(q: np.ndarray) -> np.ndarray:
     Compute the function `U` under the symmetric distribution represented by `q`.
 
     U : {0, …, n} → R
-    U(h) is the expected number of tests used to declare a group of size `h`.
-
-    This is a helper function for `optimal_multfn` below.
+    `U(h)` is the expected number of tests used to declare a group of size `h`.
 
     Parameters
     ----------
     q : np.ndarray
-        `q[i]` is the probability that a group of size i tests negative.
+        `q[i]` is the probability that a group of size `i` tests negative.
     """
-    # assert is_plausible_q(q)
     n = len(q) - 1
 
     if not (n > 0):
