@@ -21,8 +21,8 @@ def integer_partition_from_multfn(multfn: np.ndarray) -> np.ndarray:
 
 def ETests(q: np.ndarray, h: int) -> float:
     """
-    Compute the expected number of tests used for a group of size `h`
-    for a symmetric distribution with representation `q`.
+    Compute the expected number of tests used for a group of size `h` under a
+    symmetric distribution with representation `q`.
 
     Parameters
     ----------
