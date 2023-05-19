@@ -88,7 +88,7 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     # The cost of partitioning 1 is c[1]
     Mstar[1] = c[1]
 
-    # the n+1 here is for indexing off by one, we don't use i[0] or multfns[0, :]
+    # the n+1 here is for indexing convenience, we don't use i[0] or multfns[0, :]
     i = np.zeros(n + 1, dtype=int)
     multfns = np.zeros((n + 1, n + 1), dtype=int)
 
