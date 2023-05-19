@@ -106,7 +106,7 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
         # update the multfn to include a part of size i[k]
         multfns[k, istar[k]] += 1
 
-    # ith row should be a pattern the number i
+    # row i should be a be a multfn for i
     w = np.arange(0, n + 1)
     got, want = multfns @ w, w
     assert np.all(got == want), f"multfns @ np.arange(1, n+1): got {got} want {want}"
