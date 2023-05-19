@@ -21,6 +21,7 @@ test:
 	python tests/03_smoke_test:_algorithms.py
 	python tests/04_smoke_test:_utils.py
 	python tests/05_smoke_test:_golden.py
+	python tests/06_smoke_test:_golden2.py
 freeze:
 	pip freeze > requirements.txt
 
