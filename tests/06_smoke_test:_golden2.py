@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 
 
@@ -8,23 +7,17 @@ from symgt.utils import intpart_from_multfn, ECost
 
 print("THIS IS SMOKE TEST 6: IT REPRODUCES a different golden")
 
-
-def matrix(df):
-    return np.vstack(
-        batches["sample"].apply(lambda x: np.fromstring(x, dtype=int, sep=" "))
-    )
-
-
-batches = pd.read_csv("../barak2021data/out/batches.csv")
-X = matrix(batches)
+# this is the data that comes from batching Barak et al' runs,
+# only using pools of size 8, from 4/29/2020 to 6/18/2020
+X = np.load("./data/X.npy")
 
 
 m_iid = models.IIDModel.fit(X)
 m_sym = models.ExchangeableModel.fit(X)
 q_iid = np.exp(m_iid.log_q())
 q_sym = np.exp(m_sym.log_q())
-print(f"m_iid n={m_iid.n} p={m_iid.p}")
-print(f"m_sym n={m_sym.n} alpha[:10]={m_sym.alpha[:10]}...")
+# print(f"m_iid n={m_iid.n} p={m_iid.p}")
+# print(f"m_sym n={m_sym.n} alpha[:10]={m_sym.alpha[:10]}...")
 
 multfn_iid, cost_iid = algorithms.symmetric_multfn(q_iid)
 # print(f"m_iid integer partition={intpart_from_multfn(multfn_iid)}; cost={cost_iid}")
