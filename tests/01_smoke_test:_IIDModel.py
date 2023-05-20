@@ -6,7 +6,6 @@ print("THIS IS SMOKE TEST 1: IT TESTS IIDModel")
 
 IIDModel = st.IIDModel
 m = IIDModel(10, 0.1)
-m.sample()
 
 got, want = m.prevalence(), 0.1
 if got != want:

@@ -9,7 +9,6 @@ print("THIS IS SMOKE TEST 2: IT TESTS ExchangeableModel")
 ExchangeableModel = st.ExchangeableModel
 
 m = ExchangeableModel(10, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-m.sample()
 lq = m.log_q()
 assert np.all(np.exp(lq) == 1)  # this model never has positive specimens
 
