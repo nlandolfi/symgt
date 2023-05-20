@@ -224,6 +224,7 @@ class ExchangeableModel:
     def sample(self) -> np.ndarray:
         """
         Sample from the model.
+
         Returns
         -------
         np.ndarray
