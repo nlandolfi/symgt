@@ -6,6 +6,7 @@ print("THIS IS SMOKE TEST 1: IT TESTS IIDModel")
 
 IIDModel = st.IIDModel
 m = IIDModel(10, 0.1)
+m.sample()
 
 got, want = m.prevalence(), 0.1
 if got != want:
@@ -80,3 +81,16 @@ def test_IIDModel_fit():
 
 
 test_IIDModel_fit()
+
+# Test sample a bit
+m = IIDModel(4, 0.0)
+m.sample()
+got, want = m.sample(), np.zeros(4)
+assert np.allclose(got, want), f"got {got}, want {want}"
+got, want = m.sample(), np.zeros(4)
+assert np.allclose(got, want), f"got {got}, want {want}"
+m = IIDModel(4, 1.0)
+got, want = np.sum(m.sample()), 4
+assert np.allclose(got, want), f"got {got}, want {want}"
+got, want = np.sum(m.sample()), 4
+assert np.allclose(got, want), f"got {got}, want {want}"
