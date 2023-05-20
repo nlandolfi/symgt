@@ -77,7 +77,8 @@ def U_from_q(q: np.ndarray) -> np.ndarray:
 
 def grouptest_array(multfn) -> np.ndarray:
     """
-    Form a matrix that can be used for computing group tests statuses.
+    Form a matrix that can be used to comput group tests statuses from individual
+    status vectors.
 
     The matrix is `g` by `n` where `g = np.sum(multfn)` is the number of groups
     and `n = np.arange(len(multfn)) * multfn` is the population size. The `i, j`th
