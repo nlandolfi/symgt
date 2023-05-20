@@ -90,7 +90,7 @@ def grouptest_array(multfn) -> np.ndarray:
     With `multfn` and a vector of outcomes `x`, compute tests used:
     ```
         A = grouptest_array(multfn)
-        A @ x
+        group_statuses = A @ x
     ```
 
     Parameters
