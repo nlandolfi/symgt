@@ -95,6 +95,17 @@ class IIDModel:
         # handled with multiplication by 0
         return np.log(1 - self.p) * np.arange(0, self.n + 1)
 
+    def sample(self) -> np.ndarray:
+        """
+        Sample from the model.
+
+        Returns
+        -------
+        np.ndarray
+            An array of length `n` containing the outcomes.
+        """
+        return np.random.rand(self.n) < self.prevalence()
+
 
 class ExchangeableModel:
     """
@@ -209,6 +220,20 @@ class ExchangeableModel:
                 a.append(log_comb(self.n - i, j) - log_comb(self.n, j) + log_alpha[j])
             log_q[i] = logsumexp(a)
         return log_q
+
+    def sample(self) -> np.ndarray:
+        """
+        Sample from the model.
+
+        Returns
+        -------
+        np.ndarray
+            An array of length `n` containing the outcomes.
+        """
+        s = np.zeros(self.n)
+        s[: np.random.choice(np.arange(self.n + 1), p=self.alpha)] = 1
+        np.random.shuffle(s)
+        return s
 
 
 def log_comb(n, k):

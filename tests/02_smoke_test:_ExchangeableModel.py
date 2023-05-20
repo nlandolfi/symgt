@@ -107,3 +107,19 @@ def test_log_comb():
 
 
 test_log_comb()
+
+# Test sample a bit
+alpha = np.zeros(5)
+alpha[0] = 1
+m = ExchangeableModel(4, alpha)
+got, want = m.sample(), np.zeros(4)
+assert np.allclose(got, want), f"got {got}, want {want}"
+got, want = m.sample(), np.zeros(4)
+assert np.allclose(got, want), f"got {got}, want {want}"
+alpha[0] = 0
+alpha[2] = 1
+m = ExchangeableModel(4, alpha)
+got, want = np.sum(m.sample()), 2
+assert np.allclose(got, want), f"got {got}, want {want}"
+got, want = np.sum(m.sample()), 2
+assert np.allclose(got, want), f"got {got}, want {want}"
