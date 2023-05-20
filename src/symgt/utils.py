@@ -84,7 +84,7 @@ def grouptest_array(multfn) -> np.ndarray:
     and `n = np.arange(len(multfn)) * multfn` is the population size. The `i, j`th
     entry of the matrix is 1 if specimen `j` goes to group `i`.
 
-    Large groups first. For example, if there is a group of size 1 and a group of 
+    Large groups first. For example, if there is a group of size 1 and a group of
     size 2, we have [[1, 1, 0], [0, 0, 1]] and *not* [[1, 0, 0], [0, 0, 1]].
 
     With `multfn` and a vector of outcomes `x`,
