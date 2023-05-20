@@ -10,8 +10,8 @@ print("THIS IS SMOKE TEST 6: IT REPRODUCES a different golden")
 
 
 def matrix(df):
-    return np.array(
-        [[int(o) for o in sample.split(" ")] for sample in df["sample"]], dtype=int
+    return np.vstack(
+        batches["sample"].apply(lambda x: np.fromstring(x, dtype=int, sep=" "))
     )
 
 
@@ -23,8 +23,8 @@ m_iid = models.IIDModel.fit(X)
 m_sym = models.ExchangeableModel.fit(X)
 q_iid = np.exp(m_iid.log_q())
 q_sym = np.exp(m_sym.log_q())
-# print(f"m_iid n={m_iid.n} p={m_iid.p}")
-# print(f"m_sym n={m_sym.n} alpha[:10]={m_sym.alpha[:10]}...")
+print(f"m_iid n={m_iid.n} p={m_iid.p}")
+print(f"m_sym n={m_sym.n} alpha[:10]={m_sym.alpha[:10]}...")
 
 multfn_iid, cost_iid = algorithms.symmetric_multfn(q_iid)
 # print(f"m_iid integer partition={intpart_from_multfn(multfn_iid)}; cost={cost_iid}")

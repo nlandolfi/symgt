@@ -518,8 +518,8 @@ shuffle = (
 
 
 def matrix(df):
-    return np.array(
-        [[int(o) for o in sample.split(" ")] for sample in df["sample"]], dtype=int
+    return np.vstack(
+        batches["sample"].apply(lambda x: np.fromstring(x, dtype=int, sep=" "))
     )
 
 
