@@ -19,3 +19,4 @@ latex.out
 dist/*
 *_env
 env
+__pycache__
