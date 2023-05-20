@@ -1,9 +1,12 @@
 import pandas as pd
 import numpy as np
 
+
 from symgt import models
 from symgt import algorithms
 from symgt.utils import intpart_from_multfn, ECost
+
+print("THIS IS SMOKE TEST 6: IT REPRODUCES a different golden")
 
 
 def matrix(df):
