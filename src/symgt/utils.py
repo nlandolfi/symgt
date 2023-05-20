@@ -81,12 +81,12 @@ def grouptest_array(multfn) -> np.ndarray:
 
     The matrix is `g` by `n` where `g = np.sum(multfn)` is the number of groups
     and `n = np.arange(len(multfn)) * multfn` is the population size. The `i, j`th
-    entry of the matrix is 1 if sample `j` goes to group `i`.
+    entry of the matrix is 1 if specimen `j` goes to group `i`.
 
     Large groups first. For example, if there is a group of size 1 and a of size 2,
     we have [[1, 1, 0], [0, 0, 1]] and not [[1, 0, 0], [0, 0, 1]].
 
-    With `multfn` and a sample `x`, compute tests used:
+    With `multfn` and a vector of outcomes `x`, compute tests used:
     ```
         A = grouptest_array(multfn)
         A @ x
@@ -102,6 +102,8 @@ def grouptest_array(multfn) -> np.ndarray:
     A : np.ndarray
         `A[i, j]` is 1 if and only if sample `j` is in pool `i`
     """
+    assert multfn[0] == 0, f"multfn[0] should be zero, got {multfn[0]}"
+
     g, n = np.sum(multfn), np.dot(np.arange(len(multfn)), multfn)
     s = intpart_from_multfn(multfn)
     A = np.zeros((g, n))
