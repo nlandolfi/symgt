@@ -99,7 +99,7 @@ def grouptest_array(multfn) -> np.ndarray:
         `multfn[i]` is the multiplicty of a part of size `i`.
 
     Returns
-    ----------
+    -------
     A : np.ndarray
         `A[i, j]` is 1 if and only if sample `j` is in pool `i`
     """
