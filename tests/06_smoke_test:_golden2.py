@@ -37,7 +37,7 @@ np.allclose(E(q_iid, multfn_sym), 7.261454447408048)
 np.allclose(E(q_sym, multfn_iid), 6.932112504669462)
 np.allclose(E(q_sym, multfn_sym), 6.785444658410714)
 
-""" from julia 
+""" from julia
 sizes(π_iid) = Any[20, 20, 20, 20]
 sizes(π_sym) = Any[26, 27, 27]
 CGT.ECost(π_iid, m_iid) = 7.216900898670634
