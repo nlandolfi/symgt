@@ -73,3 +73,40 @@ def U_from_q(q: np.ndarray) -> np.ndarray:
     for i in range(2, n + 1):
         U[i] = 1 + i * (1 - q[i])  # don't bother calling ETests
     return U
+
+
+def grouptest_array(multfn) -> np.ndarray:
+    """
+    Form a matrix that can be used for computing group tests statuses.
+
+    The matrix is `g` by `n` where `g = np.sum(multfn)` is the number of groups
+    and `n = np.arange(len(multfn)) * multfn` is the population size. The `i, j`th
+    entry of the matrix is 1 if sample `j` goes to group `i`.
+
+    Large groups first. For example, if there is a group of size 1 and a of size 2,
+    we have [[1, 1, 0], [0, 0, 1]] and not [[1, 0, 0], [0, 0, 1]].
+
+    With `multfn` and a sample `x`, compute tests used:
+    ```
+        A = grouptest_array(multfn)
+        A @ x
+    ```
+
+    Parameters
+    ----------
+    multfn : np.ndarray
+        `multfn[i]` is the multiplicty of a part of size `i`.
+
+    Returns
+    ----------
+    A : np.ndarray
+        `A[i, j]` is 1 if and only if sample `j` is in pool `i`
+    """
+    g, n = np.sum(multfn), np.dot(np.arange(len(multfn)), multfn)
+    s = intpart_from_multfn(multfn)
+    A = np.zeros((g, n))
+
+    cum_s = np.insert(np.cumsum(s), 0, 0)
+    for i in range(len(s)):
+        A[i, cum_s[i] : cum_s[i + 1]] = 1
+    return A

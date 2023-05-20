@@ -1,7 +1,7 @@
 import numpy as np
 
 from symgt.models import IIDModel
-from symgt.utils import intpart_from_multfn, U_from_q, ECost, ETests
+from symgt.utils import intpart_from_multfn, U_from_q, ECost, ETests, grouptest_array
 
 print("THIS IS SMOKE TEST 4: IT TESTS utils.py")
 
@@ -72,4 +72,21 @@ assert np.allclose(
             7.513215599,
         ]
     ),
+)
+
+# Test grouptest_array
+multfn = [0, 1, 2]
+assert np.allclose(
+    grouptest_array(multfn),
+    np.array([[1, 1, 0, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 0, 1]]),
+)
+multfn = [0, 0, 0, 1]
+assert np.allclose(
+    grouptest_array(multfn),
+    np.array([[1, 1, 1]]),
+)
+multfn = [0, 0, 0, 1, 1]
+assert np.allclose(
+    grouptest_array(multfn),
+    np.array([[1, 1, 1, 1, 0, 0, 0], [0, 0, 0, 0, 1, 1, 1]]),
 )
