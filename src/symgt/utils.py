@@ -87,7 +87,7 @@ def grouptest_array(multfn) -> np.ndarray:
     Large groups first. For example, if there is a group of size 1 and a group of 
     size 2, we have [[1, 1, 0], [0, 0, 1]] and *not* [[1, 0, 0], [0, 0, 1]].
 
-    With `multfn` and a vector of outcomes `x`, compute tests used:
+    With `multfn` and a vector of outcomes `x`,
     ```
         A = grouptest_array(multfn)
         group_statuses = A @ x
