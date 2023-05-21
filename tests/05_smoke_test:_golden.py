@@ -7,7 +7,7 @@ from symgt.algorithms import symmetric_multfn
 print("THIS IS SMOKE TEST 5: IT REPRODUCES THE OLD julia code golden.jl")
 
 # this is a shuffled version of the data that comes from batching
-# Barak et al' runs, only using pools of size 8, from 4/29/2020 to 6/18/2020
+# Barak et al's runs, only using pools of size 8, from 4/29/2020 to 6/18/2020
 X = np.load("./data/X_shuffled.npy")
 
 m_sym = ExchangeableModel.fit(X[:250, :])
