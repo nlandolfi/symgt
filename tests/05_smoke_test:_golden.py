@@ -15,7 +15,6 @@ m_iid = IIDModel.fit(X[:250, :])
 q_sym = np.exp(m_sym.log_q())
 q_iid = np.exp(m_iid.log_q())
 
-
 mu_sym, cost_sym = symmetric_multfn(q_sym)
 mu_iid, cost_iid = symmetric_multfn(q_iid)
 l_sym, l_iid = intpart(mu_sym), intpart(mu_iid)
@@ -32,7 +31,7 @@ assert np.allclose(ECost(q_sym, mu_iid), 7.3396680473136175)
 
 def sizes(a):  # for compatability with the old julia code
     b = intpart(a)
-    b = b[::-1]
+    b = b[::-1] # reverse, cause that code did increasing order
     return b
 
 
