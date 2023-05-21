@@ -1,6 +1,6 @@
-import symgt as st
 import numpy as np
 
+from symgt.models import IIDModel, ExchangeableModel
 from symgt.utils import intpart_from_multfn as intpart, ECost
 from symgt.algorithms import symmetric_multfn
 
@@ -10,8 +10,8 @@ print("THIS IS SMOKE TEST 5: IT REPRODUCES THE OLD julia code golden.jl")
 # Barak et al' runs, only using pools of size 8, from 4/29/2020 to 6/18/2020
 X = np.load("./data/X_shuffled.npy")
 
-m_sym = st.ExchangeableModel.fit(X[:250, :])
-m_iid = st.IIDModel.fit(X[:250, :])
+m_sym = ExchangeableModel.fit(X[:250, :])
+m_iid = IIDModel.fit(X[:250, :])
 q_sym = np.exp(m_sym.log_q())
 q_iid = np.exp(m_iid.log_q())
 
