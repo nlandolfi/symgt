@@ -18,6 +18,7 @@ q = np.exp(m.log_q()) # the representation q of the symmetric distribution
 multfn, cost = algorithms.symmetric_multfn(q) # cost is 6
 intpart = utils.intpart_from_multfn(multfn) # intpart is [10]
 
+# which differs from that computed using the IID approximation
 m_iid = models.IIDModel(10, m.prevalence())
 multfn_iid, _ = algorithms.symmetric_multfn(np.exp(m_iid.log_q()))
 intpart_iid = utils.intpart_from_multfn(multfn_iid) # is [4, 3, 3]
