@@ -23,15 +23,14 @@ multfn_iid, cost_iid = algorithms.symmetric_multfn(q_iid)
 # print(f"m_iid integer partition={intpart_from_multfn(multfn_iid)}; cost={cost_iid}")
 multfn_sym, cost_sym = algorithms.symmetric_multfn(q_sym)
 # print(f"m_iid integer partition={intpart_from_multfn(multfn_sym)}; cost={cost_sym}")
+assert np.allclose(intpart_from_multfn(multfn_iid), [20, 20, 20, 20])
+assert np.allclose(intpart_from_multfn(multfn_sym), [27, 27, 26])
 
 E = ECost
 # print(f"ECost(multfn_iid, q_iid)={E(q_iid, multfn_iid)}")
 # print(f"ECost(multfn_sym, q_iid)={E(q_iid, multfn_sym)}")
 # print(f"ECost(multfn_iid, q_sym)={E(q_sym, multfn_iid)}")
 # print(f"ECost(multfn_sym, q_sym)={E(q_sym, multfn_sym)}")
-
-assert np.allclose(intpart_from_multfn(multfn_iid), [20, 20, 20, 20])
-assert np.allclose(intpart_from_multfn(multfn_sym), [27, 27, 26])
 np.allclose(E(q_iid, multfn_iid), 7.216900898670634)
 np.allclose(E(q_iid, multfn_sym), 7.261454447408048)
 np.allclose(E(q_sym, multfn_iid), 6.932112504669462)
