@@ -7,14 +7,13 @@ from symgt.algorithms import symmetric_multfn
 print("THIS IS SMOKE TEST 5: IT REPRODUCES THE OLD julia code golden.jl")
 
 # this is a shuffled version of the data that comes from batching
-# Barak et al' runs, only using pools of size 8, from 4/29/2020 to 6/18/2020
+# Barak et al's runs, only using pools of size 8, from 4/29/2020 to 6/18/2020
 X = np.load("./data/X_shuffled.npy")
 
 m_sym = ExchangeableModel.fit(X[:250, :])
 m_iid = IIDModel.fit(X[:250, :])
 q_sym = np.exp(m_sym.log_q())
 q_iid = np.exp(m_iid.log_q())
-
 
 mu_sym, cost_sym = symmetric_multfn(q_sym)
 mu_iid, cost_iid = symmetric_multfn(q_iid)
@@ -30,13 +29,15 @@ assert np.allclose(ECost(q_iid, mu_sym), 8.067076837069752)
 assert np.allclose(ECost(q_sym, mu_iid), 7.3396680473136175)
 
 
+# new code should use intpart_from_multfn in symgt.utils
 def sizes(a):  # for compatability with the old julia code
     b = intpart(a)
-    b = b[::-1]
+    b = b[::-1]  # reverse, cause that code did increasing order
     return b
 
 
-def array(multfn):
+# new code should use grouptest_array in symgt.utils
+def array(multfn):  # for compatibility with the old julia code
     num_groups = np.sum(multfn)
     A = np.zeros(
         (num_groups, len(multfn) - 1),
