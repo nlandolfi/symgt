@@ -29,13 +29,15 @@ assert np.allclose(ECost(q_iid, mu_sym), 8.067076837069752)
 assert np.allclose(ECost(q_sym, mu_iid), 7.3396680473136175)
 
 
+# new code should use intpart_from_multfn in symgt.utils
 def sizes(a):  # for compatability with the old julia code
     b = intpart(a)
-    b = b[::-1] # reverse, cause that code did increasing order
+    b = b[::-1]  # reverse, cause that code did increasing order
     return b
 
 
-def array(multfn):
+# new code should use grouptest_array in symgt.utils
+def array(multfn):  # for compatibility with the old julia code
     num_groups = np.sum(multfn)
     A = np.zeros(
         (num_groups, len(multfn) - 1),
