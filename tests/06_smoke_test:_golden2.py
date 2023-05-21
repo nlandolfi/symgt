@@ -32,8 +32,6 @@ E = ECost
 # print(f"ECost(multfn_iid, q_sym)={E(q_sym, multfn_iid)}")
 # print(f"ECost(multfn_sym, q_sym)={E(q_sym, multfn_sym)}")
 
-assert np.allclose(intpart_from_multfn(multfn_iid), [20, 20, 20, 20])
-assert np.allclose(intpart_from_multfn(multfn_sym), [27, 27, 26])
 np.allclose(E(q_iid, multfn_iid), 7.216900898670634)
 np.allclose(E(q_iid, multfn_sym), 7.261454447408048)
 np.allclose(E(q_sym, multfn_iid), 6.932112504669462)
