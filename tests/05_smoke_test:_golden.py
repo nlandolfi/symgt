@@ -77,7 +77,7 @@ def tests_expended_corrected(multfn, samples):
 # Test that we have fixed the tests_expended function above
 multfn = np.array([0, 0, 1, 1, 0, 0])
 samples = np.ones((1, 5))
-# gives 15, SHOULD give 2 + 3 + 2 = 7
+# the below gives 15 (from 2 + 3*3 + 2*2), but SHOULD give 2 + 3 + 2 = 7
 assert tests_expended(multfn, samples, complain=False) == 15
 assert tests_expended_corrected(multfn, samples) == 7  # gives 7
 # the below should match, since samples is all ones the order of
