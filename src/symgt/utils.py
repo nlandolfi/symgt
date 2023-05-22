@@ -168,7 +168,7 @@ def empirical_tests_used(A: np.ndarray, X: np.ndarray) -> int:
                 got {np.sum(group_sizes_vector)}"
         )
 
-    # a N x g matrix
+    # an N x g matrix
     group_statuses_matrix = (X @ A.T > 0).astype(int)
 
     # first term is group tests, second is individual retests
