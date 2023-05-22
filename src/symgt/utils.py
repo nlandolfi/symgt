@@ -90,8 +90,10 @@ def grouptest_array(multfn: np.ndarray) -> np.ndarray:
     With `multfn` and a vector of outcomes `x`,
     ```
         A = grouptest_array(multfn)
-        group_statuses = A @ x
+        positives_per_group = A @ x
     ```
+    Notice that `positives_per_group` may *not* be a binary vector. For example
+    `A = np.array([[1, 1]])` and `x = np.array([1, 1])` will give `np.array([2])`.
 
     Parameters
     ----------
