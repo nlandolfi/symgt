@@ -67,7 +67,7 @@ def tests_expended(multfn, samples, complain=True):
 
 
 # corrected the bug; but new code should use utils.empirical_tests_used
-def tests_expended_corrected(multfn, samples):  # corrected bug
+def tests_expended_corrected(multfn, samples):
     # samples is N by n
     A = array(multfn)  # n by g
     R = (samples @ A > 0).astype(int)  # N by g [this is the corrected line]
