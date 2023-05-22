@@ -78,7 +78,7 @@ def U_from_q(q: np.ndarray) -> np.ndarray:
 def grouptest_array(multfn: np.ndarray) -> np.ndarray:
     """
     Form a matrix that can be used to compute the number of positives per
-    group from individual status vectors and group statuses.
+    group (and, hence, group stasuses) from individual status vectors.
 
     The matrix is `g` by `n` where `g = np.sum(multfn)` is the number of groups
     and `n = np.dot(np.arange(len(multfn)), multfn)` is the population size.
