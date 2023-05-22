@@ -66,7 +66,7 @@ def tests_expended(multfn, samples, complain=True):
     return np.sum(R @ sizes(multfn)) + A.shape[1] * samples.shape[0]
 
 
-# new code should use utils.empirical_tests_used
+# corrected the bug; but new code should use utils.empirical_tests_used
 def tests_expended_corrected(multfn, samples):  # corrected bug
     # samples is N by n
     A = array(multfn)  # n by g
