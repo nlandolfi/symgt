@@ -160,11 +160,16 @@ def empirical_tests_used(A: np.ndarray, X: np.ndarray) -> int:
                     and sample matrix has {n2}"
         )
 
-    s = np.sum(A, axis=1)  # s, for group *s*izes
-    if np.sum(s) != n:
-        raise ValueError(f"group sizes should sum to {n}, got {np.sum(s)}")
+    group_sizes_vector = np.sum(A, axis=1)
+    if np.sum(group_sizes_vector) != n:
+        raise ValueError(
+            f"group sizes should sum to {n}, \
+                got {np.sum(group_sizes_vector)}"
+        )
+
+    group_statuses_matrix = (X @ A.T > 0).astype(int)
 
     # first term is group tests, second is individual retests
-    r = (g * N) + np.sum((X @ A.T > 0).astype(int) @ s)
+    r = (g * N) + np.sum(group_statuses_matrix @ group_sizes_vector)
     assert r == int(r), f"result should be an integer, but got {r}"
     return int(r)
