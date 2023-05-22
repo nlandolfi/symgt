@@ -173,5 +173,7 @@ def empirical_tests_used(A: np.ndarray, X: np.ndarray) -> int:
 
     # first term is group tests, second is individual retests
     r = (g * N) + np.sum(group_statuses_matrix @ group_sizes_vector)
+
     assert r == int(r), f"result should be an integer, but got {r}"
+
     return int(r)
