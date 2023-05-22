@@ -105,7 +105,7 @@ def grouptest_array(multfn: np.ndarray) -> np.ndarray:
     Returns
     -------
     A : np.ndarray
-        `A[i, j]` is  if and only if sample `j` is in pool `i`
+        `A[i, j]` is 1 if and only if sample `j` is in pool `i`
     """
     assert multfn[0] == 0, f"multfn[0] should be zero, got {multfn[0]}"
 
