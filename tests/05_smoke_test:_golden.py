@@ -50,8 +50,11 @@ def array(multfn):  # for compatibility with the old julia code
     return A.T  # switch to rows are samples
 
 
-# new code should use utils.empirical_tests_used
-def tests_expended(multfn, samples):  # old, has bug that R is not binary
+# old, has bug that R is not binary; see tests_expended_corrected below
+def tests_expended(multfn, samples, complain=True):
+    if complain:
+        print("WARN: use tests_expended_corrected")
+
     # samples is N by n
     A = array(multfn)  # n by g
     R = samples @ A  # N by g
@@ -70,15 +73,15 @@ def tests_expended_corrected(multfn, samples):  # corrected bug
 multfn = np.array([0, 0, 1, 1, 0, 0])
 samples = np.ones((1, 5))
 # gives 15, SHOULD give 2 + 3 + 2 = 7
-assert tests_expended(multfn, samples) == 15
+assert tests_expended(multfn, samples, complain=False) == 15
 assert tests_expended_corrected(multfn, samples)  # gives 7
 
 
 # print(np.prod(X[250:, :].shape))
 # print(tests_expended(mu_iid, X[250:, :]))
 # print(tests_expended(mu_sym, X[250:, :]))
-assert tests_expended(mu_iid, X[250:, :]) == 1660
-assert tests_expended(mu_sym, X[250:, :]) == 1630
+assert tests_expended(mu_iid, X[250:, :], complain=False) == 1660
+assert tests_expended(mu_sym, X[250:, :], complain=False) == 1630
 # print(tests_expended_corrected(mu_iid, X[250:, :]))
 # print(tests_expended_corrected(mu_sym, X[250:, :]))
 
