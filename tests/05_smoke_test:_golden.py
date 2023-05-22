@@ -50,10 +50,21 @@ def array(multfn):  # for compatibility with the old julia code
     return A.T  # switch to rows are samples
 
 
-def tests_expended(multfn, samples):
+# the next two functions are included for legacy reasons, use
+# utils.empirical_tests_used for all new code
+
+
+def tests_expended(multfn, samples):  # old, has bug that R is not binary
     # samples is N by n
     A = array(multfn)  # n by g
     R = samples @ A  # N by g
+    return np.sum(R @ sizes(multfn)) + A.shape[1] * samples.shape[0]
+
+
+def tests_expended_corrected(multfn, samples):  # corrected bug
+    # samples is N by n
+    A = array(multfn)  # n by g
+    R = (samples @ A > 0).astype(int)  # N by g
     return np.sum(R @ sizes(multfn)) + A.shape[1] * samples.shape[0]
 
 
@@ -62,3 +73,22 @@ def tests_expended(multfn, samples):
 # print(tests_expended(mu_sym, X[250:, :]))
 assert tests_expended(mu_iid, X[250:, :]) == 1660
 assert tests_expended(mu_sym, X[250:, :]) == 1630
+# print(tests_expended_corrected(mu_iid, X[250:, :]))
+# print(tests_expended_corrected(mu_sym, X[250:, :]))
+
+iids = []
+syms = []
+for i in range(1000):
+    perm = np.random.permutation(80)
+    iids.append(tests_expended_corrected(mu_iid, X[250:, perm]))
+    syms.append(tests_expended_corrected(mu_sym, X[250:, perm]))
+# print(f"iids; mean={np.mean(iids)} std={np.std(iids)}")
+# print(f"syms; mean={np.mean(syms)} std={np.std(syms)}")
+assert np.isclose(
+    np.mean(iids), 1630, 1
+), f"np.means(iids) got {np.means(iids)}, want 1630±1"
+assert np.isclose(
+    np.mean(syms), 1578, 1
+), f"np.means(syms) got {np.means(syms)}, want 1578±1"
+assert np.isclose(np.std(iids), 21, 2), f"np.std(iids) got {np.means(iids)}, want 21±2"
+assert np.isclose(np.std(syms), 30, 2), f"np.std(syms) got {np.means(syms)}, want 30±2"
