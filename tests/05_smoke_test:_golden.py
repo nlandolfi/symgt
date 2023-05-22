@@ -62,7 +62,7 @@ def tests_expended(multfn, samples, complain=True):
 
     # samples is N by n
     A = array(multfn)  # n by g
-    R = samples @ A  # N by g
+    R = samples @ A  # N by g [this is the buggy line]
     return np.sum(R @ sizes(multfn)) + A.shape[1] * samples.shape[0]
 
 
