@@ -80,9 +80,9 @@ samples = np.ones((1, 5))
 # the below gives 15 (from 2 + 3*3 + 2*2), but SHOULD give 2 + 3 + 2 = 7
 assert tests_expended(multfn, samples, complain=False) == 15
 assert tests_expended_corrected(multfn, samples) == 7  # gives 7
-# since samples ones, the order of turning the parts into rows of the
-# group test array should not matter, and so the below should match
-# even though we changed the convention to large parts first
+# since `samples` is all ones, the order of turning the parts into rows
+# of the group test array should not matter, and so the below should match,
+# even though we changed the convention to large parts first in the utils code
 assert empirical_tests_used(
     grouptest_array(multfn), samples
 ) == tests_expended_corrected(multfn, samples)
