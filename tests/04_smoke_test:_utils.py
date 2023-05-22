@@ -1,7 +1,14 @@
 import numpy as np
 
 from symgt.models import IIDModel
-from symgt.utils import intpart_from_multfn, U_from_q, ECost, ETests, grouptest_array
+from symgt.utils import (
+    intpart_from_multfn,
+    U_from_q,
+    ECost,
+    ETests,
+    grouptest_array,
+    empirical_tests_used,
+)
 
 print("THIS IS SMOKE TEST 4: IT TESTS utils.py")
 
@@ -90,3 +97,27 @@ assert np.allclose(
     grouptest_array(multfn),
     np.array([[1, 1, 1, 1, 0, 0, 0], [0, 0, 0, 0, 1, 1, 1]]),
 )
+
+# Test empirical_tests_used
+multfn = [0, 0, 0, 2, 1]  # n = 10
+A = grouptest_array(multfn)
+X = np.array(
+    [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    ]
+)
+# should use 3 + (3 + 4) + (3 + 3) = 16 tests
+got, want = empirical_tests_used(A, X), 16
+assert got == want, f"empirical tests used got {got}, want {want}"
+X = np.array(
+    [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    ]
+)
+# should use (3 + 4 + 3 + 3) + (3 + 4) + (3 + 3) = 26 tests
+got, want = empirical_tests_used(A, X), 26
+assert got == want, f"empirical tests used got {got}, want {want}"
