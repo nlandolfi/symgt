@@ -50,10 +50,7 @@ def array(multfn):  # for compatibility with the old julia code
     return A.T  # switch to rows are samples
 
 
-# the next two functions are included for legacy reasons, use
-# utils.empirical_tests_used for all new code
-
-
+# new code should use utils.empirical_tests_used
 def tests_expended(multfn, samples):  # old, has bug that R is not binary
     # samples is N by n
     A = array(multfn)  # n by g
@@ -61,11 +58,20 @@ def tests_expended(multfn, samples):  # old, has bug that R is not binary
     return np.sum(R @ sizes(multfn)) + A.shape[1] * samples.shape[0]
 
 
+# new code should use utils.empirical_tests_used
 def tests_expended_corrected(multfn, samples):  # corrected bug
     # samples is N by n
     A = array(multfn)  # n by g
     R = (samples @ A > 0).astype(int)  # N by g
     return np.sum(R @ sizes(multfn)) + A.shape[1] * samples.shape[0]
+
+
+# Test that we have fixed the tests_expended function above
+multfn = np.array([0, 0, 1, 1, 0, 0])
+samples = np.ones((1, 5))
+# gives 15, SHOULD give 2 + 3 + 2 = 7
+assert tests_expended(multfn, samples) == 15
+assert tests_expended_corrected(multfn, samples)  # gives 7
 
 
 # print(np.prod(X[250:, :].shape))
