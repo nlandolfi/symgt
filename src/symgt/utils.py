@@ -77,8 +77,9 @@ def U_from_q(q: np.ndarray) -> np.ndarray:
 
 def grouptest_array(multfn: np.ndarray) -> np.ndarray:
     """
-    Form a matrix that can be used to compute group tests statuses from individual
-    status vectors.
+    Form a matrix that can be used to compute the number of positives per
+    group from individual status vectors. When the individual status vector
+    is cast to a `bool` data type, the product is the group statuses.
 
     The matrix is `g` by `n` where `g = np.sum(multfn)` is the number of groups
     and `n = np.dot(np.arange(len(multfn)), multfn)` is the population size.
@@ -91,6 +92,7 @@ def grouptest_array(multfn: np.ndarray) -> np.ndarray:
     ```
         A = grouptest_array(multfn)
         positives_per_group = A @ x
+        group_statuses = A @ x.astype(bool)
     ```
     Notice that `positives_per_group` may *not* be a binary vector. For example
     `A = np.array([[1, 1]])` and `x = np.array([1, 1])` will give `np.array([2])`.
@@ -143,9 +145,9 @@ def empirical_tests_used(A: np.ndarray, X: np.ndarray) -> int:
     int
         The number of tests used.
     """
-    if not np.all(np.unique(A) == np.array([0, 1])):
+    if not (np.all(np.isin(A, [0, 1]))):
         raise ValueError("group test array should be binary matrix")
-    if not np.all(np.unique(X) == np.array([0, 1])):
+    if not (np.all(np.isin(X, [0, 1]))):
         raise ValueError("sample array should be binary matrix")
 
     g, n = A.shape

@@ -97,6 +97,16 @@ assert np.allclose(
     grouptest_array(multfn),
     np.array([[1, 1, 1, 1, 0, 0, 0], [0, 0, 0, 0, 1, 1, 1]]),
 )
+multfn = np.array([0, 0, 1])
+x = np.ones(2)
+A = grouptest_array(multfn)
+assert np.all(A @ x == np.array([2]))
+assert np.all(A @ x.astype(bool) == np.array([1]))
+multfn = np.array([0, 0, 1, 1])
+x = np.ones(5)
+A = grouptest_array(multfn)
+assert np.all(A @ x == np.array([3, 2]))
+assert np.all(A @ x.astype(bool) == np.array([1, 1]))
 
 # Test empirical_tests_used
 multfn = [0, 0, 0, 2, 1]  # n = 10
@@ -120,4 +130,12 @@ X = np.array(
 )
 # should use (3 + 4 + 3 + 3) + (3 + 4) + (3 + 3) = 26 tests
 got, want = empirical_tests_used(A, X), 26
+assert got == want, f"empirical tests used got {got}, want {want}"
+X = np.ones((3, 10))
+# should use 3 * (3 + 4 + 3 + 3) = 39 tests
+got, want = empirical_tests_used(A, X), 39
+assert got == want, f"empirical tests used got {got}, want {want}"
+X = np.zeros((3, 10))
+# should use 3 * (3) = 9 tests
+got, want = empirical_tests_used(A, X), 9
 assert got == want, f"empirical tests used got {got}, want {want}"
