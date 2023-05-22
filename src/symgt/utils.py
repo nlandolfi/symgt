@@ -145,9 +145,9 @@ def empirical_tests_used(A: np.ndarray, X: np.ndarray) -> int:
         The number of tests used.
     """
     if not (np.all(np.isin(A, [0, 1]))):
-        raise ValueError("group test array should be binary matrix")
+        raise ValueError("group test array should be a binary matrix")
     if not (np.all(np.isin(X, [0, 1]))):
-        raise ValueError("sample array should be binary matrix")
+        raise ValueError("sample array should be a binary matrix")
 
     g, n = A.shape
     if not np.all(np.ones(n) == np.sum(A, axis=0)):
