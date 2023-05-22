@@ -65,7 +65,7 @@ def tests_expended(multfn, samples, complain=True):
 def tests_expended_corrected(multfn, samples):  # corrected bug
     # samples is N by n
     A = array(multfn)  # n by g
-    R = (samples @ A > 0).astype(int)  # N by g
+    R = (samples @ A > 0).astype(int)  # N by g (here is the corrected line)
     return np.sum(R @ sizes(multfn)) + A.shape[1] * samples.shape[0]
 
 
