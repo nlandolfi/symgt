@@ -160,6 +160,7 @@ def empirical_tests_used(A: np.ndarray, X: np.ndarray) -> int:
                     and sample matrix has {n2}"
         )
 
+    # a g-vector
     group_sizes_vector = np.sum(A, axis=1)
     if np.sum(group_sizes_vector) != n:
         raise ValueError(
@@ -167,6 +168,7 @@ def empirical_tests_used(A: np.ndarray, X: np.ndarray) -> int:
                 got {np.sum(group_sizes_vector)}"
         )
 
+    # a N x g matrix
     group_statuses_matrix = (X @ A.T > 0).astype(int)
 
     # first term is group tests, second is individual retests
