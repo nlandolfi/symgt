@@ -53,7 +53,7 @@ def array(multfn):  # for compatibility with the old julia code
 # old, has bug that R is not binary; see tests_expended_corrected below
 def tests_expended(multfn, samples, complain=True):
     if complain:
-        print("WARN: use tests_expended_corrected")
+        raise Exception("WARN: use tests_expended_corrected")
 
     # samples is N by n
     A = array(multfn)  # n by g
