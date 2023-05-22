@@ -101,12 +101,12 @@ multfn = np.array([0, 0, 1])
 x = np.ones(2)
 A = grouptest_array(multfn)
 assert np.all(A @ x == np.array([2]))
-assert np.all(A @ x.astype(bool) == np.array([1]))
+assert np.all((A @ x > 0).astype(int) == np.array([1]))
 multfn = np.array([0, 0, 1, 1])
 x = np.ones(5)
 A = grouptest_array(multfn)
 assert np.all(A @ x == np.array([3, 2]))
-assert np.all(A @ x.astype(bool) == np.array([1, 1]))
+assert np.all((A @ x > 0).astype(int) == np.array([1, 1]))
 
 # Test empirical_tests_used
 multfn = [0, 0, 0, 2, 1]  # n = 10

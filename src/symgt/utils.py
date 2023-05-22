@@ -78,8 +78,7 @@ def U_from_q(q: np.ndarray) -> np.ndarray:
 def grouptest_array(multfn: np.ndarray) -> np.ndarray:
     """
     Form a matrix that can be used to compute the number of positives per
-    group from individual status vectors. Or, when the status vector is cast
-    to a `bool` data type, the matrix can be used to compute group statuses.
+    group from individual status vectors and group statuses.
 
     The matrix is `g` by `n` where `g = np.sum(multfn)` is the number of groups
     and `n = np.dot(np.arange(len(multfn)), multfn)` is the population size.
@@ -92,7 +91,7 @@ def grouptest_array(multfn: np.ndarray) -> np.ndarray:
     ```
         A = grouptest_array(multfn)
         positives_per_group = A @ x
-        group_statuses = A @ x.astype(bool)
+        group_statuses = (positives_per_group > 0).astype(int)
     ```
     Notice that `positives_per_group` may *not* be a binary vector. For example
     `A = np.array([[1, 1]])` and `x = np.array([1, 1])` will give `np.array([2])`.
@@ -111,7 +110,7 @@ def grouptest_array(multfn: np.ndarray) -> np.ndarray:
 
     g, n = np.sum(multfn), np.dot(np.arange(len(multfn)), multfn)
     s = intpart_from_multfn(multfn)
-    A = np.zeros((g, n), dtype=bool)
+    A = np.zeros((g, n))
 
     cum_s = np.insert(np.cumsum(s), 0, 0)
     for i in range(len(s)):
@@ -166,6 +165,6 @@ def empirical_tests_used(A: np.ndarray, X: np.ndarray) -> int:
         raise ValueError(f"group sizes should sum to {n}, got {np.sum(s)}")
 
     # first term is group tests, second is individual retests
-    r = (g * N) + np.sum(np.asarray(X, dtype=bool) @ A.T @ s)
+    r = (g * N) + np.sum((X @ A.T > 0).astype(int) @ s)
     assert r == int(r), f"result should be an integer, but got {r}"
     return int(r)
