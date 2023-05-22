@@ -95,6 +95,8 @@ assert tests_expended(mu_iid, X[250:, :], complain=False) == 1660
 assert tests_expended(mu_sym, X[250:, :], complain=False) == 1630
 # print(tests_expended_corrected(mu_iid, X[250:, :]))
 # print(tests_expended_corrected(mu_sym, X[250:, :]))
+assert tests_expended_corrected(mu_iid, X[250:, :]) == 1600
+assert tests_expended_corrected(mu_sym, X[250:, :]) == 1550
 
 iids = []
 syms = []
