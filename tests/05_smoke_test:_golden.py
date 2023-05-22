@@ -112,5 +112,5 @@ assert np.isclose(
 assert np.isclose(
     np.mean(syms), 1578, 1
 ), f"np.means(syms) got {np.means(syms)}, want 1578±1"
-assert np.isclose(np.std(iids), 21, 2), f"np.std(iids) got {np.means(iids)}, want 21±2"
-assert np.isclose(np.std(syms), 30, 2), f"np.std(syms) got {np.means(syms)}, want 30±2"
+assert np.isclose(np.std(iids), 21, 2), f"np.std(iids) got {np.std(iids)}, want 21±2"
+assert np.isclose(np.std(syms), 30, 2), f"np.std(syms) got {np.std(syms)}, want 30±2"
