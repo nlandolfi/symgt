@@ -1,7 +1,12 @@
 import numpy as np
 
 from symgt.models import IIDModel, ExchangeableModel
-from symgt.utils import intpart_from_multfn as intpart, ECost
+from symgt.utils import (
+    intpart_from_multfn as intpart,
+    ECost,
+    empirical_tests_used,
+    grouptest_array,
+)
 from symgt.algorithms import symmetric_multfn
 
 print("THIS IS SMOKE TEST 5: IT REPRODUCES THE OLD julia code golden.jl")
@@ -74,7 +79,12 @@ multfn = np.array([0, 0, 1, 1, 0, 0])
 samples = np.ones((1, 5))
 # gives 15, SHOULD give 2 + 3 + 2 = 7
 assert tests_expended(multfn, samples, complain=False) == 15
-assert tests_expended_corrected(multfn, samples)  # gives 7
+assert tests_expended_corrected(multfn, samples) == 7  # gives 7
+# the below should match, since samples is all ones the order of
+# turning the parts into rows of the group test array should not matter
+assert empirical_tests_used(
+    grouptest_array(multfn), samples
+) == tests_expended_corrected(multfn, samples)
 
 
 # print(np.prod(X[250:, :].shape))
