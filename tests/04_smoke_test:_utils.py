@@ -1,7 +1,10 @@
 import numpy as np
+import pytest
 
 from symgt.models import IIDModel
 from symgt.utils import (
+    dorfman_cost,
+    dorfman_pool_size,
     intpart_from_multfn,
     U_from_q,
     ECost,
@@ -11,6 +14,30 @@ from symgt.utils import (
 )
 
 print("THIS IS SMOKE TEST 4: IT TESTS utils.py")
+
+# Test dorfman_cost
+assert np.allclose(dorfman_cost(0.01, 10), 0.195617925)
+assert np.allclose(dorfman_cost(0.01, 11), 0.1955708367)
+
+with pytest.raises(ValueError):
+    dorfman_cost(-0.1, 10)
+with pytest.raises(ValueError):
+    dorfman_cost(0.1, 0)
+with pytest.raises(ValueError):
+    dorfman_cost(0.1, -2)
+
+# Test dorfman_pool_size
+assert dorfman_pool_size(0.01) == 11
+assert dorfman_pool_size(0.02) == 8
+assert dorfman_pool_size(0.05) == 5
+assert dorfman_pool_size(0.1) == 4
+assert dorfman_pool_size(0.15) == 3
+
+with pytest.raises(ValueError):
+    dorfman_pool_size(-0.1)
+with pytest.raises(ValueError):
+    dorfman_pool_size(0.1, max_pool_size=-1)
+
 
 # Test intpart_from_multfn
 assert np.allclose(intpart_from_multfn([0, 0, 1]), [2])
