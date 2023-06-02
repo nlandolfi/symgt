@@ -1,34 +1,6 @@
 import numpy as np
 
-from .utils import U_from_q
-
-
-def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
-    """
-    Compute the optimal pool size according to Dorfman's infinite analysis
-    where `prevalence` is the population prevalence rate.
-
-    In other words, minimize `1/m + 1 - (1-prevalence)^m` with respect to
-    the pool size `m`.
-
-    This function is a helper for `dorfman_multfn` below.
-    """
-    if not (0.0 <= prevalence <= 1.0):
-        raise ValueError(f"prevalence={prevalence} must be in [0, 1]")
-
-    if not (max_pool_size > 1):
-        raise ValueError(f"max_pool_size={max_pool_size} should be > 1")
-
-    costs = [1 / m + 1 - (1 - prevalence) ** m for m in range(1, max_pool_size + 1)]
-
-    m = int(np.argmin(costs)) + 1  # off by one indexing
-
-    if 1 / m + 1 - (1 - prevalence) ** m > 1:
-        m = 1  # no pooling
-    if m == max_pool_size:
-        print("WARNING: m == max_pool_size; might need to increase max_pool_size")
-
-    return m
+from .utils import U_from_q, dorfman_pool_size
 
 
 def dorfman_multfn(n: int, prevalence: float) -> np.ndarray:
@@ -37,7 +9,7 @@ def dorfman_multfn(n: int, prevalence: float) -> np.ndarray:
     adding a pool of irregular size if the indicated pool size does not
     divide evenly into `n`.
 
-    Uses `dorfman_pool_size` above.
+    Uses `dorfman_pool_size` from ./utils.py.
     """
 
     multfn = np.zeros(n + 1, dtype=int)
