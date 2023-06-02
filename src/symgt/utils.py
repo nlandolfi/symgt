@@ -12,17 +12,6 @@ def dorfman_cost(prevalence: float, poolsize: int):
     return 1 / m + 1 - (1 - p) ** m
 
 
-def dorfman_efficiency(prevalence: float, poolsize: int):
-    """
-    Compute the efficiency (expected number of individuals per test)
-    according to Dorfman's fixed-prevalence and infinite population analysis.
-    """
-    cost = dorfman_cost(prevalence, poolsize)
-    if cost == 0:
-        raise ValueError("dorfman_cost is 0")
-    return 1 / cost
-
-
 def dorfman_pool_size(prevalence: float, max_pool_size: int = 100) -> int:
     """
     Compute the optimal pool size according to Dorfman's infinite analysis
