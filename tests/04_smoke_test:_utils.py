@@ -16,8 +16,8 @@ from symgt.utils import (
 print("THIS IS SMOKE TEST 4: IT TESTS utils.py")
 
 # Test dorfman_cost
-assert np.allclose(dorfman_cost(0.01, 10), 0.19561792499119568)
-assert np.allclose(dorfman_cost(0.01, 11), 0.19557083665037445)
+assert np.allclose(dorfman_cost(0.01, 10), 0.195617925)
+assert np.allclose(dorfman_cost(0.01, 11), 0.1955708367)
 
 with pytest.raises(ValueError):
     dorfman_cost(-0.1, 10)
