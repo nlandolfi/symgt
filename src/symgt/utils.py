@@ -8,6 +8,12 @@ def dorfman_cost(prevalence: float, poolsize: int):
 
     This function is a helper for `dorfman_pool_size` below.
     """
+    if not (0.0 <= prevalence <= 1.0):
+        raise ValueError(f"prevalence={prevalence} must be in [0, 1]")
+
+    if not (poolsize > 0):
+        raise ValueError(f"poolsize={poolsize} should be > 0")
+
     p, m = float(prevalence), float(poolsize)
     return 1 / m + 1 - (1 - p) ** m
 
