@@ -376,9 +376,10 @@ def subset_symmetry_orbit_diffs(
     Examples
     --------
     ```
-        subset_symmetry_orbits_ordered([(0,0), (0,1), (1,0), (1,1)])
-        # {(0,0): {(0,0)} TODO
+        diffs = subset_symmetry_orbits_ordered([(0,0), (0,1), (1,0), (1,1)])
     ```
+    Here `diffs` is a dictionary where `diffs[(i, j)]` is the singleton set of
+    differences between orbit at index `i` and orbit at index `j`.
     """
     diffs = {}
     for j in range(len(orbits)):

@@ -204,4 +204,5 @@ for case in subset_symmetry_orbit_diffs_cases:
     sizes = case["in"]
     want = case["out"]
     got = subset_symmetry_orbit_diffs(sizes)
+    print(got)
     assert got == want, "output of subset_symmetry_orbit_diffs is not as expected"
