@@ -140,8 +140,8 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
     See also `compute_optimal_multfn` for the special case when the group
     is the group of *all* permutations.
 
-    For the subset symmetry case, see the helper functions in utils with
-    the prefix `utils.subset_symmetry_*`.
+    For the subset symmetry case, see the helper functions in `symgt.utils`
+    with the prefix `utils.subset_symmetry_*`.
 
     Examples
     --------
