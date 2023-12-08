@@ -380,6 +380,16 @@ def subset_symmetry_orbit_diffs(
     ```
     Here `diffs` is a dictionary where `diffs[(i, j)]` is the singleton set of
     differences between orbit at index `i` and orbit at index `j`.
+
+    Parameters
+    ----------
+    orbits : list[tuple[int, ...]]
+        The orbits.
+
+    Returns
+    -------
+    dict[tuple[int, int], set[int]]
+        The differences.
     """
     diffs = {}
     for j in range(len(orbits)):
