@@ -163,17 +163,17 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
     if not (N >= 2):
         raise ValueError(f"number of orbits N should be >= 2 ([∅] and [P]), got {N}")
 
-    Mstar = np.zeros(N)
-    istar = np.zeros(N, dtype=int)
-    dstar = np.zeros(N, dtype=int)
-    multfns = np.zeros((N, N), dtype=int)
-
     for val in diffs.values():
         for x in val:
             if type(x) != int or x < 0 or x >= N:
                 raise ValueError(
                     f"diffs should only contain elements from 0 to N-1, got {x}"
                 )
+
+    Mstar = np.zeros(N)
+    istar = np.zeros(N, dtype=int)
+    dstar = np.zeros(N, dtype=int)
+    multfns = np.zeros((N, N), dtype=int)
 
     for k in range(1, N):
         candidates = []
