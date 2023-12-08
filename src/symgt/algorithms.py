@@ -122,7 +122,7 @@ def symmetric_multfn(q: np.ndarray, subproblems=False):
 
 def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
     """
-    Compute an optimal *orbit* multiplicity function given cost c where `c[i]`
+    Compute an optimal *orbit* multiplicity function for cost c where `c[i]`
     is the cost of *orbit* `i`. Here `diffs` is a dictionary containing the
     orbit differences. In particular, `diffs[(i, j)] = (orbit j) ∖ (orbit i)`.
     This value `diffs[(i,j)]` is defined only when (orbit i) ≼ (orbit j).
