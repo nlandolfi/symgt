@@ -16,6 +16,7 @@ N = 11
 diffs = {(i, j): {j - i} for j in range(N) for i in range(j + 1)}
 assert len(diffs) == N * (N + 1) / 2
 # compare on 20 random costs
+np.random.seed(0)
 for i in range(20):
     c = np.random.rand(11)
 
