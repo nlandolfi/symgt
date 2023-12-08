@@ -335,11 +335,11 @@ def subset_symmetry_diff(a: tuple[int, ...], b: tuple[int, ...]) -> tuple[int, .
     return tuple(b[i] - a[i] for i in range(len(a)))
 
 
-def subset_symmetry_orbits_order_obeying(x: list[tuple[int, ...]]) -> bool:
+def subset_symmetry_orbits_order_obeying(orbits: list[tuple[int, ...]]) -> bool:
     """
-    Checks whether the orbits in `x` are ordered as required for the
+    Checks whether the `orbits` are ordered as required for the
     dynamic programming algorithm. In other words, whether orbit i
-    precedes (but is not equal to) orbit j implies i < j.
+    precedes (but is not equal to) orbit j, implies i < j.
 
     Examples
     --------
@@ -359,9 +359,9 @@ def subset_symmetry_orbits_order_obeying(x: list[tuple[int, ...]]) -> bool:
     bool
         Whether the ordering of the orbits is valid.
     """
-    for i in range(len(x)):
-        for j in range(len(x)):
-            if subset_symmetry_lt(x[i], x[j]) and not (i < j):
+    for i in range(len(orbits)):
+        for j in range(len(orbits)):
+            if subset_symmetry_lt(orbits[i], orbits[j]) and not (i < j):
                 return False
     return True
 
