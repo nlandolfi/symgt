@@ -127,9 +127,9 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
     orbit differences. In particular, `diffs[(i,j)] = (orbit j) ∖ (orbit i)`.
     This value `diffs[(i,j)]` is defined only when (orbit i) ≼ (orbit j).
 
-    The number `N` of orbits is assumed to be the length of `c`. Also, the
-    orbits are assumed to be ordered so that (orbit i) ≺ (orbit j) means
-    that `i < j`.
+    The number of orbits `N` is inferred from `c` (i.e., `N = len(c)`).
+    orbits is assumed to be the length of `c`. The orbits are assumed to be
+    ordered so that (orbit i) ≺ (orbit j) implies `i < j`.
 
     We use dynamic programming. We do not compute all optimal orbit
     multiplicity functions, just a single one.
