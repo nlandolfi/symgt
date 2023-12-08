@@ -194,7 +194,7 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
             multfns[k, :] = multfns[dstar[k], :]  # take its multfn
         # otherwise, inherit the constant zero multiplicity function
 
-        # update the multfn to include a part of size istar[k]
+        # update the multfn to include a part in orbit istar[k]
         multfns[k, istar[k]] += 1
 
     if subproblems:
