@@ -10,6 +10,8 @@ from symgt.utils import (
     subset_symmetry_orbit_diffs,
 )
 
+print("THIS IS SMOKE TEST 8: IT TESTS compute_optimal_orbit_multfn")
+
 # test agreement of compute_optimal_orbit_multfn and compute_optimal_multfn
 # take a population of size 10, hence 11 orbits; generate orbit differences
 N = 11
