@@ -357,7 +357,7 @@ def subset_symmetry_orbits_order_obeying(x: list[tuple[int, ...]]) -> bool:
     Returns
     -------
     bool
-        Whether the orbits obey the ordering.
+        Whether the ordering of the orbits is valid.
     """
     for i in range(len(x)):
         for j in range(len(x)):
