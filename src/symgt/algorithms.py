@@ -33,6 +33,9 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     functions and costs for all subproblems. The multiplicity functions
     are the rows of the first value returned. The second value is the costs.
 
+    See also `compute_optimal_orbit_multfn` for the generalization to
+    an arbitrary subgroup of the permutation group.
+
     Examples
     --------
     To just get the solution for `n = len(c) - 1`:
@@ -45,8 +48,8 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     ```
         multfns, costs = compute_optimal_multfn(c, subpopulations=true)
     ```
-    Here `multfns[i, :]` is an optimal multiplicty function for a subpopulation
-    of size `i` and `costs[i]` is its cost.
+    Here `multfns[i, :]` is an optimal multiplicity function for a
+    subpopulation of size `i` and `costs[i]` is its cost.
     """
     # c[i] is the cost of a part of size i = 0, …, n
     n = len(c) - 1
@@ -115,3 +118,86 @@ def symmetric_multfn(q: np.ndarray, subproblems=False):
     U = U_from_q(q)
 
     return compute_optimal_multfn(U, subproblems=subproblems)
+
+
+def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
+    """
+    Compute an optimal *orbit* multiplicity function for cost c where `c[i]`
+    is the cost of *orbit* `i`. Here `diffs` is a dictionary containing the
+    orbit differences. In particular, `diffs[(i,j)] = (orbit j) ∖ (orbit i)`.
+    This value `diffs[(i,j)]` is defined only when (orbit i) ≼ (orbit j).
+
+    The number of orbits `N` is inferred from `c` (i.e., `N = len(c)`).
+    It is assumed that (orbit i) ≺ (orbit j) implies `i < j`.
+
+    We use dynamic programming. We do not compute all optimal orbit
+    multiplicity functions, just a single one.
+
+    Use the keyword argument `subproblems=true` to return orbit multiplicity
+    functions and costs for all subproblems. The orbit multiplicity functions
+    are the rows of the first value returned. The second value is the costs.
+
+    See also `compute_optimal_multfn` for the special case when the group
+    is the group of *all* permutations.
+
+    For the subset symmetry case, see the helper functions in `symgt.utils`
+    with the prefix `subset_symmetry_*`.
+
+    Examples
+    --------
+    To just get the solution for orbit `[P]`, identified with index `N-1`:
+    ```
+        multfn, cost = compute_optimal_orbit_multfn(c, diffs)
+    ```
+    Here `multfn` is an nd.array and `cost` is a float.
+
+    To get solutions and costs for all subproblems:
+    ```
+        multfns, costs = compute_optimal_multfn(c, diffs, subpopulations=true)
+    ```
+    Here `multfns[i, :]` is an optimal orbit multiplicity function for a
+    subpopulation in orbit `i` and `costs[i]` is its cost.
+    """
+    N = len(c)
+
+    if not (N >= 2):
+        raise ValueError(f"number of orbits N should be >= 2 ([∅] and [P]), got {N}")
+
+    for val in diffs.values():
+        for x in val:
+            if type(x) != int or x < 0 or x >= N:
+                raise ValueError(
+                    f"diffs should only contain elements from 0 to N-1, got {x}"
+                )
+
+    Mstar = np.zeros(N)
+    istar = np.zeros(N, dtype=int)
+    dstar = np.zeros(N, dtype=int)
+    multfns = np.zeros((N, N), dtype=int)
+
+    for k in range(1, N):
+        candidates = []
+        for i in range(1, k + 1):
+            if (i, k) in diffs:
+                for d in diffs[(i, k)]:
+                    candidates.append((i, d))
+
+        # select the optimal subproblem
+        istar[k], dstar[k] = candidates[
+            np.argmin([Mstar[d] + c[i] for (i, d) in candidates])
+        ]
+
+        # record the optimal cost
+        Mstar[k] = Mstar[dstar[k]] + c[istar[k]]
+
+        if dstar[k] > 0:  # if we are using a nontrivial subproblem
+            multfns[k, :] = multfns[dstar[k], :]  # take its multfn
+        # otherwise, inherit the constant zero multiplicity function
+
+        # update the multfn to include a part in orbit istar[k]
+        multfns[k, istar[k]] += 1
+
+    if subproblems:
+        return multfns, Mstar
+    else:
+        return multfns[N - 1, :], Mstar[N - 1]

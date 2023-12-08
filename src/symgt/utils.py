@@ -392,10 +392,15 @@ def subset_symmetry_orbit_diffs(
         The differences.
     """
     diffs = {}
+
+    orbit_to_idx = {}
+    for i, o in enumerate(orbits):
+        orbit_to_idx[o] = i
+
     for j in range(len(orbits)):
         for i in range(j + 1):
             if subset_symmetry_leq(orbits[i], orbits[j]):
-                s = orbits.index(subset_symmetry_diff(orbits[i], orbits[j]))
+                s = orbit_to_idx[subset_symmetry_diff(orbits[i], orbits[j])]
                 diffs[(i, j)] = {s}
 
     return diffs
