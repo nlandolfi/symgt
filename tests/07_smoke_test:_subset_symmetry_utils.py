@@ -205,3 +205,20 @@ for case in subset_symmetry_orbit_diffs_cases:
     want = case["out"]
     got = subset_symmetry_orbit_diffs(sizes)
     assert got == want, "output of subset_symmetry_orbit_diffs is not as expected"
+
+
+# some additional particular tests
+orbits = subset_symmetry_orbits((5, 5))
+diffs = subset_symmetry_orbit_diffs(orbits)
+
+assert orbits[14] == (2, 2)
+assert orbits[35] == (5, 5)
+assert orbits[list(diffs[(14, 35)])[0]] == (3, 3)
+
+assert orbits[6] == (1, 0)
+assert orbits[24] == (4, 0)
+assert orbits[list(diffs[(6, 24)])[0]] == (3, 0)
+
+assert orbits[29] == (4, 5)
+assert orbits[35] == (5, 5)
+assert orbits[list(diffs[(29, 35)])[0]] == (1, 0)
