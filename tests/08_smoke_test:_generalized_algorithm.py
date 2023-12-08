@@ -11,13 +11,11 @@ from symgt.utils import (
 )
 
 # test agreement of compute_optimal_orbit_multfn and compute_optimal_multfn
-
 # take a population of size 10, hence 11 orbits; generate orbit differences
 N = 11
 diffs = {(i, j): {j - i} for j in range(N) for i in range(j + 1)}
 assert len(diffs) == N * (N + 1) / 2
-
-# compare on 20 randmo costs
+# compare on 20 random costs
 for i in range(20):
     c = np.random.rand(11)
 
