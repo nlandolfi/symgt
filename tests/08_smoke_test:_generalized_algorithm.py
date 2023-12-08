@@ -89,3 +89,13 @@ uses = {orbits[i] for i in range(N) if mu[i] > 0}
 assert uses == {(1, 1)}
 assert mu[7] == 5
 assert out == 0
+
+# a test with many subpopulations
+orbits = subset_symmetry_orbits((5, 5, 5, 5))
+N = len(orbits)
+diffs = subset_symmetry_orbit_diffs(orbits)
+c = np.random.rand(N)
+mu, out = compute_optimal_orbit_multfn(c, diffs)
+uses = {orbits[i] for i in range(N) if mu[i] > 0}
+assert uses == {(0, 5, 5, 4), (2, 0, 0, 0), (3, 0, 0, 1)}
+assert np.allclose(out, 0.05946088431369978)
