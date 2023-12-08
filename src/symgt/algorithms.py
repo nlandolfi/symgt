@@ -190,7 +190,7 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
         # record the optimal cost
         Mstar[k] = Mstar[dstar[k]] + c[istar[k]]
 
-        if dstar[k] > 0:  # if we are using a subproblem
+        if dstar[k] > 0:  # if we are using a nontrivial subproblem
             multfns[k, :] = multfns[dstar[k], :]  # take its multfn
         # otherwise, inherit the constant zero multiplicity function
 
