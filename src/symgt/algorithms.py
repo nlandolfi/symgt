@@ -48,8 +48,8 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
     ```
         multfns, costs = compute_optimal_multfn(c, subpopulations=true)
     ```
-    Here `multfns[i, :]` is an optimal multiplicty function for a subpopulation
-    of size `i` and `costs[i]` is its cost.
+    Here `multfns[i, :]` is an optimal multiplicity function for a
+    subpopulation of size `i` and `costs[i]` is its cost.
     """
     # c[i] is the cost of a part of size i = 0, …, n
     n = len(c) - 1
@@ -155,8 +155,8 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
     ```
         multfns, costs = compute_optimal_multfn(c, diffs, subpopulations=true)
     ```
-    Here `multfns[i, :]` is an optimal multiplicty function for a subpopulation
-    of size `i` and `costs[i]` is its cost.
+    Here `multfns[i, :]` is an optimal orbit multiplicity function for a
+    subpopulation of orbit `i` and `costs[i]` is its cost.
     """
     N = len(c)
 
