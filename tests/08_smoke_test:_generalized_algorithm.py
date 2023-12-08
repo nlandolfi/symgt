@@ -60,7 +60,6 @@ np.random.seed(0)
 
 # test first time
 c = np.random.rand(N)
-c[0] = 0  # empty part costs 0
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 uses = {orbits[i] for i in range(N) if mu[i] > 0}
 assert uses == {(1, 3), (4, 2)}
@@ -68,7 +67,6 @@ assert np.allclose(out, 0.5267948062348241)
 
 # test second time
 c = np.random.rand(N)
-c[0] = 0  # empty part costs 0
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 uses = {orbits[i] for i in range(N) if mu[i] > 0}
 assert uses == {(4, 4), (1, 1)}
@@ -76,7 +74,6 @@ assert np.allclose(out, 0.25680783330932333)
 
 # test third time
 c = np.random.rand(N)
-c[0] = 0  # empty part costs 0
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 uses = {orbits[i] for i in range(N) if mu[i] > 0}
 assert uses == {(4, 1), (1, 4)}
@@ -84,7 +81,6 @@ assert np.allclose(out, 0.08425504253627791)
 
 # a test with repeat multiplicities
 c = np.ones(N)
-c[0] = 0  # empty part costs 0
 c[7] = 0  # (1,1) part costs 0
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 uses = {orbits[i] for i in range(N) if mu[i] > 0}
