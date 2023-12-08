@@ -124,7 +124,7 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
     """
     Compute an optimal *orbit* multiplicity function for cost c where `c[i]`
     is the cost of *orbit* `i`. Here `diffs` is a dictionary containing the
-    orbit differences. In particular, `diffs[(i, j)] = (orbit j) ∖ (orbit i)`.
+    orbit differences. In particular, `diffs[(i,j)] = (orbit j) ∖ (orbit i)`.
     This value `diffs[(i,j)]` is defined only when (orbit i) ≼ (orbit j).
 
     The number `N` of orbits is assumed to be the length of `c`. Also, the
@@ -140,6 +140,8 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
 
     See also `compute_optimal_multfn` for the special case when the group
     is the group of *all* permutations.
+
+    For the subset symmetry case, see the `utils.subset_symmetry_*` functions.
 
     Examples
     --------
