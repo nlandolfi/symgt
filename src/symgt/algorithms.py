@@ -156,7 +156,7 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
         multfns, costs = compute_optimal_multfn(c, diffs, subpopulations=true)
     ```
     Here `multfns[i, :]` is an optimal orbit multiplicity function for a
-    subpopulation of orbit `i` and `costs[i]` is its cost.
+    subpopulation in orbit `i` and `costs[i]` is its cost.
     """
     N = len(c)
 
