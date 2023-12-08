@@ -26,7 +26,7 @@ for i in range(20):
     assert np.allclose(muspecial, mugeneral)
     assert np.allclose(outspecial, outgeneral)
 
-# not take subset symmetry with two subpopulations of size 5
+# now take subset symmetry with two subpopulations of size 5
 # set up for some staged and some random tests
 orbits = subset_symmetry_orbits((5, 5))
 diffs = subset_symmetry_orbit_diffs(orbits)
