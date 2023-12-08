@@ -145,7 +145,7 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
 
     Examples
     --------
-    To just get the solution for orbit `[P]`, identified with index `N`:
+    To just get the solution for orbit `[P]`, identified with index `N-1`:
     ```
         multfn, cost = compute_optimal_orbit_multfn(c, diffs)
     ```
