@@ -42,7 +42,7 @@ assert np.allclose(
     np.ones(N) - c,  # all zeros except index N-1
 )
 
-# stage a clear split (2,3) and (3,2)
+# stage a clear optimal split (2,3) and (3,2)
 c = np.ones(N)
 assert orbits[15] == (2, 3)
 assert orbits[20] == (3, 2)
