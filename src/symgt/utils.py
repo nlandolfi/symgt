@@ -1,3 +1,5 @@
+from typing import Sequence
+
 import numpy as np
 
 
@@ -222,3 +224,167 @@ def empirical_tests_used(A: np.ndarray, X: np.ndarray) -> int:
     assert used == int(used), f"result should be an integer, but got {used}"
 
     return int(used)
+
+
+def subset_symmetry_orbits(sizes: Sequence[int]) -> list[tuple[int, ...]]:
+    """
+    Computes a list of subset symmetry orbits for the subpopulation sizes.
+
+    Examples
+    --------
+    To get the orbits for a population of size 3, one population of size 1
+    and another population of size 2.
+    ```
+        orbits = subset_symmetry_orbits([1, 2])
+    ```
+    Here, `orbits` will be [(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)]
+
+    Parameters
+    ----------
+    sizes : Iterable[int]
+        The subpopulation sizes.
+
+    Returns
+    -------
+    list[tuple[int, ...]]
+        The subset symmetry orbits.
+    """
+    if len(sizes) == 0:
+        raise ValueError("sizes cannot be empty")
+
+    if len(sizes) == 1:
+        return [(i,) for i in range(sizes[0] + 1)]
+
+    others = subset_symmetry_orbits(sizes[1:])
+
+    return [(i,) + o for i in range(sizes[0] + 1) for o in others]
+
+
+def subset_symmetry_leq(a: tuple[int, ...], b: tuple[int, ...]) -> bool:
+    """
+    Checks whether (orbit a) ≼ (orbit b).
+
+    Examples
+    --------
+    ```
+        subset_symmetry_leq((0,0), (0,1)) # True
+        subset_symmetry_leq((1,1), (1,1)) # True
+        subset_symmetry_leq((1,3), (1,1)) # False
+    ```
+
+    Parameters
+    ----------
+    a : tuple[int, ...]
+        The first orbit.
+    b : tuple[int, ...]
+        The second orbit.
+
+    Returns
+    -------
+    bool
+        Whether (orbit a) ≼ (orbit b).
+    """
+    return all(x <= y for x, y in zip(a, b))
+
+
+def subset_symmetry_lt(a: tuple[int, ...], b: tuple[int, ...]) -> bool:
+    """
+    Checks whether (orbit a) ≺ (orbit b).
+
+    Examples
+    --------
+    ```
+        subset_symmetry_lt((0,0), (0,1)) # True
+        subset_symmetry_lt((1,1), (1,1)) # False
+        subset_symmetry_lt((1,3), (1,1)) # False
+    ```
+
+    Parameters
+    ----------
+    a : tuple[int, ...]
+        The first orbit.
+    b : tuple[int, ...]
+        The second orbit.
+
+    Returns
+    -------
+    bool
+        Whether (orbit a) ≺ (orbit b).
+    """
+    return subset_symmetry_leq(a, b) and a != b
+
+
+def subset_symmetry_diff(a: tuple[int, ...], b: tuple[int, ...]) -> tuple[int, ...]:
+    """
+    Compute the difference of the two orbits. In particular b - a.
+
+    Examples
+    --------
+    ```
+        subset_symmetry_diff((0,0), (0,1)) # (0,1)
+        subset_symmetry_diff((3,2), (5,5)) # (2,3)
+        subset_symmetry_diff((3,2,1,1), (5,5,6,7)) # (2,3,5,6)
+    ```
+    """
+    if len(a) != len(b):
+        raise ValueError("a and b must have the same length")
+
+    if not subset_symmetry_leq(a, b):
+        raise ValueError("a must precede b")
+
+    return tuple(b[i] - a[i] for i in range(len(a)))
+
+
+def subset_symmetry_orbits_order_obeying(x: list[tuple[int, ...]]) -> bool:
+    """
+    Checks whether the orbits in `x` are ordered as required for the
+    dynamic programming algorithm. In other words, whether orbit i
+    is less than (not equal to) orbit j implies i < j.
+
+    Examples
+    --------
+    ```
+        subset_symmetry_orbits_ordered([(0,0), (0,1), (1,0), (1,1)]) # True
+        subset_symmetry_orbits_ordered([(0,0), (1,0), (0,1), (1,1)]) # True
+        subset_symmetry_orbits_ordered([(0,1), (0,0), (1,0), (1,1)]) # False
+    ```
+
+    Parameters
+    ----------
+    x : list[tuple[int, ...]]
+        The orbits.
+
+    Returns
+    -------
+    bool
+        Whether the orbits obey the ordering.
+    """
+    for i in range(len(x)):
+        for j in range(len(x)):
+            if subset_symmetry_lt(x[i], x[j]) and not (i < j):
+                return False
+    return True
+
+
+def subset_symmetry_orbit_diffs(
+    orbits: list[tuple[int, ...]]
+) -> dict[tuple[int, int], set[int]]:
+    """
+    Compute the differences between all orbits in the list.
+    Returns the *indexes* of the differences.
+
+    Examples
+    --------
+    ```
+        subset_symmetry_orbits_ordered([(0,0), (0,1), (1,0), (1,1)])
+        # {(0,0): {(0,0)} TODO
+    ```
+    """
+    diffs = {}
+    for j in range(len(orbits)):
+        for i in range(j + 1):
+            if subset_symmetry_leq(orbits[i], orbits[j]):
+                s = orbits.index(subset_symmetry_diff(orbits[i], orbits[j]))
+                diffs[(i, j)] = {s}
+
+    return diffs
