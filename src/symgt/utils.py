@@ -339,7 +339,7 @@ def subset_symmetry_orbits_order_obeying(x: list[tuple[int, ...]]) -> bool:
     """
     Checks whether the orbits in `x` are ordered as required for the
     dynamic programming algorithm. In other words, whether orbit i
-    is less than (not equal to) orbit j implies i < j.
+    precedes (but is not equal to) orbit j implies i < j.
 
     Examples
     --------
