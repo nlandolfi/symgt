@@ -32,16 +32,14 @@ orbits = subset_symmetry_orbits((5, 5))
 diffs = subset_symmetry_orbit_diffs(orbits)
 N = len(orbits)
 
-15, 20
-
-# stage a clear optimal, full set
+# stage a clear optimal (5,5)
 c = np.ones(N)
-c[N - 1] = 0  # full set costs 0
+c[N - 1] = 0  # orbit (5,5)
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 assert out == 0
 assert np.allclose(
     mu,
-    np.ones(N) - c,  # all zeros except the last
+    np.ones(N) - c,  # all zeros except index N-1
 )
 
 # stage a clear split (2,3) and (3,2)
