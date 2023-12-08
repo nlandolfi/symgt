@@ -163,7 +163,6 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
     if not (N >= 2):
         raise ValueError(f"number of orbits N should be >= 2 ([∅] and [P]), got {N}")
 
-    # Mstar[i] is the optimal cost to partition orbit i
     Mstar = np.zeros(N)
     istar = np.zeros(N, dtype=int)
     dstar = np.zeros(N, dtype=int)
