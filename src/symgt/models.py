@@ -320,7 +320,7 @@ class ProductExchangeableModel:
         Returns
         -------
         ProductExchangeableModel
-            An ProductExchangeableModel object fit to samples.
+            A ProductExchangeableModel object fit to samples.
         """
         N, n = samples.shape
 
