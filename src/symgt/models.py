@@ -360,21 +360,14 @@ class ProductExchangeableModel:
         np.ndarray
             An array containing the log of the `q` representation.
         """
-        # TODO CHECK THAT THIS REALLY IS THE PRODUCT
-
         assert self.orbits[0] == (0,) * len(self.sizes)
         assert self.orbits[len(self.orbits) - 1] == tuple(self.sizes)
 
         log_qs = [m.log_q() for m in self.models]
 
-        # note that by convention q([0]) = 1, so log q(0) = 0;
-        # handled with initialization to 0
         log_q = np.zeros(len(self.orbits))
 
         for i, orbit in enumerate(self.orbits):
-            if i == 0:
-                continue
-
             log_q[i] = np.sum([log_qs[j][o] for (j, o) in enumerate(orbit)])
 
         return log_q
