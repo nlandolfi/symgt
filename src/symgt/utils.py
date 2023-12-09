@@ -256,14 +256,6 @@ def subset_symmetry_orbits(sizes: Sequence[int]) -> list[tuple[int, ...]]:
     return list(itertools.product(*[range(s + 1) for s in sizes]))
 
 
-#     if len(sizes) == 1:
-#         return [(i,) for i in range(sizes[0] + 1)]
-#
-#     others = subset_symmetry_orbits(sizes[1:])
-#
-#     return [(i,) + o for i in range(sizes[0] + 1) for o in others]
-
-
 def subset_symmetry_leq(a: tuple[int, ...], b: tuple[int, ...]) -> bool:
     """
     Checks whether (orbit a) ≼ (orbit b).
