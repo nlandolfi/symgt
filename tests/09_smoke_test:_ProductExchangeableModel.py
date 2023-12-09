@@ -27,7 +27,7 @@ with pytest.raises(ValueError):
 with pytest.raises(ValueError):
     ProductExchangeableModel([5, 3], [sm1, sm2])
 
-# test fit
+# test fitting...
 
 # all zeros
 m = ProductExchangeableModel.fit(
