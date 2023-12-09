@@ -252,7 +252,7 @@ def log_comb(n, k):
 
 class IndependentSubpopulationsModel:
     """
-    This class represents a distribution of independent subpopulations.
+    This class represents a distribution over independent subpopulations.
 
     It is defined by subpopulation `sizes` and `models`.
 
