@@ -322,7 +322,6 @@ class ProductExchangeableModel:
         ProductExchangeableModel
             An ProductExchangeableModel object fit to samples.
         """
-
         N, n = samples.shape
 
         if np.sum(np.asarray(sizes)) != n:
