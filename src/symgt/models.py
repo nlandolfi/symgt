@@ -272,8 +272,8 @@ class ProductExchangeableModel:
 
     def __init__(self, sizes: Sequence[int], models: list[ExchangeableModel]):
         """
-        Initializes a ProductExchangeableModel with a specific population size and
-        representation.
+        Initializes a ProductExchangeableModel with a subpopulation sizes
+        and models.
 
         Parameters
         ----------
