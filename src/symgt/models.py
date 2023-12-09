@@ -260,7 +260,7 @@ class ProductExchangeableModel:
     Attributes
     ----------
     sizes : Sequence[int]
-        Population sizes of submodel.
+        Subpopulation sizes.
 
     models : list[ExchangeableModel]
         List of submodels.
