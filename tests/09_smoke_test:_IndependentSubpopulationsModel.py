@@ -1,7 +1,11 @@
 import numpy as np
 import pytest
 
-from symgt.models import ExchangeableModel, IndependentSubpopulationsModel
+from symgt.models import (
+    ExchangeableModel,
+    IIDModel,
+    IndependentSubpopulationsModel,
+)
 
 print("THIS IS SMOKE TEST 9: IT TESTS IndependentSubpopulationsModel")
 
@@ -9,6 +13,24 @@ print("THIS IS SMOKE TEST 9: IT TESTS IndependentSubpopulationsModel")
 sm1 = ExchangeableModel(5, [1, 0, 0, 0, 0, 0])
 sm2 = ExchangeableModel(5, [1, 0, 0, 0, 0, 0])
 m = IndependentSubpopulationsModel([5, 5], [sm1, sm2])
+
+lq = m.log_q()
+assert np.all(np.exp(lq) == 1)  # this model never has positive outcomes
+
+# basic initialization with different subpopulation model classes
+sm1 = ExchangeableModel(5, [1, 0, 0, 0, 0, 0])
+sm2 = IIDModel(5, 0.0)
+m = IndependentSubpopulationsModel([5, 5], [sm1, sm2])
+
+lq = m.log_q()
+assert np.all(np.exp(lq) == 1)  # this model never has positive outcomes
+
+# basic initialization from fitting with different subpopulation model classes
+m = IndependentSubpopulationsModel.fit(
+    [5, 5],
+    np.array([np.zeros(10), np.zeros(10), np.zeros(10)]),
+    [ExchangeableModel, IIDModel],
+)
 
 lq = m.log_q()
 assert np.all(np.exp(lq) == 1)  # this model never has positive outcomes
