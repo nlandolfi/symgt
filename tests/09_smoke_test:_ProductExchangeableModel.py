@@ -118,7 +118,7 @@ m = ProductExchangeableModel(
 assert np.allclose(m.sample(), np.array([0, 0, 1, 1]))
 assert np.allclose(m.sample(), np.array([0, 0, 1, 1]))
 
-# test that samples empirically matches prevalence
+# test that sample prevalence (roughly) empirically matches model prevalence
 m = ProductExchangeableModel.fit(
     [4, 3],
     np.array(
