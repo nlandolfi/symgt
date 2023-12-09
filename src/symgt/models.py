@@ -250,12 +250,11 @@ def log_comb(n, k):
     return gammaln(n + 1) - gammaln(k + 1) - gammaln(n - k + 1)
 
 
-class ProductExchangeableModel:
+class IndependentSubpopulationsModel:
     """
-    This class represents a distribution of partially exchangeable random
-    variables where the exchangeable subsets are modeled as independent.
+    This class represents a distribution of independent subpopulations.
 
-    An exchangeable model is defined by subpopulation `sizes` and `models`.
+    It is defined by subpopulation `sizes` and `models`.
 
     Attributes
     ----------
@@ -268,11 +267,11 @@ class ProductExchangeableModel:
 
     sizes: Sequence[int]
     orbits: list[tuple[int, ...]]
-    models: list[ExchangeableModel]
+    models: list
 
-    def __init__(self, sizes: Sequence[int], models: list[ExchangeableModel]):
+    def __init__(self, sizes: Sequence[int], models: list):
         """
-        Initializes a ProductExchangeableModel with the give subpopulation
+        Initializes a IndependentSubpopulationsModel with the given subpopulation
         sizes and models.
 
         Parameters
@@ -297,17 +296,20 @@ class ProductExchangeableModel:
         self.models = models
 
     def __str__(self):
-        return f"ProductExchangeableModel(sizes={self.sizes}, models=...)"
+        return f"IndependentSubpopulationsModel(sizes={self.sizes}, models=...)"
 
     def __repr__(self):
         return self.__str__()
 
     @classmethod
     def fit(
-        cls, sizes: Sequence[int], samples: np.ndarray
-    ) -> "ProductExchangeableModel":
+        cls,
+        sizes: Sequence[int],
+        samples: np.ndarray,
+        model_classes,
+    ) -> "IndependentSubpopulationsModel":
         """
-        Function to fit a product of fully symmetric models.
+        Function to fit a product of models.
 
         Parameters
         ----------
@@ -319,8 +321,8 @@ class ProductExchangeableModel:
 
         Returns
         -------
-        ProductExchangeableModel
-            A ProductExchangeableModel object fit to samples.
+        IndependentSubpopulationsModel
+            A IndependentSubpopulationsModel object fit to samples.
         """
         N, n = samples.shape
 
@@ -330,7 +332,7 @@ class ProductExchangeableModel:
         models = []
         offset = 0
         for i, size in enumerate(sizes):
-            models.append(ExchangeableModel.fit(samples[:, offset : offset + size]))
+            models.append(model_classes[i].fit(samples[:, offset : offset + size]))
             offset += size
 
         return cls(sizes, models)
