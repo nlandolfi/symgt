@@ -1,14 +1,36 @@
 import numpy as np
 import pytest
 
-from symgt.models import ExchangeableModel, ProductExchangeableModel
+from symgt.models import (
+    ExchangeableModel,
+    IIDModel,
+    IndependentSubpopulationsModel,
+)
 
-print("THIS IS SMOKE TEST 9: IT TESTS ProductExchangeableModel")
+print("THIS IS SMOKE TEST 9: IT TESTS IndependentSubpopulationsModel")
 
 # base initialization test...
 sm1 = ExchangeableModel(5, [1, 0, 0, 0, 0, 0])
 sm2 = ExchangeableModel(5, [1, 0, 0, 0, 0, 0])
-m = ProductExchangeableModel([5, 5], [sm1, sm2])
+m = IndependentSubpopulationsModel([5, 5], [sm1, sm2])
+
+lq = m.log_q()
+assert np.all(np.exp(lq) == 1)  # this model never has positive outcomes
+
+# basic initialization with different subpopulation model classes
+sm1 = ExchangeableModel(5, [1, 0, 0, 0, 0, 0])
+sm2 = IIDModel(5, 0.0)
+m = IndependentSubpopulationsModel([5, 5], [sm1, sm2])
+
+lq = m.log_q()
+assert np.all(np.exp(lq) == 1)  # this model never has positive outcomes
+
+# basic initialization from fitting with different subpopulation model classes
+m = IndependentSubpopulationsModel.fit(
+    [5, 5],
+    np.array([np.zeros(10), np.zeros(10), np.zeros(10)]),
+    [ExchangeableModel, IIDModel],
+)
 
 lq = m.log_q()
 assert np.all(np.exp(lq) == 1)  # this model never has positive outcomes
@@ -17,34 +39,40 @@ assert np.all(np.exp(lq) == 1)  # this model never has positive outcomes
 
 # sizes and models length mismatch
 with pytest.raises(ValueError):
-    ProductExchangeableModel([1, 2, 3], [sm1, sm2])
+    IndependentSubpopulationsModel([1, 2, 3], [sm1, sm2])
 
 # test negative integer size
 with pytest.raises(ValueError):
-    ProductExchangeableModel([-5, -5], [sm1, sm2])
+    IndependentSubpopulationsModel([-5, -5], [sm1, sm2])
 
 # test model 1 size doesnt match size 1
 with pytest.raises(ValueError):
-    ProductExchangeableModel([5, 3], [sm1, sm2])
+    IndependentSubpopulationsModel([5, 3], [sm1, sm2])
 
 # test fitting...
 
 # all zeros
-m = ProductExchangeableModel.fit(
-    [3, 2], np.array([np.zeros(5), np.zeros(5), np.zeros(5)])
+m = IndependentSubpopulationsModel.fit(
+    [3, 2],
+    np.array([np.zeros(5), np.zeros(5), np.zeros(5)]),
+    [ExchangeableModel, ExchangeableModel],
 )
 assert np.allclose(m.models[0].prevalence(), 0)
 assert np.allclose(m.models[1].prevalence(), 0)
 assert np.allclose(m.prevalence(), 0)
 
 # all ones
-m = ProductExchangeableModel.fit([1, 4], np.array([np.ones(5), np.ones(5), np.ones(5)]))
+m = IndependentSubpopulationsModel.fit(
+    [1, 4],
+    np.array([np.ones(5), np.ones(5), np.ones(5)]),
+    [ExchangeableModel, ExchangeableModel],
+)
 assert np.allclose(m.models[0].prevalence(), 1)
 assert np.allclose(m.models[1].prevalence(), 1)
 assert np.allclose(m.prevalence(), 1)
 
 # mix of zeros and ones
-m = ProductExchangeableModel.fit(
+m = IndependentSubpopulationsModel.fit(
     [2, 3],
     np.array(
         [
@@ -54,13 +82,14 @@ m = ProductExchangeableModel.fit(
             [0, 0, 1, 1, 1],
         ]
     ),
+    [ExchangeableModel, ExchangeableModel],
 )
 assert np.allclose(m.models[0].prevalence(), 0.5)
 assert np.allclose(m.models[1].prevalence(), 0.75)
 assert np.allclose(m.prevalence(), 0.4 * 0.5 + 0.6 * 0.75)
 
 # test log_q more extensively...
-m = ProductExchangeableModel.fit(
+m = IndependentSubpopulationsModel.fit(
     [2, 2],
     np.array(
         [
@@ -70,6 +99,7 @@ m = ProductExchangeableModel.fit(
             [0, 0, 1, 1],
         ]
     ),
+    [ExchangeableModel, ExchangeableModel],
 )
 assert m.models[0].prevalence() == 0.5
 assert m.models[1].prevalence() == 0.75
@@ -86,7 +116,7 @@ assert np.allclose(
 )
 
 # one more test
-m = ProductExchangeableModel.fit(
+m = IndependentSubpopulationsModel.fit(
     [1, 3],  # this is different from previous
     np.array(  # this is the same as previous
         [
@@ -96,6 +126,7 @@ m = ProductExchangeableModel.fit(
             [0, 0, 1, 1],
         ]
     ),
+    [ExchangeableModel, ExchangeableModel],
 )
 assert m.models[0].prevalence() == 0.5
 assert np.allclose(m.models[1].prevalence(), 8 / 12.0)
@@ -112,14 +143,14 @@ assert np.allclose(
 )
 
 # test sample a bit
-m = ProductExchangeableModel(
+m = IndependentSubpopulationsModel(
     [2, 2], [ExchangeableModel(2, [1, 0, 0]), ExchangeableModel(2, [0, 0, 1])]
 )
 assert np.allclose(m.sample(), np.array([0, 0, 1, 1]))
 assert np.allclose(m.sample(), np.array([0, 0, 1, 1]))
 
 # test that sample prevalence (roughly) empirically matches model prevalence
-m = ProductExchangeableModel.fit(
+m = IndependentSubpopulationsModel.fit(
     [4, 3],
     np.array(
         [
@@ -129,6 +160,7 @@ m = ProductExchangeableModel.fit(
             [0, 0, 1, 1, 0, 0, 0],
         ]
     ),
+    [ExchangeableModel, ExchangeableModel],
 )
 np.random.seed(0)
 x = np.hstack([m.sample() for i in range(100000)])
