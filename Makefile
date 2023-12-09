@@ -24,6 +24,7 @@ test:
 	python tests/06_smoke_test:_golden2.py
 	python tests/07_smoke_test:_subset_symmetry_utils.py
 	python tests/08_smoke_test:_generalized_algorithm.py
+	python tests/09_smoke_test:_ProductExchangeableModel.py
 freeze:
 	pip freeze > requirements.txt
 
