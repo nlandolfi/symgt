@@ -1,5 +1,9 @@
+from typing import Sequence
+
 import numpy as np
 from scipy.special import gammaln, logsumexp  # type: ignore
+
+from .utils import subset_symmetry_orbits
 
 
 class IIDModel:
@@ -127,7 +131,7 @@ class ExchangeableModel:
 
     def __init__(self, n: int, alpha: np.ndarray):
         """
-        Initializes a ExchangeableModel with a specific population size and
+        Initializes an ExchangeableModel with a specific population size and
         representation.
 
         Parameters
@@ -159,6 +163,7 @@ class ExchangeableModel:
     def fit(cls, samples: np.ndarray) -> "ExchangeableModel":
         """
         Function to fit a symmetric distribution model.
+
         Parameters
         ----------
         samples : np.ndarray
@@ -243,3 +248,145 @@ def log_comb(n, k):
     Used by `ExchangeableModel`'s `log_q` function.
     """
     return gammaln(n + 1) - gammaln(k + 1) - gammaln(n - k + 1)
+
+
+class ProductExchangeableModel:
+    """
+    This class represents a distribution of partially exchangeable random
+    variables where the groups of variables are modeled as independent.
+
+    An exchangeable model is defined by population sizes `sizes` and `models`.
+
+    Attributes
+    ----------
+    sizes : Sequence[int]
+        Population sizes of submodel.
+
+    models : list[ExchangeableModel]
+        List of submodels.
+    """
+
+    sizes: Sequence[int]
+    orbits: list[tuple[int, ...]]
+    models: list[ExchangeableModel]
+
+    def __init__(self, sizes: Sequence[int], models: list[ExchangeableModel]):
+        """
+        Initializes a ProductExchangeableModel with a specific population size and
+        representation.
+
+        Parameters
+        ----------
+        sizes : Sequence[int]
+            Population sizes of each submodel.
+        submodels : list[ExchangeableModel]
+            List of submodels.
+        """
+        if len(sizes) != len(models):
+            raise ValueError("sizes and models must have the same length")
+
+        for i, x in enumerate(sizes):
+            if x <= 0:
+                raise ValueError(f"size {i} is not a positive integer")
+
+            if x != models[i].n:
+                raise ValueError(f"size {i} does not match model {i}")
+
+        self.sizes = sizes
+        self.orbits = subset_symmetry_orbits(sizes)
+        self.models = models
+
+    def __str__(self):
+        return f"ProductExchangeableModel(sizes={self.sizes}, models=...)"
+
+    def __repr__(self):
+        return self.__str__()
+
+    @classmethod
+    def fit(
+        cls, sizes: Sequence[int], samples: np.ndarray
+    ) -> "ProductExchangeableModel":
+        """
+        Function to fit a product of fully symmetric models.
+
+        Parameters
+        ----------
+        sizes : Sequence[int]
+            Population sizes of each submodel.
+        samples : np.ndarray
+            A 2D numpy array where each row represents a sample and each column
+            represents a specimen.
+
+        Returns
+        -------
+        ProductExchangeableModel
+            An ProductExchangeableModel object fit to samples.
+        """
+
+        N, n = samples.shape
+
+        if np.sum(np.asarray(sizes)) != n:
+            raise ValueError("sum of sizes does not match number of samples")
+
+        models = []
+        offset = 0
+        for i, size in enumerate(sizes):
+            models.append(ExchangeableModel.fit(samples[:, offset : offset + size]))
+            offset += size
+
+        return cls(sizes, models)
+
+    def prevalence(self) -> float:
+        """
+        Returns the prevalence of the model.
+
+        Returns
+        -------
+        float
+            The prevalence of the model.
+        """
+        total = sum(self.sizes)
+        proportions = [float(s) / total for s in self.sizes]
+        return np.dot(proportions, np.array([m.prevalence() for m in self.models]))
+
+    def log_q(self) -> np.ndarray:
+        """
+        Computes the log of the `q` representation of the distribution. See paper.
+
+        The `i`-th entry of the returned array is the log probability that a
+        group of orbit `i` has negative status.
+
+        Returns
+        -------
+        np.ndarray
+            An array containing the log of the `q` representation.
+        """
+        # TODO CHECK THAT THIS REALLY IS THE PRODUCT
+
+        assert self.orbits[0] == (0,) * len(self.sizes)
+        assert self.orbits[len(self.orbits) - 1] == tuple(self.sizes)
+
+        log_qs = [m.log_q() for m in self.models]
+
+        # note that by convention q([0]) = 1, so log q(0) = 0;
+        # handled with initialization to 0
+        log_q = np.zeros(len(self.orbits))
+
+        for i, orbit in enumerate(self.orbits):
+            if i == 0:
+                continue
+
+            log_q[i] = np.sum([log_qs[j][o] for (j, o) in enumerate(orbit)])
+
+        return log_q
+
+    def sample(self) -> np.ndarray:
+        """
+        Sample from the model.
+
+        Returns
+        -------
+        np.ndarray
+            An array of length `n` containing the outcomes.
+        """
+        return np.concatenate([model.sample() for model in self.models])
