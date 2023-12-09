@@ -271,7 +271,7 @@ class IndependentSubpopulationsModel:
 
     def __init__(self, sizes: Sequence[int], models: list):
         """
-        Initializes a IndependentSubpopulationsModel with the given subpopulation
+        Initializes an IndependentSubpopulationsModel with the given subpopulation
         sizes and models.
 
         Parameters
