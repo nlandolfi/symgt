@@ -322,7 +322,7 @@ class IndependentSubpopulationsModel:
         Returns
         -------
         IndependentSubpopulationsModel
-            A IndependentSubpopulationsModel object fit to samples.
+            An IndependentSubpopulationsModel object fit to samples.
         """
         N, n = samples.shape
 
