@@ -255,7 +255,7 @@ class ProductExchangeableModel:
     This class represents a distribution of partially exchangeable random
     variables where the exchangeable subsets are modeled as independent.
 
-    An exchangeable model is defined by population sizes `sizes` and `models`.
+    An exchangeable model is defined by subpopulation `sizes` and `models`.
 
     Attributes
     ----------
