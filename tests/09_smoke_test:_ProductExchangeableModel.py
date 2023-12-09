@@ -13,7 +13,6 @@ m = ProductExchangeableModel([5, 5], [sm1, sm2])
 lq = m.log_q()
 assert np.all(np.exp(lq) == 1)  # this model never has positive outcomes
 
-
 # test bad initializations...
 
 # sizes and models length mismatch
