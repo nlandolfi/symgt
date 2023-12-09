@@ -253,8 +253,7 @@ def log_comb(n, k):
 class ProductExchangeableModel:
     """
     This class represents a distribution of partially exchangeable random
-    variables where the exchangeable subsets of random variables are modeled
-    as independent.
+    variables where the exchangeable subsets are modeled as independent.
 
     An exchangeable model is defined by population sizes `sizes` and `models`.
 
