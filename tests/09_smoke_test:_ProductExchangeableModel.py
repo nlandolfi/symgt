@@ -19,11 +19,11 @@ assert np.all(np.exp(lq) == 1)  # this model never has positive outcomes
 with pytest.raises(ValueError):
     ProductExchangeableModel([1, 2, 3], [sm1, sm2])
 
-# test negative integer value
+# test negative integer size
 with pytest.raises(ValueError):
     ProductExchangeableModel([-5, -5], [sm1, sm2])
 
-# test model i doesnt match size i
+# test model 1 size doesnt match size 1
 with pytest.raises(ValueError):
     ProductExchangeableModel([5, 3], [sm1, sm2])
 
