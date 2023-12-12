@@ -123,6 +123,41 @@ def U_from_q(q: np.ndarray) -> np.ndarray:
     return U
 
 
+def U_from_q_orbits(q: np.ndarray, sizes: np.ndarray) -> np.ndarray:
+    """
+    Compute the function `U` under the symmetric distribution represented by `q`.
+    `U[i]` is the expected number of tests used to declare a group in orbit `i`.
+
+    Parameters
+    ----------
+    q : np.ndarray
+        `q[i]` is the probability that a group of orbit `i` tests negative.
+    sizes : np.ndarray
+        `sizes[i]` is the size of orbit `i`.
+    """
+    N = len(q)
+    if N < 2:
+        raise ValueError("q must have at least two elements")
+
+    sizes = np.asarray(sizes)
+    if len(sizes) != N:
+        raise ValueError("q and sizes must have the same length")
+    if not np.all(sizes >= 0):
+        raise ValueError("sizes must be nonnegative")
+    if not np.all(sizes[1:] >= 1):
+        raise ValueError("all but first orbit size must be at least 1")
+
+    U = np.zeros(N)
+    U[0] = 1  # by convention
+    for i in range(1, N):
+        if sizes[i] == 1:
+            U[i] = 1
+        else:
+            U[i] = 1 + sizes[i] * (1 - q[i])
+
+    return U
+
+
 def grouptest_array(multfn: np.ndarray) -> np.ndarray:
     """
     Form a matrix that can be used to compute the number of positives per
