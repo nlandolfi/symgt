@@ -320,7 +320,7 @@ class IndependentSubpopulationsModel:
         model_classes,
     ) -> "IndependentSubpopulationsModel":
         """
-        Function to fit a product of models.
+        Function to fit an IndependentSubpopulationsModel.
 
         Parameters
         ----------
@@ -476,7 +476,7 @@ class SubsetSymmetryModel:
         samples: np.ndarray,
     ) -> "SubsetSymmetryModel":
         """
-        Function to fit a subset symmetry model.
+        Function to fit a SubsetSymmetryModel.
 
         Parameters
         ----------
