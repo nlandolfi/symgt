@@ -337,7 +337,7 @@ class IndependentSubpopulationsModel:
         """
         N, n = samples.shape
 
-        if np.sum(np.asarray(sizes)) != n:
+        if np.sum(sizes) != n:
             raise ValueError("sum of sizes does not match number of samples")
 
         models = []
