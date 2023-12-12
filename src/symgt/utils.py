@@ -148,7 +148,7 @@ def U_from_q_orbits(q: np.ndarray, sizes: np.ndarray) -> np.ndarray:
         raise ValueError("all but first orbit size must be at least 1")
 
     U = np.zeros(N)
-    U[0] = 1
+    U[0] = 1 # by convention
     for i in range(1, N):
         if sizes[i] == 1:
             U[i] = 1
