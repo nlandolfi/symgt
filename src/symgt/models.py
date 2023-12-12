@@ -460,7 +460,6 @@ class SubsetSymmetryModel:
             if x <= 0:
                 raise ValueError(f"size {i} is not a positive integer")
 
-        # the interepretation of these orbits is number of nonzeros
         self.orbits = orbits
         self.orbit_sizes = np.array([sum(o) for o in orbits])
         self.alpha = alpha
