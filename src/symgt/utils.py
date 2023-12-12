@@ -253,7 +253,10 @@ def subset_symmetry_orbits(sizes: Sequence[int]) -> list[tuple[int, ...]]:
     if len(sizes) == 0:
         raise ValueError("sizes cannot be empty")
 
-    return list(itertools.product(*[range(s + 1) for s in sizes]))
+    out = list(itertools.product(*[range(s + 1) for s in sizes]))
+    out.sort(key=sum)
+
+    return out
 
 
 def subset_symmetry_leq(a: tuple[int, ...], b: tuple[int, ...]) -> bool:
@@ -326,7 +329,7 @@ def subset_symmetry_diff(a: tuple[int, ...], b: tuple[int, ...]) -> tuple[int, .
         raise ValueError("a and b must have the same length")
 
     if not subset_symmetry_leq(a, b):
-        raise ValueError("a must precede b")
+        raise ValueError("a must precede or equal b")
 
     return tuple(b[i] - a[i] for i in range(len(a)))
 
@@ -340,9 +343,9 @@ def subset_symmetry_orbits_order_obeying(orbits: list[tuple[int, ...]]) -> bool:
     Examples
     --------
     ```
-        subset_symmetry_orbits_ordered([(0,0), (0,1), (1,0), (1,1)]) # True
-        subset_symmetry_orbits_ordered([(0,0), (1,0), (0,1), (1,1)]) # True
-        subset_symmetry_orbits_ordered([(0,1), (0,0), (1,0), (1,1)]) # False
+        subset_symmetry_orbits_order_obeying([(0,0), (0,1), (1,0), (1,1)]) # True
+        subset_symmetry_orbits_order_obeying([(0,0), (1,0), (0,1), (1,1)]) # True
+        subset_symmetry_orbits_order_obeying([(0,1), (0,0), (1,0), (1,1)]) # False
     ```
 
     Parameters
