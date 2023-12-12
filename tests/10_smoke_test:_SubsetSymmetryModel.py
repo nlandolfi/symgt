@@ -96,8 +96,8 @@ for i, o in enumerate(m.orbits):
             assert (
                 q[i] >= q[j]
             ), f"q[{i}]={q[i]} >= q[{j}]={q[j]}; orbit i={o}; orbit j={o2}"
-# computed once and pasted in; included here as a golden to know if the
-# computation of q is every changed; for checks on the computation see below
+# computed once and pasted in; included here as a golden to know if the computation
+# of q ever change; for checks on correctness of the log_q function , see below
 assert np.allclose(
     q,
     [
