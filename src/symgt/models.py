@@ -579,7 +579,7 @@ class SubsetSymmetryModel:
                     # i.e., number of ways to place "shape" p ones in "shape" diff
                     np.sum([log_comb(n, m) for (n, m) in zip(diff, p)])
                     # log probability of a member of orbit p
-                    # i.e., log( alpha[orbit p]/(total # orbit members) ), where
+                    # i.e., log( alpha[orbit p]/(total # of orbit members) ), where
                     # denominator is # of ways to place "shape" p ones in "shape" sizes
                     + log_alpha[j]
                     - np.sum([log_comb(n, m) for (n, m) in zip(self.sizes, p)])
