@@ -18,7 +18,6 @@ mu, out = compute_optimal_multfn(c)
 assert np.allclose(mu, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1])
 assert out == 0
 
-
 # Test symmetric_multfn
 q = np.array([1.0, 0.5, 0.0])
 mus, J = symmetric_multfn(q, subproblems=True)
