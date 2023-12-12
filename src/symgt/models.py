@@ -1,4 +1,3 @@
-from collections import defaultdict
 from typing import Sequence
 
 import numpy as np
@@ -507,11 +506,11 @@ class SubsetSymmetryModel:
         sum_samples = np.array(
             [samples[:, segment].sum(axis=1) for segment in segments]
         ).T
-        count: dict[tuple[int, ...], int] = defaultdict(int)
-        for i in range(N_samples):
-            count[tuple(sum_samples[i, :])] += 1
 
-        alpha = np.array([count[o] / N_samples for o in orbits])
+        unique_rows, counts = np.unique(sum_samples, axis=0, return_counts=True)
+        counts = {tuple(row): count for row, count in zip(unique_rows, counts)}
+
+        alpha = np.array([counts.get(o, 0) / N_samples for o in orbits])
 
         return cls(orbits, alpha)
 
