@@ -561,7 +561,7 @@ class SubsetSymmetryModel:
 
             # hence, we can only place the ones elsewhere, in diff
             diff = self.orbits[list(diffs[(i, N - 1)])[0]]  # assume singleton
-            assert sum(diff) == nnzx, "sanity check"
+            assert sum(diff) == nnzx
 
             a = []
             # here the orbits identify elements of {0,1}^P
@@ -571,8 +571,8 @@ class SubsetSymmetryModel:
                 # recall: diff is the shape of places where ones can be allocated
                 if not subset_symmetry_leq(p, diff):
                     continue
-                # precendence of p implies nnz(p) <= nnzx
-                assert sum(p) <= nnzx, "sanity check"
+                # precedence of p implies nnz(p) <= nnzx
+                assert sum(p) <= nnzx
 
                 a.append(
                     # number of members of orbit p in R^{-1}(x^{-1}(0), nnz(p))
