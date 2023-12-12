@@ -109,10 +109,11 @@ assert np.allclose(m.models[1].alpha, [0.25, 0, 0.75])
 assert np.allclose(np.exp(m.models[0].log_q()), [1, 0.5, 0.5])
 assert np.allclose(np.exp(m.models[1].log_q()), [1, 0.25, 0.25])
 assert np.allclose(
-    m.orbits, [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+    m.orbits,
+    [(0, 0), (0, 1), (1, 0), (0, 2), (1, 1), (2, 0), (1, 2), (2, 1), (2, 2)],
 )
 assert np.allclose(
-    np.exp(m.log_q()), [1, 0.25, 0.25, 0.5, 0.125, 0.125, 0.5, 0.125, 0.125]
+    np.exp(m.log_q()), [1, 0.25, 0.5, 0.25, 0.125, 0.5, 0.125, 0.125, 0.125]
 )
 
 # one more test
@@ -136,10 +137,11 @@ assert np.allclose(m.models[1].alpha, [0, 0.25, 0.5, 0.25])
 assert np.allclose(np.exp(m.models[0].log_q()), [1, 0.5])
 assert np.allclose(np.exp(m.models[1].log_q()), [1, 4 / 12.0, 1 / 12.0, 0])
 assert np.allclose(
-    m.orbits, [(0, 0), (0, 1), (0, 2), (0, 3), (1, 0), (1, 1), (1, 2), (1, 3)]
+    m.orbits,
+    [(0, 0), (0, 1), (1, 0), (0, 2), (1, 1), (0, 3), (1, 2), (1, 3)],
 )
 assert np.allclose(
-    np.exp(m.log_q()), [1, 4 / 12.0, 1 / 12.0, 0.0, 0.5, 4 / 24.0, 1 / 24.0, 0]
+    np.exp(m.log_q()), [1, 4 / 12.0, 0.5, 1 / 12.0, 4 / 24.0, 0.0, 1 / 24.0, 0]
 )
 
 # test sample a bit

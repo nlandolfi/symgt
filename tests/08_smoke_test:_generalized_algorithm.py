@@ -46,10 +46,10 @@ assert np.allclose(
 
 # stage a clear optimal split (2, 3) and (3, 2)
 c = np.ones(N)
-assert orbits[15] == (2, 3)
-assert orbits[20] == (3, 2)
-c[15] = 0  # orbit (2, 3)
-c[20] = 0  # orbit (3, 2)
+assert orbits[17] == (2, 3)
+assert orbits[18] == (3, 2)
+c[17] = 0  # orbit (2, 3)
+c[18] = 0  # orbit (3, 2)
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 assert out == 0
 assert np.allclose(
@@ -64,30 +64,30 @@ np.random.seed(0)
 c = np.random.rand(N)
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 uses = {orbits[i] for i in range(N) if mu[i] > 0}
-assert uses == {(1, 3), (4, 2)}
+assert uses == {(2, 5), (3, 0)}
 assert np.allclose(out, 0.5267948062348241)
 
 # test twice
 c = np.random.rand(N)
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 uses = {orbits[i] for i in range(N) if mu[i] > 0}
-assert uses == {(4, 4), (1, 1)}
+assert uses == {(1, 2), (4, 3)}
 assert np.allclose(out, 0.25680783330932333)
 
 # test thrice
 c = np.random.rand(N)
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 uses = {orbits[i] for i in range(N) if mu[i] > 0}
-assert uses == {(4, 1), (1, 4)}
+assert uses == {(0, 4), (5, 1)}
 assert np.allclose(out, 0.08425504253627791)
 
 # a test with repeat multiplicities
 c = np.ones(N)
-c[7] = 0  # (1, 1) part costs 0
+c[4] = 0  # (1, 1) part costs 0
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 uses = {orbits[i] for i in range(N) if mu[i] > 0}
 assert uses == {(1, 1)}
-assert mu[7] == 5
+assert mu[4] == 5
 assert out == 0
 
 # a test with many subpopulations
@@ -97,5 +97,5 @@ diffs = subset_symmetry_orbit_diffs(orbits)
 c = np.random.rand(N)
 mu, out = compute_optimal_orbit_multfn(c, diffs)
 uses = {orbits[i] for i in range(N) if mu[i] > 0}
-assert uses == {(0, 5, 5, 4), (2, 0, 0, 0), (3, 0, 0, 1)}
-assert np.allclose(out, 0.05946088431369978)
+assert uses == {(2, 0, 3, 1), (2, 3, 1, 4), (1, 2, 1, 0)}
+assert np.allclose(out, 0.028811293454162556)
