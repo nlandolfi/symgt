@@ -397,9 +397,11 @@ class IndependentSubpopulationsModel:
 
 class SubsetSymmetryModel:
     """
-    This class represents a distribution over exchangeable subpopulations.
+    This class represents a distribution over fully symmetric subpopulations.
 
-    It is defined by subpopulation `sizes`.
+    It is defined by a list of `orbits`, of which the last element is a tuple
+    of subpopulation `sizes and `alpha` which are the probabilities of each
+    orbit. I.e., `alpha[i]` is the probability of seeing any sample in orbit `i`.
 
     For the case in which the distribution of subpopulations is independent,
     use the `IndependentSubpopulationsModel` class.
