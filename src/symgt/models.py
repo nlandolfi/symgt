@@ -258,6 +258,8 @@ def log_comb(n, k):
 class IndependentSubpopulationsModel:
     """
     This class represents a distribution over independent subpopulations.
+    In other words, the members of a given subpopulation are independent of the
+    members of all other subpopulations.
 
     It is defined by subpopulation `sizes` and `models`.
 
@@ -403,8 +405,9 @@ class SubsetSymmetryModel:
     The last element of the orbits list is a tuple of subpopulation sizes.
     The elements of `alpha` are the probabilities of each orbit.
 
-    For the case in which the distribution of subpopulations is independent,
-    use the `IndependentSubpopulationsModel` class.
+    For the case in which the individual members of a given subpopulation are
+    independent of the given members of another subpopulation, for all two distinct
+    subpopulations, use the `IndependentSubpopulationsModel` class.
 
     Attributes
     ----------
