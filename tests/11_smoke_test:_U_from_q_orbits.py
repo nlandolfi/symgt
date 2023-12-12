@@ -16,7 +16,7 @@ m = IndependentSubpopulationsModel(
     [1, 2],
     [
         ExchangeableModel(1, [0.5, 0.5]),  # half time 0, half time 1
-        ExchangeableModel(2, [1, 0, 0]),  # all time time 0
+        ExchangeableModel(2, [1, 0, 0]),  # all time 0
     ],
 )
 assert np.allclose(
