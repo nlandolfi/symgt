@@ -489,7 +489,7 @@ class SubsetSymmetryModel:
         Returns
         -------
         SubsetSymmetryModel
-            An SubsetSymmetryModel object fit to samples.
+            A SubsetSymmetryModel object fit to samples.
         """
         N_samples, n = samples.shape
 
