@@ -258,6 +258,8 @@ def log_comb(n, k):
 class IndependentSubpopulationsModel:
     """
     This class represents a distribution over independent subpopulations.
+    In other words, the members of a given subpopulation are independent of the
+    members of all other subpopulations.
 
     It is defined by subpopulation `sizes` and `models`.
 
@@ -318,7 +320,7 @@ class IndependentSubpopulationsModel:
         model_classes,
     ) -> "IndependentSubpopulationsModel":
         """
-        Function to fit a product of models.
+        Function to fit an IndependentSubpopulationsModel.
 
         Parameters
         ----------
@@ -335,7 +337,7 @@ class IndependentSubpopulationsModel:
         """
         N, n = samples.shape
 
-        if np.sum(np.asarray(sizes)) != n:
+        if np.sum(sizes) != n:
             raise ValueError("sum of sizes does not match number of samples")
 
         models = []
@@ -397,17 +399,28 @@ class IndependentSubpopulationsModel:
 
 class SubsetSymmetryModel:
     """
-    This class represents a distribution over exchangeable subpopulations.
+    This class represents a distribution over fully symmetric subpopulations.
 
-    It is defined by subpopulation `sizes`.
+    It is defined by a list of `orbits` and corresponding probabilities `alpha`.
+     - Each orbit is a tuple that identifies the number of nonzeros of an element
+       of the set {0,1}^P, for each given subpopulation.
+     - The last element of the orbits list is a tuple of subpopulation sizes.
+     - The elements of `alpha` are the probabilities of each orbit.
 
-    For the case in which the distribution of subpopulations is independent,
-    use the `IndependentSubpopulationsModel` class.
+    To construct the list of orbits, see `utils.subset_symmetry_orbits`.
+
+    For the case in which the individual members of a given subpopulation are
+    independent of the given members of another subpopulation, for all two distinct
+    subpopulations, use the `IndependentSubpopulationsModel` class.
 
     Attributes
     ----------
     sizes : Sequence[int]
         Subpopulation sizes.
+    orbits : list[tuple[int, ...]]
+        List of orbits.
+    orbit_sizes : np.ndarray
+        List of orbits sizes (sum of the tuple).
     alpha : np.ndarray
         Representation of the symmetric distribution.
         `alpha[i]` is the probability of obtaining a sample in orbit `i`.
@@ -420,32 +433,35 @@ class SubsetSymmetryModel:
 
     def __init__(self, orbits: list[tuple[int, ...]], alpha: np.ndarray):
         """
-        Initializes an IndependentSubpopulationsModel with the given subpopulation
-        sizes and models.
+        Initializes a SubsetSymmetryModel with the given orbits and representation.
 
         Parameters
         ----------
-        sizes : Sequence[int]
-            Population sizes of each submodel.
+        orbits : list[tuple[int, ...]]
+            List of orbits. To construct this, see `utils.subset_symmetry_orbits`.
+        alpha : np.ndarray
+            Representation of the symmetric distribution. Nonnegative and sums to one.
         """
         if len(orbits) < 2:
             raise ValueError("orbits must have at least two elements")
 
         if len(alpha) != len(orbits):
             raise ValueError("orbits and alpha must have the same length")
+
+        alpha = np.asarray(alpha)
+        if not np.all(alpha >= 0):
+            raise ValueError("alpha has negative values")
         if not np.allclose(np.sum(alpha), 1.0):
             raise ValueError("`np.sum(alpha)` should be `1`.")
 
         self.sizes = orbits[-1]
-
         for i, x in enumerate(self.sizes):
             if x <= 0:
                 raise ValueError(f"size {i} is not a positive integer")
 
-        # the interepretation of these orbits is number of nonzeros
         self.orbits = orbits
         self.orbit_sizes = np.array([sum(o) for o in orbits])
-        self.alpha = np.asarray(alpha)
+        self.alpha = alpha
 
     def __str__(self):
         return f"SubsetSymmetryModel(sizes={self.sizes}, models=...)"
@@ -460,7 +476,7 @@ class SubsetSymmetryModel:
         samples: np.ndarray,
     ) -> "SubsetSymmetryModel":
         """
-        Function to fit a subset symmetry model.
+        Function to fit a SubsetSymmetryModel.
 
         Parameters
         ----------
@@ -473,11 +489,11 @@ class SubsetSymmetryModel:
         Returns
         -------
         SubsetSymmetryModel
-            An SubsetSymmetryModel object fit to samples.
+            A SubsetSymmetryModel object fit to samples.
         """
         N_samples, n = samples.shape
 
-        if np.sum(np.asarray(sizes)) != n:
+        if np.sum(sizes) != n:
             raise ValueError("sum of sizes does not match number of samples")
 
         orbits = subset_symmetry_orbits(sizes)
@@ -491,11 +507,11 @@ class SubsetSymmetryModel:
         sum_samples = np.array(
             [samples[:, segment].sum(axis=1) for segment in segments]
         ).T
-        count: dict[tuple[int, ...], int] = defaultdict(int)
-        for i in range(N_samples):
-            count[tuple(sum_samples[i, :])] += 1
 
-        alpha = np.array([count[o] / N_samples for o in orbits])
+        unique_rows, counts = np.unique(sum_samples, axis=0, return_counts=True)
+        counts = {tuple(row): count for row, count in zip(unique_rows, counts)}
+
+        alpha = np.array([counts.get(o, 0) / N_samples for o in orbits])
 
         return cls(orbits, alpha)
 
@@ -508,7 +524,7 @@ class SubsetSymmetryModel:
         float
             The prevalence of the model.
         """
-        return np.dot(self.alpha, self.orbit_sizes) / sum(self.sizes)
+        return np.dot(self.alpha, self.orbit_sizes) / np.sum(self.sizes)
 
     def log_q(self) -> np.ndarray:
         """
@@ -546,7 +562,7 @@ class SubsetSymmetryModel:
 
             # hence, we can only place the ones elsewhere, in diff
             diff = self.orbits[list(diffs[(i, N - 1)])[0]]  # assume singleton
-            assert sum(diff) == nnzx, "sanity check"
+            assert sum(diff) == nnzx
 
             a = []
             # here the orbits identify elements of {0,1}^P
@@ -556,15 +572,15 @@ class SubsetSymmetryModel:
                 # recall: diff is the shape of places where ones can be allocated
                 if not subset_symmetry_leq(p, diff):
                     continue
-                # precendence of p implies nnz(p) <= nnzx
-                assert sum(p) <= nnzx, "sanity check"
+                # precedence of p implies nnz(p) <= nnzx
+                assert sum(p) <= nnzx
 
                 a.append(
                     # number of members of orbit p in R^{-1}(x^{-1}(0), nnz(p))
                     # i.e., number of ways to place "shape" p ones in "shape" diff
                     np.sum([log_comb(n, m) for (n, m) in zip(diff, p)])
                     # log probability of a member of orbit p
-                    # i.e., log( alpha[orbit p]/(total # orbit members) ), where
+                    # i.e., log( alpha[orbit p]/(total # of orbit members) ), where
                     # denominator is # of ways to place "shape" p ones in "shape" sizes
                     + log_alpha[j]
                     - np.sum([log_comb(n, m) for (n, m) in zip(self.sizes, p)])

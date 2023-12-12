@@ -31,6 +31,10 @@ with pytest.raises(ValueError):
 with pytest.raises(ValueError):
     SubsetSymmetryModel([(0, 0), (1, 0)], [1])
 
+# invalid alpha (negative)
+with pytest.raises(ValueError):
+    SubsetSymmetryModel([(0, 0), (1, 0)], [2, -1])
+
 # invalid alpha (does not sum to 1)
 with pytest.raises(ValueError):
     SubsetSymmetryModel([(0, 0), (1, 0)], [1, 1])
@@ -39,7 +43,7 @@ with pytest.raises(ValueError):
 with pytest.raises(ValueError):
     SubsetSymmetryModel([(0, 0), (-1, 0)], [1, 0])
 
-# Test some fitting
+# Test some fitting...
 
 # Test basic fit
 m = SubsetSymmetryModel.fit(
@@ -92,8 +96,8 @@ for i, o in enumerate(m.orbits):
             assert (
                 q[i] >= q[j]
             ), f"q[{i}]={q[i]} >= q[{j}]={q[j]}; orbit i={o}; orbit j={o2}"
-# computed once and pasted in; included here as a golden to know if the
-# computation of q is every changed; for checks on the computation see below
+# computed once and pasted in; included here as a golden to know if the computation
+# of q ever change; for checks on correctness of the log_q function , see below
 assert np.allclose(
     q,
     [
@@ -172,7 +176,7 @@ assert np.allclose(m1.log_q(), m2.log_q())
 np.random.seed(0)
 m1 = IndependentSubpopulationsModel(
     [1, 2, 3, 4, 5],
-    [  # note: dirichlet just way of sampling uniformly from simplex
+    [  # note: dirichlet is just a way of sampling uniformly from simplex
         ExchangeableModel(1, np.random.dirichlet(np.ones(1 + 1))),
         ExchangeableModel(2, np.random.dirichlet(np.ones(2 + 1))),
         ExchangeableModel(3, np.random.dirichlet(np.ones(3 + 1))),
