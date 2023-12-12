@@ -402,8 +402,10 @@ class SubsetSymmetryModel:
     This class represents a distribution over fully symmetric subpopulations.
 
     It is defined by a list of `orbits` and corresponding probabilities `alpha`.
-    The last element of the orbits list is a tuple of subpopulation sizes.
-    The elements of `alpha` are the probabilities of each orbit.
+     - Each orbit is a tuple that identifies the number of nonzeros of an element
+       of the set {0,1}^P, for each given subpopulation.
+     - The last element of the orbits list is a tuple of subpopulation sizes.
+     - The elements of `alpha` are the probabilities of each orbit.
 
     To construct the list of orbits, see `utils.subset_symmetry_orbits`.
 
