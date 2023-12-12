@@ -43,7 +43,7 @@ with pytest.raises(ValueError):
 with pytest.raises(ValueError):
     SubsetSymmetryModel([(0, 0), (-1, 0)], [1, 0])
 
-# Test some fitting
+# Test some fitting...
 
 # Test basic fit
 m = SubsetSymmetryModel.fit(
