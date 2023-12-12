@@ -26,6 +26,7 @@ test:
 	python tests/08_smoke_test:_generalized_algorithm.py
 	python tests/09_smoke_test:_IndependentSubpopulationsModel.py
 	python tests/10_smoke_test:_SubsetSymmetryModel.py
+	python tests/11_smoke_test:_U_from_q_orbits.py
 freeze:
 	pip freeze > requirements.txt
 
