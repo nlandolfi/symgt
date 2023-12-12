@@ -10,8 +10,8 @@ from symgt.utils import (
     U_from_q_orbits,
 )
 
-# Test log_q by comparison to independent subpopulations...
-# easy case
+# Test on a simple case done by hand...
+
 m = IndependentSubpopulationsModel(
     [1, 2],
     [
