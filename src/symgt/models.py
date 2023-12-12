@@ -455,7 +455,6 @@ class SubsetSymmetryModel:
             raise ValueError("`np.sum(alpha)` should be `1`.")
 
         self.sizes = orbits[-1]
-
         for i, x in enumerate(self.sizes):
             if x <= 0:
                 raise ValueError(f"size {i} is not a positive integer")
