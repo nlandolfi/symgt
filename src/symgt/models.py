@@ -438,13 +438,14 @@ class SubsetSymmetryModel:
         orbits : list[tuple[int, ...]]
             List of orbits. To construct this, see `utils.subset_symmetry_orbits`.
         alpha : np.ndarray
-            Representation of the symmetric distribution. Nonnegative and sum to one.
+            Representation of the symmetric distribution. Nonnegative and sums to one.
         """
         if len(orbits) < 2:
             raise ValueError("orbits must have at least two elements")
 
         if len(alpha) != len(orbits):
             raise ValueError("orbits and alpha must have the same length")
+
         alpha = np.asarray(alpha)
         if not np.all(alpha >= 0):
             raise ValueError("alpha has negative values")
