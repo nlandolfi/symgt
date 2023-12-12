@@ -176,7 +176,7 @@ assert np.allclose(m1.log_q(), m2.log_q())
 np.random.seed(0)
 m1 = IndependentSubpopulationsModel(
     [1, 2, 3, 4, 5],
-    [  # note: dirichlet just way of sampling uniformly from simplex
+    [  # note: dirichlet is just a way of sampling uniformly from simplex
         ExchangeableModel(1, np.random.dirichlet(np.ones(1 + 1))),
         ExchangeableModel(2, np.random.dirichlet(np.ones(2 + 1))),
         ExchangeableModel(3, np.random.dirichlet(np.ones(3 + 1))),
