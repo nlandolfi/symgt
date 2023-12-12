@@ -431,8 +431,7 @@ class SubsetSymmetryModel:
 
     def __init__(self, orbits: list[tuple[int, ...]], alpha: np.ndarray):
         """
-        Initializes an IndependentSubpopulationsModel with the given subpopulation
-        sizes and models.
+        Initializes a SubsetSymmetryModel with the given orbits and representation.
 
         Parameters
         ----------
