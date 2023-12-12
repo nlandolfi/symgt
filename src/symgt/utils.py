@@ -136,7 +136,6 @@ def U_from_q_orbits(q: np.ndarray, sizes: np.ndarray) -> np.ndarray:
         `sizes[i]` is the size of orbit `i`.
     """
     N = len(q)
-
     if N < 2:
         raise ValueError("q must have at least two elements")
 
