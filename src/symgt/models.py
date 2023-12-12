@@ -405,6 +405,8 @@ class SubsetSymmetryModel:
     The last element of the orbits list is a tuple of subpopulation sizes.
     The elements of `alpha` are the probabilities of each orbit.
 
+    To construct the list of orbits, see `utils.subset_symmetry_orbits`.
+
     For the case in which the individual members of a given subpopulation are
     independent of the given members of another subpopulation, for all two distinct
     subpopulations, use the `IndependentSubpopulationsModel` class.
