@@ -524,7 +524,7 @@ class SubsetSymmetryModel:
         float
             The prevalence of the model.
         """
-        return np.dot(self.alpha, self.orbit_sizes) / sum(self.sizes)
+        return np.dot(self.alpha, self.orbit_sizes) / np.sum(self.sizes)
 
     def log_q(self) -> np.ndarray:
         """
