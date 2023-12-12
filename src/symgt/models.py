@@ -415,6 +415,10 @@ class SubsetSymmetryModel:
     ----------
     sizes : Sequence[int]
         Subpopulation sizes.
+    orbits : list[tuple[int, ...]]
+        List of orbits.
+    orbit_sizes : np.ndarray
+        List of orbits sizes (sum of the tuple).
     alpha : np.ndarray
         Representation of the symmetric distribution.
         `alpha[i]` is the probability of obtaining a sample in orbit `i`.
@@ -432,14 +436,19 @@ class SubsetSymmetryModel:
 
         Parameters
         ----------
-        sizes : Sequence[int]
-            Population sizes of each submodel.
+        orbits : list[tuple[int, ...]]
+            List of orbits. To construct this, see `utils.subset_symmetry_orbits`.
+        alpha : np.ndarray
+            Representation of the symmetric distribution. Nonnegative and sum to one.
         """
         if len(orbits) < 2:
             raise ValueError("orbits must have at least two elements")
 
         if len(alpha) != len(orbits):
             raise ValueError("orbits and alpha must have the same length")
+        alpha = np.asarray(alpha)
+        if not np.all(alpha >= 0):
+            raise ValueError("alpha has negative values")
         if not np.allclose(np.sum(alpha), 1.0):
             raise ValueError("`np.sum(alpha)` should be `1`.")
 
@@ -452,7 +461,7 @@ class SubsetSymmetryModel:
         # the interepretation of these orbits is number of nonzeros
         self.orbits = orbits
         self.orbit_sizes = np.array([sum(o) for o in orbits])
-        self.alpha = np.asarray(alpha)
+        self.alpha = alpha
 
     def __str__(self):
         return f"SubsetSymmetryModel(sizes={self.sizes}, models=...)"

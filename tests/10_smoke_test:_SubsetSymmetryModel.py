@@ -31,6 +31,10 @@ with pytest.raises(ValueError):
 with pytest.raises(ValueError):
     SubsetSymmetryModel([(0, 0), (1, 0)], [1])
 
+# invalid alpha (negative)
+with pytest.raises(ValueError):
+    SubsetSymmetryModel([(0, 0), (1, 0)], [2, -1])
+
 # invalid alpha (does not sum to 1)
 with pytest.raises(ValueError):
     SubsetSymmetryModel([(0, 0), (1, 0)], [1, 1])
