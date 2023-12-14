@@ -264,9 +264,9 @@ with pytest.raises(ValueError):
         [0, 0, 0, 0, 0, 0, 0, 2],
     )
 
-# test nonintegral multfn...
+# nonintegral multfn
 with pytest.raises(ValueError):
-    subset_symmetry_grouptest_array(
+    subset_symmetry_multpart_from_multfn(
         orbits,
         [0, 2.5, 1.5, 0, 0, 0, 0, 0],
     )
