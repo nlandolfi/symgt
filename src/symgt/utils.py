@@ -446,8 +446,8 @@ def subset_symmetry_multpart_from_multfn(
     orbits: list[tuple[int, ...]], multfn: np.ndarray
 ) -> np.ndarray:
     """
-    Compute the multipartition of `orbits[-1]` given the
-    orbit multiplicites `multfn`.
+    Construct the multipartition of `orbits[-1]` given the
+    orbit multiplicities `multfn`.
 
     The number of pieces `g` is `sum(multfn)`.
     The number of subpopulations `m` is `len(orbits[0])`
