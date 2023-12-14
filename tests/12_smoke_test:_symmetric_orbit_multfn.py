@@ -18,7 +18,6 @@ from symgt.utils import (
 
 print("THIS IS SMOKE TEST 12: IT TESTS symmetric_orbit_multfn")
 
-
 # A simple example by hand...
 orbits = subset_symmetry_orbits((4, 4))
 sizes = [sum(o) for o in orbits]
