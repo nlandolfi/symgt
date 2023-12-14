@@ -209,7 +209,7 @@ def symmetric_orbit_multfn(
     """
     Compute an optimal multiplicity function for a symmetric distribution
     with representation `q`. The number of orbits is inferred from the
-    length of`q` (i.e., `len(q)`).
+    length of `q` (i.e., `len(q)`).
 
     Here `sizes[i]` is the size of subsets in the orbit `i`.
 
