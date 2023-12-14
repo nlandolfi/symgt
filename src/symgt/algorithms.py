@@ -227,7 +227,7 @@ def symmetric_orbit_multfn(
     --------
     e.g.,
     ```
-        multfns, costs = symmetric_orbit_multfn(q, subproblems=true)
+        multfns, costs = symmetric_orbit_multfn(q, sizes, diffs, subproblems=true)
     ```
     Here `multfns[i, :]` is an optimal orbit multiplicty function for the
     orbit `i` and `costs[i]` is its cost.
