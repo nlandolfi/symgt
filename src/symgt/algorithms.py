@@ -1,6 +1,6 @@
 import numpy as np
 
-from .utils import U_from_q, dorfman_pool_size
+from .utils import U_from_q, U_from_q_orbits, dorfman_pool_size
 
 
 def dorfman_multfn(n: int, prevalence: float) -> np.ndarray:
@@ -104,7 +104,7 @@ def symmetric_multfn(q: np.ndarray, subproblems=False):
     --------
     e.g.,
     ```
-        multfns, costs = optimal_multfn(q, subpopulations=true)
+        multfns, costs = symmetric_multfn(q, subproblems=true)
     ```
     Here `multfns[i, :]` is an optimal multiplicty function for a subpopulation
     of size `i` and `costs[i]` is its cost.
@@ -120,7 +120,7 @@ def symmetric_multfn(q: np.ndarray, subproblems=False):
     return compute_optimal_multfn(U, subproblems=subproblems)
 
 
-def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
+def compute_optimal_orbit_multfn(c: np.ndarray, diffs: dict, subproblems=False):
     """
     Compute an optimal *orbit* multiplicity function for cost c where `c[i]`
     is the cost of *orbit* `i`. Here `diffs` is a dictionary containing the
@@ -201,3 +201,43 @@ def compute_optimal_orbit_multfn(c: list, diffs: dict, subproblems=False):
         return multfns, Mstar
     else:
         return multfns[N - 1, :], Mstar[N - 1]
+
+
+def symmetric_orbit_multfn(
+    q: np.ndarray, sizes: np.ndarray, diffs: dict, subproblems=False
+):
+    """
+    Compute an optimal multiplicity function for a symmetric distribution
+    with representation `q`. The number of orbits is inferred from the
+    length of`q` (i.e., `len(q)`).
+
+    Here `sizes[i]` is the size of subsets in the orbit `i`.
+
+    Here `diffs` is a dictionary containing orbit differences. In particular,
+    `diffs[(i, j)] = (orbit j) ∖ (orbit i)`.  This value `diffs[(i, j)]` is
+    defined only when (orbit i) ≼ (orbit j).  It is assumed that the orbit
+    order obeys the condition (orbit i) ≺ (orbit j) implies `i < j`.
+
+    The keyword argument `subproblems=true` behaves as it does
+    in the `compute_optimal_orbit_multfn` function.
+
+    For the fully symmetric case, see the `symmetric_multfn` helper function.
+
+    Examples
+    --------
+    e.g.,
+    ```
+        multfns, costs = symmetric_orbit_multfn(q, subproblems=true)
+    ```
+    Here `multfns[i, :]` is an optimal orbit multiplicty function for the
+    orbit `i` and `costs[i]` is its cost.
+    """
+    if len(q) < 2:
+        raise ValueError(f"number of orbits N={len(q)} should be >= 2")
+    if len(q) != len(sizes):
+        raise ValueError("q and sizes must have the same length")
+
+    # U[i] is the *expected* number of tests used for a group of orbit i
+    U = U_from_q_orbits(q, sizes)
+
+    return compute_optimal_orbit_multfn(U, diffs, subproblems=subproblems)

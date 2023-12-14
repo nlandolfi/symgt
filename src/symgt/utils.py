@@ -128,6 +128,8 @@ def U_from_q_orbits(q: np.ndarray, sizes: np.ndarray) -> np.ndarray:
     Compute the function `U` under the symmetric distribution represented by `q`.
     `U[i]` is the expected number of tests used to declare a group in orbit `i`.
 
+    For the fully symmetric case, see the `U_from_q` helper function.
+
     Parameters
     ----------
     q : np.ndarray
