@@ -99,6 +99,8 @@ options = [  # all partitions of (2, 2)
 for option in options:
     assert np.dot(c, option) >= out  # assert mu is optimal
 
+# Test some invalid invocations
+
 # too few orbits
 with pytest.raises(ValueError):
     symmetric_orbit_multfn([1], [1], {})
