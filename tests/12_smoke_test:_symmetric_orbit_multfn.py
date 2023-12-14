@@ -85,7 +85,7 @@ assert np.allclose(
 mu, out = symmetric_orbit_multfn(q, sizes, diffs)
 assert np.all(mu == [0, 0, 0, 0, 0, 0, 0, 0, 1])
 assert np.dot(mu, c) == out
-other_options = [  # other partitions of (2, 2)
+options = [  # all partitions of (2, 2)
     [0, 2, 2, 0, 0, 0, 0, 0, 0],  # (0,1)+(0,1)+(1,0)+(1,0)
     [0, 2, 0, 0, 0, 1, 0, 0, 0],  # (0,1)+(0,1)+(2,0)
     [0, 0, 2, 1, 0, 0, 0, 0, 0],  # (1,0)+(1,0)+(0,2)
@@ -96,7 +96,7 @@ other_options = [  # other partitions of (2, 2)
     [0, 0, 1, 0, 0, 0, 1, 0, 0],  # (1,0)+(1,2)
     [0, 0, 0, 0, 0, 0, 0, 0, 1],  # (2,2)
 ]
-for option in other_options:
+for option in options:
     assert np.dot(c, option) >= out
 
 # too few orbits
