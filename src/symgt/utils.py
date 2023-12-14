@@ -478,7 +478,7 @@ def subset_symmetry_multpart_from_multfn(
     if multfn[0] != 0:
         raise ValueError("multfn may not include empty part")
 
-    g = int(np.sum(multfn))
+    g = np.sum(multfn)
     m = len(orbits[0])
     p = np.zeros((g, m))
     o = 0
