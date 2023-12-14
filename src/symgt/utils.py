@@ -501,7 +501,7 @@ def subset_symmetry_grouptest_array(
     group (and, hence, group statuses) from individual status vectors.
 
     The matrix is `g` by `n` where `g = np.sum(multfn)` is the number of groups
-    and `n = np.dot(np.arange(len(multfn)), multfn)` is the population size.
+    and `n = np.sum(orbits[-1])` is the population size.
     The `i, j`th entry of the matrix is 1 if specimen `j` goes to group `i`.
 
     For the fully symmetric case, see `grouptest_array`.
