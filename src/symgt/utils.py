@@ -440,3 +440,50 @@ def subset_symmetry_orbit_diffs(
                 diffs[(i, j)] = {s}
 
     return diffs
+
+
+def subset_symmetry_multpart_from_multfn(
+    orbits: list[tuple[int, ...]], multfn: np.ndarray
+) -> np.ndarray:
+    """
+    Compute the multipartition of `orbits[-1]` given the
+    orbit multiplicites `multfn`.
+
+    The number of pieces `g` is `sum(multfn)`.
+    The number of subpopulations `m` is `len(orbits[0])`
+
+    Examples
+    --------
+    ```
+        multpart = subset_symmetry_multpart_from_multfn(orbits, multfn)
+    ```
+    Here multpart[:, i] is tuple of sizes (orbit) in the partition.
+
+    Parameters
+    ----------
+    orbits : list[tuple[int, ...]]
+        The orbits.
+    multfn : np.ndarray
+        The orbit multiplicities.
+
+    Returns
+    -------
+    np.ndarray
+        The multipartition as a `g` by `m` matrix.
+    """
+    if multfn[0] != 0:
+        raise ValueError("multfn may not include empty part")
+
+    g = np.sum(multfn)
+    m = len(orbits[0])
+    p = np.zeros((g, m))
+    o = 0
+    for i, c in enumerate(multfn):
+        for _ in range(c):
+            p[g - 1 - o, :] = orbits[i]
+            o += 1
+
+    if not np.allclose(np.sum(p, axis=0), orbits[-1]):
+        raise ValueError("multfn parts should sum to orbits[-1]")
+
+    return p
