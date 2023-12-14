@@ -478,11 +478,16 @@ def subset_symmetry_multpart_from_multfn(
     if multfn[0] != 0:
         raise ValueError("multfn may not include empty part")
 
-    g = np.sum(multfn)
+    multfn_ints = np.asarray(multfn).astype(int)  # ensure ints
+
+    if not np.allclose(multfn_ints, multfn):
+        raise ValueError("multfn must only contain integers")
+
+    g = np.sum(multfn_ints)
     m = len(orbits[0])
     p = np.zeros((g, m))
     o = 0
-    for i, c in enumerate(multfn):
+    for i, c in enumerate(multfn_ints):
         for _ in range(c):
             p[g - 1 - o, :] = orbits[i]
             o += 1
@@ -491,3 +496,45 @@ def subset_symmetry_multpart_from_multfn(
         raise ValueError("multfn parts should sum to orbits[-1]")
 
     return p
+
+
+def subset_symmetry_grouptest_array(
+    orbits: list[tuple[int, ...]], multfn: np.ndarray
+) -> np.ndarray:
+    """
+    Form a matrix that can be used to compute the number of positives per
+    group (and, hence, group statuses) from individual status vectors.
+
+    The matrix is `g` by `n` where `g = np.sum(multfn)` is the number of groups
+    and `n = np.sum(orbits[-1])` is the population size.
+    The `i, j`th entry of the matrix is 1 if specimen `j` goes to group `i`.
+
+    For the fully symmetric case, see `grouptest_array`.
+    """
+    multfn_ints = np.asarray(multfn).astype(int)  # ensure ints
+
+    if not np.allclose(multfn_ints, multfn):
+        raise ValueError("multfn must only contain integers")
+
+    g = np.sum(multfn_ints)
+    m = len(orbits[0])
+    n = int(np.sum(orbits[-1]))
+    A = np.zeros((g, n), dtype=int)
+    offsets = np.insert(np.cumsum(orbits[-1]), 0, 0).astype(int)
+    mp = subset_symmetry_multpart_from_multfn(orbits, multfn_ints)
+    cum_s = np.insert(
+        np.cumsum(mp, axis=0),
+        0,
+        (0,) * m,
+        axis=0,
+    ).astype(int)
+    for i in range(g):
+        for j in range(m):
+            A[i, offsets[j] + cum_s[i, j] : offsets[j] + cum_s[i + 1, j]] = 1
+
+    assert np.sum(A) == n, "sanity: A should sum to n"
+    assert np.allclose(
+        np.sum(A, axis=1), np.sum(mp, axis=1)
+    ), "sanity: A rows should sum to multpart rows"
+
+    return A

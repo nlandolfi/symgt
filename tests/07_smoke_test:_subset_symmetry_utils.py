@@ -9,6 +9,7 @@ from symgt.utils import (
     subset_symmetry_orbits_order_obeying,
     subset_symmetry_orbit_diffs,
     subset_symmetry_multpart_from_multfn,
+    subset_symmetry_grouptest_array,
 )
 
 
@@ -262,3 +263,57 @@ with pytest.raises(ValueError):
         orbits,
         [0, 0, 0, 0, 0, 0, 0, 2],
     )
+
+# nonintegral multfn
+with pytest.raises(ValueError):
+    subset_symmetry_multpart_from_multfn(
+        orbits,
+        [0, 2.5, 1.5, 0, 0, 0, 0, 0],
+    )
+
+# some tests of subset_symmetry_grouptest_array...
+
+orbits = subset_symmetry_orbits((1, 3))
+# = [(0, 0), (0, 1), (1, 0), (0, 2), (1, 1), (0, 3), (1, 2), (1, 3)]
+A = subset_symmetry_grouptest_array(
+    orbits,
+    [0, 0, 0, 0, 0, 0, 0, 1],  # (1,3)
+)
+assert np.allclose(A, np.array([[1, 1, 1, 1]]))
+A = subset_symmetry_grouptest_array(
+    orbits,
+    [0, 1, 0, 0, 0, 0, 1, 0],  # (1,2)+(0,1)
+)
+assert np.allclose(A, np.array([[1, 1, 1, 0], [0, 0, 0, 1]]))
+A = subset_symmetry_grouptest_array(
+    orbits,
+    [0, 3, 1, 0, 0, 0, 0, 0],  # (1,0)+(0,1)+(0,1)+(0,1)
+)
+assert np.allclose(A, np.eye(4))  # all individual tests
+
+# test nonintegral multfn...
+with pytest.raises(ValueError):
+    subset_symmetry_grouptest_array(
+        orbits,
+        [0, 2.5, 1.5, 0, 0, 0, 0, 0],
+    )
+
+# slightly more complex example
+orbits = subset_symmetry_orbits((2, 3, 4, 5))  # n = 14
+mf = np.zeros(len(orbits))
+mf[orbits.index((1, 0, 3, 1))] = 1
+mf[orbits.index((0, 3, 0, 2))] = 1
+mf[orbits.index((1, 0, 1, 0))] = 1
+mf[orbits.index((0, 0, 0, 2))] = 1
+A = subset_symmetry_grouptest_array(orbits, mf)
+assert np.allclose(
+    A,
+    np.array(
+        [
+            [1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0],
+            [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        ]
+    ),
+)
