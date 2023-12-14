@@ -227,7 +227,8 @@ assert orbits[33] == (4, 5)
 assert orbits[35] == (5, 5)
 assert orbits[list(diffs[(33, 35)])[0]] == (1, 0)
 
-# some tests of multpart_from_multfn
+# some tests of subset_symmetry_multpart_from_multfn...
+
 orbits = subset_symmetry_orbits((1, 3))
 # = [(0, 0), (0, 1), (1, 0), (0, 2), (1, 1), (0, 3), (1, 2), (1, 3)]
 mp = subset_symmetry_multpart_from_multfn(
