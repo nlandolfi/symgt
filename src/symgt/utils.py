@@ -449,7 +449,7 @@ def subset_symmetry_multpart_from_multfn(
     Construct the multipartition of `orbits[-1]` given the
     orbit multiplicities `multfn`.
 
-    The number of pieces `g` is `sum(multfn)`.
+    The number of parts `g` is `sum(multfn)`.
     The number of subpopulations `m` is `len(orbits[0])`
 
     Examples
