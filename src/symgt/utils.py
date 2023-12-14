@@ -457,7 +457,7 @@ def subset_symmetry_multpart_from_multfn(
     ```
         multpart = subset_symmetry_multpart_from_multfn(orbits, multfn)
     ```
-    Here multpart[:, i] is tuple of sizes (orbit) in the partition.
+    Here multpart[i, :] is sizes of part i in the partition.
 
     Parameters
     ----------
