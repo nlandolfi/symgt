@@ -247,6 +247,8 @@ mp = subset_symmetry_multpart_from_multfn(
 )
 assert np.allclose(mp, np.array([[1, 1], [0, 1], [0, 1]]))
 
+# test some invalid invocations of subset_symmetry_multpart_from_multfn...
+
 # includes empty part
 with pytest.raises(ValueError):
     subset_symmetry_multpart_from_multfn(
