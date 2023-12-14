@@ -97,7 +97,7 @@ options = [  # all partitions of (2, 2)
     [0, 0, 0, 0, 0, 0, 0, 0, 1],  # (2,2)
 ]
 for option in options:
-    assert np.dot(c, option) >= out
+    assert np.dot(c, option) >= out  # assert mu is optimal
 
 # too few orbits
 with pytest.raises(ValueError):
