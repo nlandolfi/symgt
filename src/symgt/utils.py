@@ -521,8 +521,9 @@ def subset_symmetry_grouptest_array(
     n = int(np.sum(orbits[-1]))
     A = np.zeros((g, n), dtype=int)
     offsets = np.insert(np.cumsum(orbits[-1]), 0, 0).astype(int)
+    mp = subset_symmetry_multpart_from_multfn(orbits, multfn_ints)
     cum_s = np.insert(
-        np.cumsum(subset_symmetry_multpart_from_multfn(orbits, multfn_ints), axis=0),
+        np.cumsum(mp, axis=0),
         0,
         (0,) * m,
         axis=0,
@@ -530,4 +531,9 @@ def subset_symmetry_grouptest_array(
     for i in range(g):
         for j in range(m):
             A[i, offsets[j] + cum_s[i, j] : offsets[j] + cum_s[i + 1, j]] = 1
+
+    assert np.sum(A) == n, "sanity: A should sum to n"
+    assert np.allclose(
+        np.sum(A, axis=1), np.sum(mp, axis=1)
+    ), "sanity: A rows should sum to multpart rows"
     return A
