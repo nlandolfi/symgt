@@ -478,11 +478,16 @@ def subset_symmetry_multpart_from_multfn(
     if multfn[0] != 0:
         raise ValueError("multfn may not include empty part")
 
-    g = np.sum(multfn)
+    multfn_ints = np.asarray(multfn).astype(int)  # ensure ints
+
+    if not np.allclose(multfn_ints, multfn):
+        raise ValueError("multfn must only contain integers")
+
+    g = np.sum(multfn_ints)
     m = len(orbits[0])
     p = np.zeros((g, m))
     o = 0
-    for i, c in enumerate(multfn):
+    for i, c in enumerate(multfn_ints):
         for _ in range(c):
             p[g - 1 - o, :] = orbits[i]
             o += 1
@@ -506,15 +511,18 @@ def subset_symmetry_grouptest_array(
 
     For the fully symmetric case, see `grouptest_array`.
     """
-    multfn = np.asarray(multfn).astype(int)
+    multfn_ints = np.asarray(multfn).astype(int)  # ensure ints
 
-    g = np.sum(multfn)
+    if not np.allclose(multfn_ints, multfn):
+        raise ValueError("multfn must only contain integers")
+
+    g = np.sum(multfn_ints)
     m = len(orbits[0])
     n = int(np.sum(orbits[-1]))
     A = np.zeros((g, n), dtype=int)
     offsets = np.insert(np.cumsum(orbits[-1]), 0, 0).astype(int)
     cum_s = np.insert(
-        np.cumsum(subset_symmetry_multpart_from_multfn(orbits, multfn), axis=0),
+        np.cumsum(subset_symmetry_multpart_from_multfn(orbits, multfn_ints), axis=0),
         0,
         (0,) * m,
         axis=0,

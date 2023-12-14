@@ -264,6 +264,13 @@ with pytest.raises(ValueError):
         [0, 0, 0, 0, 0, 0, 0, 2],
     )
 
+# test nonintegral multfn...
+with pytest.raises(ValueError):
+    subset_symmetry_grouptest_array(
+        orbits,
+        [0, 2.5, 1.5, 0, 0, 0, 0, 0],
+    )
+
 # some tests of subset_symmetry_grouptest_array...
 
 orbits = subset_symmetry_orbits((1, 3))
@@ -283,6 +290,13 @@ A = subset_symmetry_grouptest_array(
     [0, 3, 1, 0, 0, 0, 0, 0],  # (1,0)+(0,1)+(0,1)+(0,1)
 )
 assert np.allclose(A, np.eye(4))  # all individual tests
+
+# test nonintegral multfn...
+with pytest.raises(ValueError):
+    subset_symmetry_grouptest_array(
+        orbits,
+        [0, 2.5, 1.5, 0, 0, 0, 0, 0],
+    )
 
 # slightly more complex example
 orbits = subset_symmetry_orbits((2, 3, 4, 5))  # n = 14
