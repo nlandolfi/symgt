@@ -10,6 +10,8 @@ from symgt.utils import (
     U_from_q_orbits,
 )
 
+print("THIS IS SMOKE TEST 11: IT TESTS U_from_q_orbits")
+
 # Test on a simple case done by hand...
 
 m = IndependentSubpopulationsModel(
