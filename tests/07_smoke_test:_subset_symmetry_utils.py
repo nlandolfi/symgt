@@ -1,3 +1,6 @@
+import numpy as np
+import pytest
+
 from symgt.utils import (
     subset_symmetry_orbits,
     subset_symmetry_leq,
@@ -5,6 +8,7 @@ from symgt.utils import (
     subset_symmetry_diff,
     subset_symmetry_orbits_order_obeying,
     subset_symmetry_orbit_diffs,
+    subset_symmetry_multpart_from_multfn,
 )
 
 
@@ -222,3 +226,39 @@ assert orbits[list(diffs[(2, 14)])[0]] == (3, 0)
 assert orbits[33] == (4, 5)
 assert orbits[35] == (5, 5)
 assert orbits[list(diffs[(33, 35)])[0]] == (1, 0)
+
+# some tests of subset_symmetry_multpart_from_multfn...
+
+orbits = subset_symmetry_orbits((1, 3))
+# = [(0, 0), (0, 1), (1, 0), (0, 2), (1, 1), (0, 3), (1, 2), (1, 3)]
+mp = subset_symmetry_multpart_from_multfn(
+    orbits,
+    [0, 0, 0, 0, 0, 0, 0, 1],  # (1,3)
+)
+assert np.allclose(mp, np.array([[1, 3]]))
+mp = subset_symmetry_multpart_from_multfn(
+    orbits,
+    [0, 1, 0, 0, 0, 0, 1, 0],  # (1,2)+(0,1)
+)
+assert np.allclose(mp, np.array([[1, 2], [0, 1]]))
+mp = subset_symmetry_multpart_from_multfn(
+    orbits,
+    [0, 2, 0, 0, 1, 0, 0, 0],  # (1,1)+(0,1)+(0,1)
+)
+assert np.allclose(mp, np.array([[1, 1], [0, 1], [0, 1]]))
+
+# test some invalid invocations of subset_symmetry_multpart_from_multfn...
+
+# includes empty part
+with pytest.raises(ValueError):
+    subset_symmetry_multpart_from_multfn(
+        orbits,
+        [1, 0, 0, 0, 0, 0, 0, 0],
+    )
+
+# does not sum to (1, 3)
+with pytest.raises(ValueError):
+    subset_symmetry_multpart_from_multfn(
+        orbits,
+        [0, 0, 0, 0, 0, 0, 0, 2],
+    )
