@@ -536,4 +536,5 @@ def subset_symmetry_grouptest_array(
     assert np.allclose(
         np.sum(A, axis=1), np.sum(mp, axis=1)
     ), "sanity: A rows should sum to multpart rows"
+
     return A
