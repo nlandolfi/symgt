@@ -2,6 +2,7 @@ from typing import Sequence
 
 import numpy as np
 from scipy.special import gammaln, logsumexp  # type: ignore
+from scipy.stats import binom  # type: ignore
 
 from .utils import (
     subset_symmetry_orbits,
@@ -102,6 +103,9 @@ class IIDModel:
         # note that by convention q(0) = 1, so log q(0) = 0;
         # handled with multiplication by 0
         return np.log(1 - self.p) * np.arange(0, self.n + 1)
+
+    def log_alpha(self) -> np.ndarray:
+        return binom.logpmf(np.arange(0, self.n + 1), self.n, self.p)
 
     def sample(self) -> np.ndarray:
         """
