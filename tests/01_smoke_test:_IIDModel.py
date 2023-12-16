@@ -25,6 +25,7 @@ alpha = np.exp(m.log_alpha())
 assert np.allclose(alpha[0], 0.9**10)
 assert np.allclose(alpha[5], 252 * (0.9**5) * (0.1**5))
 assert np.allclose(alpha[-1], 0.1**10)
+assert np.allclose(np.sum(alpha), 1)
 
 
 def test_IIDModel_init():
