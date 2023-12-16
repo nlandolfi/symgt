@@ -429,12 +429,7 @@ class IndependentSubpopulationsModel:
         """
         log_alpha = np.zeros(len(self.orbits))
 
-        # by default, np.log also takes log(0) = -np.inf, but throws a warning
-        # here we make it explicit and do not print a warning
-        l_alphas = [
-            np.log(m.alpha, where=(m.alpha != 0), out=np.full_like(m.alpha, -np.inf))
-            for m in self.models
-        ]
+        l_alphas = [m.log_alpha() for m in self.models]
 
         for i, o in enumerate(self.orbits):
             log_alpha[i] = np.sum([l_alphas[j][s] for (j, s) in enumerate(o)])
