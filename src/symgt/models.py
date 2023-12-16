@@ -386,9 +386,9 @@ class IndependentSubpopulationsModel:
 
     def log_alpha(self) -> np.ndarray:
         """
-        Computes the log of the `α` representation of the distribution.
+        Computes the log of the alpha representation of the distribution.
         Useful for comparison with SubsetSymmetryModel whose default
-        representation is the α representation.
+        representation is the alpha representation.
 
         The `i`-th entry of the returned array is the log probability to see a
         sample from a group of orbit `i`.
@@ -396,7 +396,7 @@ class IndependentSubpopulationsModel:
         Returns
         -------
         np.ndarray
-            An array containing the log of the `α` representation.
+            An array containing the log of the alpha representation.
         """
         log_alpha = np.zeros(len(self.orbits))
 
