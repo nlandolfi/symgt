@@ -384,6 +384,32 @@ class IndependentSubpopulationsModel:
 
         return log_q
 
+    def log_alpha(self) -> np.ndarray:
+        """
+        Computes the log of the `α` representation of the distribution. See paper.
+
+        The `i`-th entry of the returned array is the log probability to see a
+        sample from a group of orbit `i`.
+
+        Returns
+        -------
+        np.ndarray
+            An array containing the log of the `α` representation.
+        """
+        log_alpha = np.zeros(len(self.orbits))
+
+        # by default, np.log also takes log(0) = -np.inf, but throws a warning
+        # here we make it explicit and do not print a warning
+        l_alphas = [
+            np.log(m.alpha, where=(m.alpha != 0), out=np.full_like(m.alpha, -np.inf))
+            for m in self.models
+        ]
+
+        for i, o in enumerate(self.orbits):
+            log_alpha[i] = np.sum([l_alphas[j][s] for (j, s) in enumerate(o)])
+
+        return log_alpha
+
     def sample(self) -> np.ndarray:
         """
         Sample from the model.

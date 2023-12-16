@@ -115,6 +115,12 @@ assert np.allclose(
 assert np.allclose(
     np.exp(m.log_q()), [1, 0.25, 0.5, 0.25, 0.125, 0.5, 0.125, 0.125, 0.125]
 )
+alpha = np.exp(m.log_alpha())
+assert np.allclose(
+    alpha,
+    [0.5 * 0.25, 0, 0, 0.5 * 0.75, 0, 0.5 * 0.25, 0, 0, 0.5 * 0.75],
+)
+assert np.allclose(np.sum(alpha), 1)
 
 # one more test
 m = IndependentSubpopulationsModel.fit(
@@ -143,6 +149,12 @@ assert np.allclose(
 assert np.allclose(
     np.exp(m.log_q()), [1, 4 / 12.0, 0.5, 1 / 12.0, 4 / 24.0, 0.0, 1 / 24.0, 0]
 )
+alpha = np.exp(m.log_alpha())
+assert np.allclose(
+    alpha,
+    [0, 0.5 * 0.25, 0, 0.5 * 0.5, 0.5 * 0.25, 0.5 * 0.25, 0.5 * 0.5, 0.5 * 0.25],
+)
+assert np.allclose(np.sum(alpha), 1)
 
 # test sample a bit
 m = IndependentSubpopulationsModel(
