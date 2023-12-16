@@ -185,8 +185,6 @@ m1 = IndependentSubpopulationsModel(
     ],
 )
 orbits = subset_symmetry_orbits((1, 2, 3, 4, 5))
-alpha = np.zeros(len(orbits))
-for i, o in enumerate(orbits):
-    alpha[i] = np.prod([m1.models[j].alpha[s] for (j, s) in enumerate(o)])
+alpha = np.exp(m1.log_alpha())
 m2 = SubsetSymmetryModel(orbits, alpha)
 assert np.allclose(m1.log_q(), m2.log_q())
