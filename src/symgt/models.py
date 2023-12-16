@@ -2,6 +2,7 @@ from typing import Sequence
 
 import numpy as np
 from scipy.special import gammaln, logsumexp  # type: ignore
+from scipy.stats import binom  # type: ignore
 
 from .utils import (
     subset_symmetry_orbits,
@@ -102,6 +103,20 @@ class IIDModel:
         # note that by convention q(0) = 1, so log q(0) = 0;
         # handled with multiplication by 0
         return np.log(1 - self.p) * np.arange(0, self.n + 1)
+
+    def log_alpha(self) -> np.ndarray:
+        """
+        Computes the log of the alpha representation of the distribution.
+
+        The `i`-th entry of the returned array is the log probability to see a
+        sample with `i` nonzeros.
+
+        Returns
+        -------
+        np.ndarray
+            An array containing the log of the alpha representation.
+        """
+        return binom.logpmf(np.arange(0, self.n + 1), self.n, self.p)
 
     def sample(self) -> np.ndarray:
         """
@@ -217,11 +232,7 @@ class ExchangeableModel:
         # handled with initialization to 0
         log_q = np.zeros(self.n + 1)
 
-        # by default, np.log also takes log(0) = -np.inf, but throws a warning
-        # here we make it explicit and do not print a warning
-        log_alpha = np.log(
-            self.alpha, where=(self.alpha != 0), out=np.full_like(self.alpha, -np.inf)
-        )
+        log_alpha = self.log_alpha()
 
         for i in range(1, self.n + 1):
             a = [log_alpha[0]]
@@ -229,6 +240,24 @@ class ExchangeableModel:
                 a.append(log_comb(self.n - i, j) - log_comb(self.n, j) + log_alpha[j])
             log_q[i] = logsumexp(a)
         return log_q
+
+    def log_alpha(self) -> np.ndarray:
+        """
+        Computes the log of the alpha representation of the distribution.
+
+        The `i`-th entry of the returned array is the log probability to see a
+        sample with `i` nonzeros.
+
+        Returns
+        -------
+        np.ndarray
+            An array containing the log of the alpha representation.
+        """
+        # by default, np.log also takes log(0) = -np.inf, but throws a warning
+        # here we make it explicit and do not print a warning
+        return np.log(
+            self.alpha, where=(self.alpha != 0), out=np.full_like(self.alpha, -np.inf)
+        )
 
     def sample(self) -> np.ndarray:
         """
@@ -400,12 +429,7 @@ class IndependentSubpopulationsModel:
         """
         log_alpha = np.zeros(len(self.orbits))
 
-        # by default, np.log also takes log(0) = -np.inf, but throws a warning
-        # here we make it explicit and do not print a warning
-        l_alphas = [
-            np.log(m.alpha, where=(m.alpha != 0), out=np.full_like(m.alpha, -np.inf))
-            for m in self.models
-        ]
+        l_alphas = [m.log_alpha() for m in self.models]
 
         for i, o in enumerate(self.orbits):
             log_alpha[i] = np.sum([l_alphas[j][s] for (j, s) in enumerate(o)])
