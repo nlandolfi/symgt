@@ -22,6 +22,7 @@ alpha = np.array([0.3, 0.4, 0.3])
 model = ExchangeableModel(n, alpha)
 assert model.n == n
 assert np.all(model.alpha == alpha)
+assert np.allclose(model.log_alpha(), np.log(alpha))
 
 # test exchangeable model init invalid n type
 n = "2"

@@ -105,6 +105,17 @@ class IIDModel:
         return np.log(1 - self.p) * np.arange(0, self.n + 1)
 
     def log_alpha(self) -> np.ndarray:
+        """
+        Computes the log of the alpha representation of the distribution.
+
+        The `i`-th entry of the returned array is the log probability to see a
+        sample with `i` nonzeros.
+
+        Returns
+        -------
+        np.ndarray
+            An array containing the log of the alpha representation.
+        """
         return binom.logpmf(np.arange(0, self.n + 1), self.n, self.p)
 
     def sample(self) -> np.ndarray:
@@ -221,11 +232,7 @@ class ExchangeableModel:
         # handled with initialization to 0
         log_q = np.zeros(self.n + 1)
 
-        # by default, np.log also takes log(0) = -np.inf, but throws a warning
-        # here we make it explicit and do not print a warning
-        log_alpha = np.log(
-            self.alpha, where=(self.alpha != 0), out=np.full_like(self.alpha, -np.inf)
-        )
+        log_alpha = self.log_alpha()
 
         for i in range(1, self.n + 1):
             a = [log_alpha[0]]
@@ -233,6 +240,24 @@ class ExchangeableModel:
                 a.append(log_comb(self.n - i, j) - log_comb(self.n, j) + log_alpha[j])
             log_q[i] = logsumexp(a)
         return log_q
+
+    def log_alpha(self) -> np.ndarray:
+        """
+        Computes the log of the alpha representation of the distribution.
+
+        The `i`-th entry of the returned array is the log probability to see a
+        sample with `i` nonzeros.
+
+        Returns
+        -------
+        np.ndarray
+            An array containing the log of the alpha representation.
+        """
+        # by default, np.log also takes log(0) = -np.inf, but throws a warning
+        # here we make it explicit and do not print a warning
+        return np.log(
+            self.alpha, where=(self.alpha != 0), out=np.full_like(self.alpha, -np.inf)
+        )
 
     def sample(self) -> np.ndarray:
         """
