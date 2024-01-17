@@ -76,7 +76,7 @@ def compute_optimal_multfn(c: np.ndarray, subproblems=False):
 
         if k - istar[k] > 0:  # if we are using a subproblem
             multfns[k, :] = multfns[k - istar[k], :]  # take its multfn
-        # otherwise, inherit the zero pattern
+        # otherwise, inherit the zero multiplicity function
 
         # update the multfn to include a part of size istar[k]
         multfns[k, istar[k]] += 1
