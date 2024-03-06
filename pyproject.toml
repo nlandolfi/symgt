@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
 name = "symgt"
-version = "0.0.17"
+version = "0.0.18"
 authors = [
   { name = "N. C. Landolfi", email="crews.fixture.0f@icloud.com"},
 ]
@@ -11,7 +11,8 @@ description = "A package for group testing against symmetric distributions."
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
-  "numpy", 
+  "numpy",
+  "scipy",
 ]
 classifiers = [
   "Programming Language :: Python :: 3",
