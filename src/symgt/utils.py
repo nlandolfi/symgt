@@ -270,8 +270,8 @@ def subset_symmetry_orbits(sizes: Sequence[int]) -> list[tuple[int, ...]]:
 
     Examples
     --------
-    To get the orbits for a population of size 3, one population of size 1
-    and another population of size 2.
+    To get the orbits for a subpopulation of size 3, one subpopulation of
+    size 1 and another subpopulation of size 2.
     ```
         orbits = subset_symmetry_orbits([1, 2])
     ```
